@@ -76,6 +76,35 @@ header{height:86px;border-bottom-color:#ff8ac31f}.brand{font-size:20px;letter-sp
 .priceValue{font-size:22px!important;color:#fff!important}
 @media(max-width:700px){.brand{font-size:17px}.mark{width:42px;height:42px}}
 
+
+/* Full-screen product detail experience */
+.detailOverlay{padding:0!important;align-items:stretch!important;justify-content:stretch!important;background:rgba(3,2,7,.94)!important;backdrop-filter:blur(18px)}
+.detailModal{width:100%!important;height:100dvh!important;max-height:100dvh!important;border:0!important;border-radius:0!important;overflow-y:auto!important;background:linear-gradient(180deg,#120b14,#09080e)!important;box-shadow:none!important}
+.detailHeader{position:sticky;top:0;padding:15px clamp(16px,4vw,54px)!important;background:#100a13f2!important;border-bottom:1px solid #ff7db52b!important}
+.detailHeader h2{font-size:clamp(18px,2vw,26px)!important}
+.detailContent{max-width:1240px;margin:0 auto;padding:clamp(16px,3vw,38px)!important}
+.detailHero{grid-template-columns:minmax(220px,380px) 1fr!important;gap:clamp(22px,4vw,54px)!important;align-items:center!important;padding:clamp(16px,3vw,34px);border:1px solid #ff82bd35;border-radius:22px;background:radial-gradient(circle at 15% 35%,#f23d9226,transparent 40%),linear-gradient(135deg,#1c111e,#100c15)}
+.featuredRender{height:clamp(240px,34vw,430px)!important;border:1px solid #ff8ac333;background:radial-gradient(circle,#f34a9c35,transparent 65%),#1b101c!important}
+.detailHero h2{font-size:clamp(28px,4vw,48px)!important;line-height:1.05}
+.detailHero p{font-size:14px!important;max-width:650px}
+.detailStats{gap:10px!important;margin:22px 0!important}
+.detailStat{padding:14px!important;border-color:#ff8ac333!important;background:#ff8ac30a!important}
+.detailStat b{font-size:clamp(16px,2vw,23px)!important}
+.detailStat small{font-size:10px!important}
+.buyPanel{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:20px;padding:16px;border:1px solid #ff8ac344;border-radius:16px;background:#ff8ac30c}
+.buyPrice{font-size:clamp(26px,3vw,36px);font-weight:950;color:#fff}
+.buyNow{border:0;border-radius:11px;padding:15px 28px;background:linear-gradient(110deg,#ff58a5,#c91d70);color:#fff;font-weight:950;font-size:14px;letter-spacing:.5px;box-shadow:0 10px 28px #f33b9140;cursor:pointer}
+.buyNow:active{transform:scale(.98)}
+.buyNote{font-size:11px;color:#d4a9bf;flex-basis:100%}
+.lockerSection{margin-top:34px}
+.lockerSection .sectionHead{margin:0 0 16px!important}
+.itemGrid{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:12px!important}
+.lockerItem{border-color:#ff8ac333!important;background:linear-gradient(145deg,#1b1220,#100d15)!important}
+.lockerItem .itemArt{height:clamp(100px,13vw,155px)!important;background:radial-gradient(circle,#ed3c8b25,transparent 70%),#120d17!important}
+.lockerItem .itemName{font-size:12px!important;min-height:44px!important;padding:9px!important}
+.itemType{display:block;padding:0 9px 9px;color:#ff9bc9;font-size:9px;text-transform:uppercase;letter-spacing:.8px;font-weight:800}
+@media(max-width:700px){.detailHero{grid-template-columns:1fr!important}.featuredRender{height:260px!important}.itemGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.detailStats{grid-template-columns:repeat(3,1fr)!important}.buyNow{width:100%}.detailContent{padding:14px!important}}
+
 </style>
 </head>
 <body>
@@ -149,32 +178,32 @@ function chapter(x){return Number(x.introduction&&x.introduction.chapter)||0}
 function season(x){return Number(String(x.introduction&&x.introduction.season||'').replace(/[^0-9.]/g,''))||0}
 function rarity(x){return val(x.rarity&&x.rarity.value)}
 function categoryPool(cat){
- let pool=allCosmetics.filter(x=>x&&x.name&&x.images&&(x.images.icon||x.images.smallIcon));
+ const pool=allCosmetics.filter(x=>x&&x.name&&x.images&&(x.images.icon||x.images.smallIcon||x.images.featured));
  const outfits=pool.filter(x=>itemType(x)==='outfit');
- if(cat==='OG') pool=pool.filter(x=>chapter(x)===1&&(season(x)<=2||!season(x)));
+ if(cat==='OG') return pool.filter(x=>chapter(x)===1&&(season(x)<=2||!season(x)));
  if(cat==='Competitive'){
    const names=sampleNames.Competitive.map(val);
-   pool=pool.filter(x=>itemType(x)==='outfit'&&names.some(n=>val(x.name).includes(n)));
+   return pool.filter(x=>itemType(x)==='outfit'&&names.some(n=>val(x.name).includes(n)));
  }
- if(cat==='Rare') pool=pool.filter(x=>['legendary','epic'].includes(rarity(x))||val(x.rarity&&x.rarity.displayValue).includes('series'));
- if(cat==='Exclusive') pool=pool.filter(x=>val(x.series&&x.series.value).includes('gaming')||val(x.series&&x.series.value).includes('icon')||val(x.series&&x.series.value).includes('platform'));
- if(cat==='Starter') pool=pool.filter(x=>itemType(x)==='outfit'&&['common','uncommon','rare'].includes(rarity(x)));
- if(cat==='Stacked') pool=pool.filter(x=>x.images&&x.images.icon);
- if(cat==='NFA') pool=pool.filter(x=>x.images&&x.images.icon);
- if(cat==='OG'&&!pool.length) pool=outfits;
- if(!pool.length) pool=allCosmetics.filter(x=>x&&x.name&&x.images&&(x.images.icon||x.images.smallIcon));
- return pool;
+ if(cat==='Rare') return pool.filter(x=>['legendary','epic'].includes(rarity(x))||val(x.rarity&&x.rarity.displayValue).includes('series'));
+ if(cat==='Exclusive') return pool.filter(x=>['gaming','icon','platform'].some(t=>val(x.series&&x.series.value).includes(t)));
+ if(cat==='Starter') return pool.filter(x=>itemType(x)==='outfit'&&['common','uncommon','rare'].includes(rarity(x)));
+ if(cat==='Stacked'||cat==='NFA') return pool;
+ return outfits.length?outfits:pool;
 }
 function pickTwenty(cat){
- const pool=categoryPool(cat),picked=[],seen=new Set();
- const wanted=sampleNames[cat]||[];
- for(const n of wanted){const match=pool.find(x=>val(x.name)===val(n)||val(x.name).includes(val(n)));if(match&&!seen.has(match.id)){picked.push(match);seen.add(match.id)}}
- const sorted=pool.slice().sort((a,b)=>{
-   const at=itemType(a),bt=itemType(b);
-   const score=t=>t==='outfit'?0:t==='backpack'?1:t==='pickaxe'?2:t==='glider'?3:t==='emote'?4:5;
-   return score(at)-score(bt);
+ const pool=categoryPool(cat),picked=[],seen=new Set(),wanted=sampleNames[cat]||[];
+ const add=x=>{if(x&&!seen.has(x.id)&&picked.length<20){picked.push(x);seen.add(x.id)}};
+ for(const n of wanted)add(pool.find(x=>val(x.name)===val(n)||val(x.name).includes(val(n))));
+ const typeOrder=['outfit','backpack','pickaxe','glider','emote','wrap'];
+ const targets=cat==='OG'?[8,3,3,2,2,2]:cat==='Competitive'?[8,3,3,2,2,2]:cat==='Starter'?[8,3,3,2,2,2]:cat==='Rare'||cat==='Exclusive'?[8,3,3,2,2,2]:[8,3,3,2,2,2];
+ typeOrder.forEach((type,i)=>{
+   const target=targets[i];
+   const current=picked.filter(x=>itemType(x)===type).length;
+   pool.filter(x=>itemType(x)===type).sort((a,b)=>val(a.name).localeCompare(val(b.name))).forEach(x=>{if(picked.filter(y=>itemType(y)===type).length<target)add(x)});
  });
- for(const x of sorted){if(picked.length>=20)break;if(!seen.has(x.id)){picked.push(x);seen.add(x.id)}}
+ const fallback=pool.slice().sort((a,b)=>val(a.name).localeCompare(val(b.name)));
+ fallback.forEach(add);
  return picked.slice(0,20);
 }
 function buildDemo(){
@@ -203,9 +232,12 @@ search.addEventListener('input',e=>{query=e.target.value.trim();render()});
 const overlay=document.getElementById('detailOverlay');
 function openDetail(id){
  const a=demoAccounts.find(x=>x.id===id);if(!a)return;
- const featured=a.featured;
+ const featured=a.featured,price=SAMPLE_PRICES[a.category]||'Price not set';
  document.getElementById('detailTitle').textContent=a.title;
- document.getElementById('detailContent').innerHTML='<div class="detailHero"><div class="featuredRender">'+(imageOf(featured)?'<img src="'+escapeHtml(imageOf(featured))+'" alt="'+escapeHtml(featured.name)+'">':'<span>No render available</span>')+'</div><div><div class="eyebrow">'+escapeHtml(a.category)+' • SAMPLE LOCKER</div><h2 style="margin:8px 0">'+escapeHtml(featured?featured.name:'Cosmetic preview')+'</h2><p style="font-size:12px;color:#aab4c8;line-height:1.6">A category-based cosmetic preview assembled from the live Fortnite cosmetic catalogue. These 20 items are illustrative only and do not represent a real Fortnite account, ownership, or account access.</p><div class="detailStats"><div class="detailStat"><b>'+a.skinCount+'</b><small>Outfit previews</small></div><div class="detailStat"><b>'+a.locker.length+'</b><small>Unique cosmetics</small></div><div class="detailStat"><b>'+escapeHtml(SAMPLE_PRICES[a.category]||'—')+'</b><small>Sample price</small></div></div></div></div><div class="sectionHead" style="margin:25px 0 10px"><div><div class="eyebrow">LOCKER PREVIEW</div><h2 style="font-size:20px">All 20 cosmetics</h2><p>Icons and names loaded from the cosmetic catalogue.</p></div></div><div class="itemGrid">'+a.locker.map(x=>'<div class="lockerItem"><div class="itemArt">'+(imageOf(x)?'<img loading="lazy" src="'+escapeHtml(imageOf(x))+'" alt="'+escapeHtml(x.name)+'">':'<span>Image unavailable</span>')+'</div><div class="itemName">'+escapeHtml(x.name)+'</div></div>').join('')+'</div><div class="apiStatus">Demo inventory only • API cosmetic metadata, not account locker verification.</div>';
+ const typeLabel=x=>({outfit:'Outfit',backpack:'Back Bling',pickaxe:'Pickaxe',glider:'Glider',emote:'Emote',wrap:'Wrap',loadingscreen:'Loading Screen',music:'Music'}[itemType(x)]||((x.type&&x.type.displayValue)||'Cosmetic'));
+ document.getElementById('detailContent').innerHTML=
+ '<div class="detailHero"><div class="featuredRender">'+(imageOf(featured)?'<img src="'+escapeHtml(imageOf(featured))+'" alt="'+escapeHtml(featured.name)+'">':'<span>No render available</span>')+'</div><div><div class="eyebrow">'+escapeHtml(BADGES[a.category]||a.category)+' • SAMPLE LISTING</div><h2 style="margin:8px 0">'+escapeHtml(a.title)+'</h2><p style="font-size:14px;color:#d2b9c8;line-height:1.7">Explore this example locker featuring '+escapeHtml(featured?featured.name:'Fortnite cosmetics')+' and a mix of outfits, back blings, pickaxes, gliders and emotes. This is a catalogue mockup, not a verified account or confirmed inventory.</p><div class="detailStats"><div class="detailStat"><b>'+a.locker.filter(x=>itemType(x)==='outfit').length+'</b><small>Outfits</small></div><div class="detailStat"><b>'+a.locker.length+'</b><small>Cosmetic items</small></div><div class="detailStat"><b>'+escapeHtml(price)+'</b><small>Sample price</small></div></div><div class="buyPanel"><div><div class="priceNote">Example asking price</div><div class="buyPrice">'+escapeHtml(price)+'</div></div><button class="buyNow" id="buyNowBtn" type="button">BUY NOW ↗</button><div class="buyNote">Demo listing only — checkout is not enabled until a real account is added and verified.</div></div></div></div><div class="lockerSection"><div class="sectionHead"><div><div class="eyebrow">FULL COSMETIC PREVIEW</div><h2 style="font-size:clamp(22px,3vw,30px)">Locker contents <span style="color:#ff8fc2">('+a.locker.length+')</span></h2><p>Real cosmetic names and artwork from the live cosmetic catalogue. This is not proof of account ownership.</p></div></div><div class="itemGrid">'+a.locker.map(x=>'<div class="lockerItem"><div class="itemArt">'+(imageOf(x)?'<img loading="lazy" src="'+escapeHtml(imageOf(x))+'" alt="'+escapeHtml(x.name)+'">':'<span>Image unavailable</span>')+'</div><div class="itemName">'+escapeHtml(x.name)+'</div><span class="itemType">'+escapeHtml(typeLabel(x))+'</span></div>').join('')+'</div></div><div class="apiStatus">Sample catalogue preview • cosmetics are not verified as belonging to a real account.</div>';
+ document.getElementById('buyNowBtn').addEventListener('click',()=>alert('This is a sample listing. Checkout will be enabled when a genuine account and confirmed inventory are added.'));
  overlay.classList.add('open');document.body.style.overflow='hidden';
 }
 function closeDetail(){overlay.classList.remove('open');document.body.style.overflow=''}
