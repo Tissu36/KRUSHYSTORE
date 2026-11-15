@@ -192,51 +192,47 @@ function categoryPool(cat){
  if(cat==='Starter')return pool.filter(x=>itemType(x)==='outfit'&&['common','uncommon','rare'].includes(rarity(x)));
  return pool;
 }
-function pickTwenty(cat){
- const pool=categoryPool(cat),picked=[],seen=new Set();
- const add=x=>{if(x&&!seen.has(x.id)&&picked.length<20){picked.push(x);seen.add(x.id)}};
- const outfits=pool.filter(x=>itemType(x)==='outfit');
- const named=(sampleNames[cat]||[]).map(val);
- named.forEach(n=>add(outfits.find(x=>val(x.name)===n)));
- outfits.forEach(add);
- return picked;
+const TEMPLATE_SKINS={Competitive:30,OG:15,Stacked:235,Rare:100,Exclusive:80,Starter:20,NFA:50};
+function uniqueItems(items){return [...new Map(items.filter(x=>x&&x.id).map(x=>[x.id,x])).values()]}
+function pickOutfits(cat){
+ const pool=categoryPool(cat),outfits=pool.filter(x=>itemType(x)==='outfit');
+ const named=(sampleNames[cat]||[]).map(val),picked=[],seen=new Set();
+ const add=x=>{if(x&&x.id&&!seen.has(x.id)){picked.push(x);seen.add(x.id)}};
+ named.forEach(n=>add(outfits.find(x=>val(x.name)===n)));outfits.forEach(add);
+ if(picked.length<TEMPLATE_SKINS[cat])allCosmetics.filter(x=>itemType(x)==='outfit').forEach(add);
+ return picked.slice(0,TEMPLATE_SKINS[cat]||30);
 }
-
 function battlePassLocker(outfit){
- const target=sourceSeason(outfit);
- if(!target)return [];
- const prefix='cosmetics.source.season'+target+'.battlepass';
- return allCosmetics.filter(x=>x&&x.name&&tagsOf(x).some(t=>t.includes(prefix)))
-  .sort((a,b)=>itemType(a).localeCompare(itemType(b))||val(a.name).localeCompare(val(b.name)));
+ const target=sourceSeason(outfit);if(!target)return [];
+ const prefix='cosmetics.source.season'+target+'.battlepass.';
+ return allCosmetics.filter(x=>x&&x.name&&tagsOf(x).some(t=>t.startsWith(prefix))).sort((a,b)=>itemType(a).localeCompare(itemType(b))||val(a.name).localeCompare(val(b.name)));
 }
-
+function isExclusive(x){
+ const tags=tagsOf(x),series=val(x.series&&x.series.value)+' '+val(x.series&&x.series.displayValue);
+ return tags.some(t=>/cosmetics\.source\..*(promo|exclusive|platform|founder|console|device|nintendo|playstation|xbox|samsung|twitch|crew)/i.test(t))||/gaming|icon|platform|marvel|dc|star wars|console|exclusive|promotion/.test(series);
+}
 function buildDemo(){
  demoAccounts=CATEGORIES.map(cat=>{
-  let locker=pickTwenty(cat),featured=locker.find(x=>itemType(x)==='outfit')||locker[0];
-  if(cat==='OG'){
-   const blackKnight=allCosmetics.find(x=>val(x.name)==='black knight'&&itemType(x)==='outfit');
-   if(blackKnight){featured=blackKnight;if(!locker.some(x=>x.id===blackKnight.id))locker.unshift(blackKnight)}
-  }
+  const skins=pickOutfits(cat);let featured=skins[0]||null;
+  if(cat==='OG'){const bk=allCosmetics.find(x=>val(x.name)==='black knight'&&itemType(x)==='outfit');if(bk){featured=bk;if(!skins.some(x=>x.id===bk.id))skins.unshift(bk)}}
   const groups=new Map();
-  locker.filter(x=>itemType(x)==='outfit'&&sourceSeason(x)>0).forEach(outfit=>{
-   const seasonId=sourceSeason(outfit);
-   if(!groups.has(seasonId)){
-    const rewards=battlePassLocker(outfit);
-    if(rewards.length)groups.set(seasonId,rewards);
-   }
-  });
-  const passGroups=[...groups.entries()].map(([season,items])=>({season,items}));
-  const passItems=[...new Map(passGroups.flatMap(g=>g.items).map(x=>[x.id,x])).values()];
-  locker=[...new Map([...locker,...passItems].map(x=>[x.id,x])).values()];
-  return {id:'demo-'+cat,category:cat,title:cat+' Locker Preview',locker,passItems,passGroups,skinCount:locker.filter(x=>itemType(x)==='outfit').length,featured};
+  skins.filter(x=>sourceSeason(x)>0).forEach(outfit=>{const sid=sourceSeason(outfit);if(!groups.has(sid))groups.set(sid,battlePassLocker(outfit))});
+  const passGroups=[...groups.entries()].filter(([,items])=>items.length).map(([season,items])=>({season,items}));
+  const passItems=uniqueItems(passGroups.flatMap(g=>g.items)),passIds=new Set(passItems.map(x=>x.id));
+  const exclusiveItems=uniqueItems(allCosmetics.filter(x=>x&&x.name&&isExclusive(x)&&!passIds.has(x.id)&&itemType(x)!=='outfit'));
+  const exclusiveIds=new Set(exclusiveItems.map(x=>x.id)),extraTarget=Math.max(100,skins.length*7);
+  const preferred=['backpack','pickaxe','glider','emote','wrap','loadingscreen','music','spray','emoji','banner','contrail','toy','pet','instrument','jamtrack','vehicle','sidekick','shoe'];
+  const nonPass=allCosmetics.filter(x=>x&&x.name&&itemType(x)!=='outfit'&&!passIds.has(x.id)&&!exclusiveIds.has(x.id));
+  nonPass.sort((a,b)=>{const ai=preferred.indexOf(itemType(a)),bi=preferred.indexOf(itemType(b));return (ai<0?999:ai)-(bi<0?999:bi)||val(a.name).localeCompare(val(b.name))});
+  const otherItems=nonPass.slice(0,extraTarget),locker=uniqueItems([...skins,...passItems,...exclusiveItems,...otherItems]);
+  return {id:'demo-'+cat,category:cat,title:cat+' Locker Preview',locker,passItems,passGroups,exclusiveItems,otherItems,skinCount:skins.length,featured};
  });
 }
-
 function imageOf(x){return x&&x.images&&(x.images.icon||x.images.smallIcon||x.images.featured)||''}
 function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function cardHTML(a){
  const thumbs=a.locker.slice(0,20).map(x=>'<div class="previewItem" title="'+escapeHtml(x.name)+'">'+(imageOf(x)?'<img loading="lazy" src="'+escapeHtml(imageOf(x))+'" alt="'+escapeHtml(x.name)+'">':'<span>'+escapeHtml(x.name)+'</span>')+'</div>').join('');
- return '<article class="listing" data-id="'+a.id+'" tabindex="0" role="button" aria-label="Open '+escapeHtml(a.title)+'"><div class="listingTop"><span class="demoFlag">DEMO • NOT FOR SALE</span><div class="listingSymbol">'+escapeHtml(a.category.slice(0,1))+'</div><span class="listingLabel">'+escapeHtml(a.category.toUpperCase())+'</span></div><div class="listingBody"><h3>'+escapeHtml(a.title)+'</h3><p>'+a.skinCount+' skins and '+a.passItems.length+' Battle Pass reward items ('+a.locker.length+' total unique items). Pass rewards are included in the total, not added on top. Demo data only.</p><div class="listingMeta"><span class="chip">'+a.skinCount+' skins</span><span class="chip">'+a.passItems.length+' BP rewards</span><span class="chip">'+a.locker.length+' total items</span><span class="chip">'+escapeHtml(BADGES[a.category]||a.category)+'</span></div><div class="listingFoot"><strong>'+(SAMPLE_PRICES[a.category]==='Not set'?'Price not set':'Sample price '+SAMPLE_PRICES[a.category])+'</strong><button type="button" tabindex="-1">View locker ↗</button></div></div><div class="previewRow">'+thumbs+'</div></article>';
+ return '<article class="listing" data-id="'+a.id+'" tabindex="0" role="button" aria-label="Open '+escapeHtml(a.title)+'"><div class="listingTop"><span class="demoFlag">DEMO • NOT FOR SALE</span><div class="listingSymbol">'+escapeHtml(a.category.slice(0,1))+'</div><span class="listingLabel">'+escapeHtml(a.category.toUpperCase())+'</span></div><div class="listingBody"><h3>'+escapeHtml(a.title)+'</h3><p>'+a.skinCount+' sample skins, '+a.passItems.length+' Battle Pass rewards, '+a.exclusiveItems.length+' exclusives and '+a.otherItems.length+' additional cosmetics ('+a.locker.length+' unique items total). Illustrative preview, not verified ownership.</p><div class="listingMeta"><span class="chip">'+a.skinCount+' skins</span><span class="chip">'+a.passItems.length+' BP rewards</span><span class="chip">'+a.exclusiveItems.length+' exclusives</span><span class="chip">'+a.locker.length+' total items</span><span class="chip">'+escapeHtml(BADGES[a.category]||a.category)+'</span></div><div class="listingFoot"><strong>'+(SAMPLE_PRICES[a.category]==='Not set'?'Price not set':'Sample price '+SAMPLE_PRICES[a.category])+'</strong><button type="button" tabindex="-1">View locker ↗</button></div></div><div class="previewRow">'+thumbs+'</div></article>';
 }
 function render(){
  const q=val(query);
@@ -254,16 +250,16 @@ function openDetail(id){
  const a=demoAccounts.find(x=>x.id===id);if(!a)return;
  const featured=a.featured,price=SAMPLE_PRICES[a.category]||'Price not set';
  const typeLabel=x=>({outfit:'Outfit',backpack:'Back Bling',pickaxe:'Pickaxe',glider:'Glider',emote:'Emote',wrap:'Wrap',loadingscreen:'Loading Screen',music:'Music',spray:'Spray',emoji:'Emoticon',banner:'Banner',toy:'Toy',pet:'Pet',contrail:'Contrail',instrument:'Instrument',jamtrack:'Jam Track',vehicle:'Vehicle',sidekick:'Sidekick',shoe:'Kicks',aura:'Aura'}[itemType(x)]||((x.type&&x.type.displayValue)||'Cosmetic'));
- const passIds=new Set(a.passItems.map(x=>x.id));
- const otherLocker=a.locker.filter(x=>!passIds.has(x.id));
+ const passIds=new Set(a.passItems.map(x=>x.id)),exclusiveIds=new Set(a.exclusiveItems.map(x=>x.id));
+ const otherLocker=a.locker.filter(x=>!passIds.has(x.id)&&!exclusiveIds.has(x.id)&&itemType(x)!=='outfit');
+ const typeLabel=x=>({outfit:'Outfit',backpack:'Back Bling',pickaxe:'Pickaxe',glider:'Glider',emote:'Emote',wrap:'Wrap',loadingscreen:'Loading Screen',music:'Music',spray:'Spray',emoji:'Emoticon',banner:'Banner',toy:'Toy',pet:'Pet',contrail:'Contrail',instrument:'Instrument',jamtrack:'Jam Track',vehicle:'Vehicle',sidekick:'Sidekick',shoe:'Kicks',aura:'Aura'}[itemType(x)]||((x.type&&x.type.displayValue)||'Cosmetic'));
  const itemCards=items=>items.map(x=>'<div class="lockerItem"><div class="itemArt">'+(imageOf(x)?'<img loading="lazy" src="'+escapeHtml(imageOf(x))+'" alt="'+escapeHtml(x.name)+'">':'<span>Image unavailable</span>')+'</div><div class="itemName">'+escapeHtml(x.name)+'</div><span class="itemType">'+escapeHtml(typeLabel(x))+'</span></div>').join('');
- const passHtml=a.passGroups.length
-  ?'<div class="lockerSection passCollectionSection"><div class="sectionHead"><div><div class="eyebrow">MATCHED BY BATTLE PASS SOURCE TAGS</div><h2 style="font-size:clamp(22px,3vw,30px)">Battle Pass rewards ('+a.passItems.length+')</h2><p>Each group contains cosmetics tagged to that exact Battle Pass season — not every cosmetic released during the same season.</p></div></div>'+a.passGroups.map(g=>'<div class="passGroup"><div class="passGroupHead"><b>Battle Pass · Season '+g.season+'</b><span>'+g.items.length+' reward items</span></div><div class="itemGrid">'+itemCards(g.items)+'</div></div>').join('')+'</div>'
-  :'<div class="passBanner"><b>No verified Battle Pass reward set found</b><span>No Battle Pass source tags were found for the featured outfits. The catalogue will not guess from introduction season.</span></div>';
+ const passHtml=a.passGroups.length?'<div class="lockerSection passCollectionSection"><div class="sectionHead"><div><div class="eyebrow">MATCHED BY BATTLE PASS SOURCE TAGS</div><h2 style="font-size:clamp(22px,3vw,30px)">Battle Pass rewards ('+a.passItems.length+')</h2><p>Full tagged reward sets across outfits, back blings, pickaxes, gliders, emotes and other reward types.</p></div></div>'+a.passGroups.map(g=>'<div class="passGroup"><div class="passGroupHead"><b>Battle Pass · Season '+g.season+'</b><span>'+g.items.length+' reward items</span></div><div class="itemGrid">'+itemCards(g.items)+'</div></div>').join('')+'</div>':'<div class="passBanner"><b>No verified Battle Pass reward set found</b><span>No Battle Pass source tags were found for the featured outfits. The catalogue will not guess from introduction season.</span></div>';
+ const exclusiveHtml='<div class="lockerSection"><div class="sectionHead"><div><div class="eyebrow">PROMO / PLATFORM / COLLAB</div><h2 style="font-size:clamp(22px,3vw,30px)">Exclusive cosmetics ('+a.exclusiveItems.length+')</h2><p>Non-Battle-Pass promotional, platform, founder and collaboration items identified from catalogue metadata.</p></div></div><div class="itemGrid">'+itemCards(a.exclusiveItems)+'</div></div>';
  document.getElementById('detailContent').innerHTML=
- '<div class="detailHero '+(a.category==='OG'?'ogTheme':'')+'"><div class="featuredRender">'+(imageOf(featured)?'<img src="'+escapeHtml(imageOf(featured))+'" alt="'+escapeHtml(featured.name)+'">':'<span>No render available</span>')+'</div><div><div class="eyebrow">'+escapeHtml(BADGES[a.category]||a.category)+' • SAMPLE LISTING</div><h2 style="margin:8px 0">'+escapeHtml(a.title)+'</h2><p style="font-size:14px;color:#d2b9c8;line-height:1.7">Example collection featuring '+escapeHtml(featured?featured.name:'Fortnite cosmetics')+'. Full Battle Pass reward groups are shown separately when the game data identifies them. This is a catalogue demo, not a verified account inventory.</p><div class="detailStats"><div class="detailStat"><b>'+a.skinCount+'</b><small>Skins</small></div><div class="detailStat"><b>'+a.passItems.length+'</b><small>BP rewards</small></div><div class="detailStat"><b>'+otherLocker.length+'</b><small>Other items</small></div><div class="detailStat"><b>'+a.locker.length+'</b><small>Total items</small></div></div><div class="buyPanel"><div><div class="priceNote">Example asking price</div><div class="buyPrice">'+escapeHtml(price)+'</div></div><button class="buyNow" id="buyNowBtn" type="button">BUY NOW ↗</button><div class="buyNote">Demo listing only — checkout is not enabled until a real account is added and verified.</div></div></div></div>'
+ '<div class="detailHero '+(a.category==='OG'?'ogTheme':'')+'"><div class="featuredRender">'+(imageOf(featured)?'<img src="'+escapeHtml(imageOf(featured))+'" alt="'+escapeHtml(featured.name)+'">':'<span>No render available</span>')+'</div><div><div class="eyebrow">'+escapeHtml(BADGES[a.category]||a.category)+' • SAMPLE LISTING</div><h2 style="margin:8px 0">'+escapeHtml(a.title)+'</h2><p style="font-size:14px;color:#d2b9c8;line-height:1.7">Example collection featuring '+escapeHtml(featured?featured.name:'Fortnite cosmetics')+'. Full Battle Pass reward groups are shown separately when the game data identifies them. This is a catalogue demo, not a verified account inventory.</p><div class="detailStats"><div class="detailStat"><b>'+a.skinCount+'</b><small>Skins</small></div><div class="detailStat"><b>'+a.passItems.length+'</b><small>BP rewards</small></div><div class="detailStat"><b>'+a.exclusiveItems.length+'</b><small>Exclusives</small></div><div class="detailStat"><b>'+otherLocker.length+'</b><small>Other items</small></div><div class="detailStat"><b>'+a.locker.length+'</b><small>Total items</small></div></div><div class="buyPanel"><div><div class="priceNote">Example asking price</div><div class="buyPrice">'+escapeHtml(price)+'</div></div><button class="buyNow" id="buyNowBtn" type="button">BUY NOW ↗</button><div class="buyNote">Demo listing only — checkout is not enabled until a real account is added and verified.</div></div></div></div>'
  +passHtml
- +'<div class="lockerSection"><div class="sectionHead"><div><div class="eyebrow">OTHER FEATURED COSMETICS</div><h2 style="font-size:clamp(22px,3vw,30px)">Additional items ('+otherLocker.length+')</h2><p>Items outside the matched Battle Pass groups. Pass rewards above are included in the total item count.</p></div></div><div class="itemGrid">'+itemCards(otherLocker)+'</div></div><div class="apiStatus">Demo collection • Battle Pass sets are grouped by source tags. This does not prove that a real account owns these items.</div>';
+ +exclusiveHtml+'<div class="lockerSection"><div class="sectionHead"><div><div class="eyebrow">OTHER COSMETICS</div><h2 style="font-size:clamp(22px,3vw,30px)">Additional items ('+otherLocker.length+')</h2><p>Non-outfit cosmetics outside the Battle Pass and exclusive groups, including back blings, pickaxes, gliders, emotes and wraps.</p></div></div><div class="itemGrid">'+itemCards(otherLocker)+'</div></div><div class="apiStatus">Illustrative catalogue preview using real catalogue entries. Exact items and ownership must be checked against each account before sale.</div>';
  document.getElementById('buyNowBtn').addEventListener('click',()=>alert('This is a sample listing. Checkout will be enabled when a genuine account and confirmed inventory are added.'));
  storeWrap.style.display='none';detailPage.hidden=false;window.scrollTo(0,0);document.body.style.overflow='auto';
 }
