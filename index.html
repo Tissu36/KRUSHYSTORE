@@ -258,7 +258,7 @@ async function loadCosmetics(){
    allCosmetics=Array.isArray(payload.data)?payload.data:[];
    const ghoul=allCosmetics.find(x=>val(x.name)==='ghoul trooper'&&x.images&&(x.images.icon||x.images.smallIcon));
    const logo=document.getElementById('brandSkin');
-   if(ghoul&&logo)logo.src=imageOf(ghoul);
+   if(ghoul&&logo)logo.src='https://fortnite-api.com/images/cosmetics/br/cid_029_athena_commando_f_halloween/variants/material/mat3.png';
    if(!allCosmetics.length)throw new Error('Cosmetics list was empty');
    apiLoaded=true;buildDemo();render();count.textContent='Live cosmetic catalogue • '+allCosmetics.length.toLocaleString()+' items • demo locker previews';
  }catch(err){
