@@ -35,10 +35,10 @@ h1{font-size:clamp(42px,6vw,76px);line-height:.94;letter-spacing:-3px;margin:17p
 .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
 .skinCard{min-width:0;overflow:hidden;border:1px solid #ffffff15;background:linear-gradient(180deg,#151c2c,#0f1420);border-radius:19px;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;outline:none}
 .skinCard:hover,.skinCard:focus-visible{transform:translateY(-4px);border-color:#8e6dff99;box-shadow:0 16px 34px #0005}
-.art{height:292px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:transparent}
-.art:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 65%,#111724 100%);pointer-events:none}
-.art img{width:100%;height:100%;object-fit:cover;object-position:center 12%;padding:0;position:relative;z-index:1;filter:drop-shadow(0 8px 12px #0006);transform:scale(1.18);transition:transform .25s}
-.skinCard:hover .art img{transform:scale(1.18)}
+.art{height:292px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#fff}
+.art:after{display:none}
+.art img{width:100%;height:100%;object-fit:contain;object-position:center;padding:12px;position:relative;z-index:1;filter:drop-shadow(0 8px 12px #0003);transform:scale(1);transition:transform .2s}
+.skinCard:hover .art img{transform:scale(1.03)}
 .imageStatus{position:absolute;z-index:2;top:12px;left:12px;border:1px solid #ffffff1e;background:#080d1bcc;padding:6px 8px;border-radius:7px;color:#d1d8e7;font-size:9px;text-transform:uppercase;letter-spacing:1px}
 .artFallback{display:none;align-items:center;justify-content:center;position:absolute;inset:0;color:#b8a3ff;font-size:56px;font-weight:1000;letter-spacing:-3px;background:transparent}
 .cardBody{padding:14px 15px 15px}.meta{display:flex;justify-content:space-between;align-items:center;gap:8px}.pill{font-size:9px;font-weight:950;letter-spacing:1px;text-transform:uppercase;color:#c5aaff;background:#7951dc21;border:1px solid #9b75f744;border-radius:6px;padding:5px 7px}
@@ -259,9 +259,7 @@ function renderCart(){
  const box=document.getElementById("cartItems"),count=document.getElementById("cartCount"),totalEl=document.getElementById("cartTotal");
  const total=cart.reduce((sum,x)=>sum+numericPrice(x)*x.qty,0);count.textContent=cart.reduce((sum,x)=>sum+x.qty,0);totalEl.textContent="$"+total.toFixed(2);
  if(!cart.length){box.innerHTML='<div class="cartEmpty">Your cart is empty.<br>Open a product and add it here.</div>';return}
- box.innerHTML=cart.map(x=>'<div class="cartItem"><div class="cartThumb">'+(x.image?'<img src="'+x.image+'" alt="">':'')+'</div><div><h4>'+escapeHtml(x.name)+'</h4><p>'+escapeHtml(x.price||"Contact for price")+'</p><div class="cartQty"><button onclick="changeQty('+JSON.stringify(x.name)+',-1)">−</button><span>'+x.qty+'</span><button onclick="changeQty('+JSON.stringify(x.name)+',1)">+</button></div></div><div class="cartItemPrice">
-</body>
-</html>+(numericPrice(x)*x.qty).toFixed(2)+'<br><button class="removeBtn" onclick="removeFromCart('+JSON.stringify(x.name)+')">REMOVE</button></div></div>').join("");
+ box.innerHTML=cart.map(x=>'<div class="cartItem"><div class="cartThumb">'+(x.image?'<img src="'+x.image+'" alt="">':'')+'</div><div><h4>'+escapeHtml(x.name)+'</h4><p>'+escapeHtml(x.price||"Contact for price")+'</p><div class="cartQty"><button onclick="changeQty('+JSON.stringify(x.name)+',-1)">−</button><span>'+x.qty+'</span><button onclick="changeQty('+JSON.stringify(x.name)+',1)">+</button></div></div><div class="cartItemPrice">$'+(numericPrice(x)*x.qty).toFixed(2)+'<br><button class="removeBtn" onclick="removeFromCart('+JSON.stringify(x.name)+')">REMOVE</button></div></div>').join("");
 }
 function escapeHtml(v){return String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function openCart(){document.getElementById("cartDrawer").classList.add("open");document.getElementById("cartDrawer").setAttribute("aria-hidden","false")}
@@ -271,8 +269,7 @@ document.getElementById("closeCart").addEventListener("click",closeCart);
 document.getElementById("cartDrawer").addEventListener("click",e=>{if(e.target.id==="cartDrawer")closeCart()});
 document.getElementById("reviewOrder").addEventListener("click",()=>{if(!cart.length){alert("Your cart is empty.");return}alert("Order review is ready. Payment is not connected in this catalogue build.")});
 renderCart();
-
-render();
+try{render()}catch(err){console.error(err);grid.innerHTML='<div class="empty">The skin gallery failed to load. Please refresh the page.</div>';}
 </script>
 </body>
 </html>
