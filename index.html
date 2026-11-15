@@ -47,12 +47,41 @@ footer{border-top:1px solid #ffffff14;padding:25px 0 38px;margin-top:38px;color:
 .lockerItem .itemName{font-size:9px;color:#dce1ee;padding:7px;line-height:1.35;min-height:34px}
 .apiStatus{font-size:10px;color:#9ba5b9;margin-top:8px}
 @media(max-width:600px){.detailHero{grid-template-columns:1fr}.featuredRender{height:155px}.itemGrid{grid-template-columns:repeat(3,minmax(0,1fr))}.detailStats{grid-template-columns:repeat(3,1fr)}}
+
+/* KRUSHYSTORE visual refresh */
+:root{--bg:#08070d;--panel:#15101a;--panel2:#201522;--line:#493044;--text:#fff8fc;--muted:#c1aebb;--purple:#ff4fa3;--lime:#ff9bc9;--cyan:#ffb5d9}
+body{background:radial-gradient(ellipse at 78% 2%,#e72c8750,transparent 32%),radial-gradient(ellipse at 2% 35%,#8e235233,transparent 30%),#08070d}
+header{height:86px;border-bottom-color:#ff8ac31f}.brand{font-size:20px;letter-spacing:2px}.brand span:last-child em{color:#ff79b9}
+.mark{width:48px;height:48px;border-radius:15px;background:linear-gradient(145deg,#ffb0d3,#e82b83 60%,#721544);box-shadow:0 8px 28px #f32e8a66;overflow:hidden;border:1px solid #ffc3df66}.mark img{width:100%;height:100%;object-fit:cover;display:block}
+.hero{min-height:410px;border-color:#ff8ac333;background:linear-gradient(118deg,#1a101b,#241321 54%,#31152a);box-shadow:0 28px 90px #0008,0 0 65px #f52b8510}
+.hero:before{background:radial-gradient(circle,#ff4fa355,#f65caa22 48%,transparent 70%)}.eyebrow{color:#ff8fc2}.hero h1 span{color:#ff76b8}
+.primary{background:linear-gradient(115deg,#ff4fa3,#d92b78);box-shadow:0 10px 30px #f0449255}.secondary{border-color:#ff8ac344}
+.orbit{border-color:#ffb0d944;box-shadow:0 0 0 25px #ff7eb30a,0 0 90px #ff4fa322}.orbit:before,.orbit:after{border-color:#ffb0d933}
+.orbCore{background:linear-gradient(145deg,#ff9bc9,#ed3f91 55%,#8d174f);box-shadow:0 22px 70px #e72c8755}.orbCore b{color:#fff4fa}
+.floatTag{border-color:#ff9bc944;background:#190d18ed}
+.trustItem,.category,.listing,.info{border-color:#ffffff17;background:linear-gradient(145deg,#17101b,#100d15)}
+.category{--glow:#ff4fa3!important}.category:hover,.category.active{border-color:#ff6aaa;box-shadow:0 12px 35px #ed3a8a22}
+.listing:hover{border-color:#ff75b6;box-shadow:0 18px 40px #0006,0 0 30px #ed3a8a15}
+.listingTop{background:radial-gradient(circle at 50% 40%,#fa4d9b33,transparent 60%),linear-gradient(135deg,#241323,#11101a)}
+.listingSymbol{background:linear-gradient(135deg,#ff91c5,#dc2a7a);color:white}.listingLabel,.chip{border-color:#ff8dc344}
+.listingFoot strong{color:#ff91c5}.listingFoot button{background:#ed3c8d;color:white;border:0;border-radius:8px;padding:9px 12px;font-weight:850}
+.demoFlag{background:#ff9ac8;color:#3a0922}.previewItem{border-color:#ff9ac833}
+.search{border-color:#ff8ac344;background:#130e17;color:white}.filters button{border-color:#ff8ac333}
+.filters button.active{background:#e83a88;border-color:#e83a88;color:white}
+.detailModal{border-color:#ff8ac344;background:#160f19}.detailHeader{background:#160f19ed}
+.featuredRender{background:radial-gradient(circle,#e83a8840,transparent 65%),#201321}
+.lockerItem{border-color:#ff8ac333;background:#1b1220}.lockerItem .itemArt{background:radial-gradient(circle,#e83a8822,transparent 70%),#120e17}
+.x{color:white;border:1px solid #ff8ac344;background:#291523;border-radius:9px}
+.priceNote{color:#ff9ac8;font-size:10px;font-weight:850;letter-spacing:.6px;text-transform:uppercase}
+.priceValue{font-size:22px!important;color:#fff!important}
+@media(max-width:700px){.brand{font-size:17px}.mark{width:42px;height:42px}}
+
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
-<a class="brand" href="#"><span class="mark">K</span><span>KRUSHY<em>STORE</em></span></a>
+<a class="brand" href="#"><span class="mark"><img id="brandSkin" alt="Pink Ghoul Trooper" src="" /></span><span>KRUSHY<em>STORE</em></span></a>
 <nav class="nav"><a href="#categories">CATEGORIES</a><a href="#catalogue">MARKET</a><a href="#about">ABOUT</a><button class="cart" id="cartBtn">Cart <span id="cartCount">0</span></button></nav>
 </header>
 <main>
@@ -63,7 +92,7 @@ footer{border-top:1px solid #ffffff14;padding:25px 0 38px;margin-top:38px;color:
 <p>Explore the KRUSHYSTORE catalogue by account style — competitive, OG, stacked, rare, exclusive and starter. Every listing should show its actual locker details before it is offered.</p>
 <div class="actions"><button class="primary" onclick="document.getElementById('catalogue').scrollIntoView({behavior:'smooth'})">Explore marketplace ↘</button><button class="secondary" onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'})">Browse categories</button></div>
 </div>
-<div class="heroVisual"><div class="orbit"><div class="orbCore"><b>K</b></div><span class="floatTag tagA">LOCKER COLLECTIONS</span><span class="floatTag tagB">KRUSHYSTORE • MARKET</span></div></div>
+<div class="heroVisual"><div class="orbit"><div class="orbCore"><b>KS</b></div><span class="floatTag tagA">LOCKER COLLECTIONS</span><span class="floatTag tagB">KRUSHYSTORE • MARKET</span></div></div>
 </section>
 <div class="trust">
 <div class="trustItem"><b>7 categories</b><small>ORGANISED ACCOUNT TYPES</small></div>
@@ -103,6 +132,8 @@ footer{border-top:1px solid #ffffff14;padding:25px 0 38px;margin-top:38px;color:
 const grid=document.getElementById('listingGrid'),search=document.getElementById('search'),count=document.getElementById('resultCount');
 let active='All',query='',allCosmetics=[],demoAccounts=[],apiLoaded=false;
 const CATEGORIES=['Competitive','OG','Stacked','Rare','Exclusive','Starter','NFA'];
+const SAMPLE_PRICES={Competitive:'$29.99',OG:'$1,999.99',Stacked:'$399.99',Rare:'$299.99',Exclusive:'$499.99',Starter:'$14.99',NFA:'Not set'};
+const BADGES={Competitive:'META / SWEATY',OG:'OG 2017',Stacked:'STACKED / ICON',Rare:'PROMO',Exclusive:'PROMO',Starter:'BUDGET',NFA:'ACCESS TYPE'};
 const sampleNames={
  Competitive:['Focus','Aura','Surf Witch','Siren','Scarlet Commander','Mogul Master','Poised Playmaker','Backlash','Joltara','Par Patroller'],
  OG:['Renegade Raider','Aerial Assault Trooper','Black Knight','The Reaper','Skull Trooper','Ghoul Trooper','Rogue Agent','Sparkle Specialist','Mako','Blue Squire'],
@@ -156,7 +187,7 @@ function imageOf(x){return x&&x.images&&(x.images.icon||x.images.smallIcon||x.im
 function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function cardHTML(a){
  const thumbs=a.locker.slice(0,20).map(x=>'<div class="previewItem" title="'+escapeHtml(x.name)+'">'+(imageOf(x)?'<img loading="lazy" src="'+escapeHtml(imageOf(x))+'" alt="'+escapeHtml(x.name)+'">':'<span>'+escapeHtml(x.name)+'</span>')+'</div>').join('');
- return '<article class="listing" data-id="'+a.id+'" tabindex="0" role="button" aria-label="Open '+escapeHtml(a.title)+'"><div class="listingTop"><span class="demoFlag">DEMO • NOT FOR SALE</span><div class="listingSymbol">'+escapeHtml(a.category.slice(0,1))+'</div><span class="listingLabel">'+escapeHtml(a.category.toUpperCase())+'</span></div><div class="listingBody"><h3>'+escapeHtml(a.title)+'</h3><p>20-item cosmetic preview built from the live cosmetic catalogue. This is not a real account inventory.</p><div class="listingMeta"><span class="chip">'+a.skinCount+' outfit previews</span><span class="chip">20 cosmetics</span><span class="chip">Preview only</span></div><div class="listingFoot"><strong>Price not set</strong><button type="button" tabindex="-1">View locker ↗</button></div></div><div class="previewRow">'+thumbs+'</div></article>';
+ return '<article class="listing" data-id="'+a.id+'" tabindex="0" role="button" aria-label="Open '+escapeHtml(a.title)+'"><div class="listingTop"><span class="demoFlag">DEMO • NOT FOR SALE</span><div class="listingSymbol">'+escapeHtml(a.category.slice(0,1))+'</div><span class="listingLabel">'+escapeHtml(a.category.toUpperCase())+'</span></div><div class="listingBody"><h3>'+escapeHtml(a.title)+'</h3><p>20-item cosmetic preview built from the live cosmetic catalogue. This is not a real account inventory.</p><div class="listingMeta"><span class="chip">'+a.skinCount+' outfit previews</span><span class="chip">20 cosmetics</span><span class="chip">'+escapeHtml(BADGES[a.category]||a.category)+'</span></div><div class="listingFoot"><strong>'+(SAMPLE_PRICES[a.category]==='Not set'?'Price not set':'Sample price '+SAMPLE_PRICES[a.category])+'</strong><button type="button" tabindex="-1">View locker ↗</button></div></div><div class="previewRow">'+thumbs+'</div></article>';
 }
 function render(){
  const q=val(query);
@@ -174,14 +205,14 @@ function openDetail(id){
  const a=demoAccounts.find(x=>x.id===id);if(!a)return;
  const featured=a.featured;
  document.getElementById('detailTitle').textContent=a.title;
- document.getElementById('detailContent').innerHTML='<div class="detailHero"><div class="featuredRender">'+(imageOf(featured)?'<img src="'+escapeHtml(imageOf(featured))+'" alt="'+escapeHtml(featured.name)+'">':'<span>No render available</span>')+'</div><div><div class="eyebrow">'+escapeHtml(a.category)+' • SAMPLE LOCKER</div><h2 style="margin:8px 0">'+escapeHtml(featured?featured.name:'Cosmetic preview')+'</h2><p style="font-size:12px;color:#aab4c8;line-height:1.6">A category-based cosmetic preview assembled from the live Fortnite cosmetic catalogue. These 20 items are illustrative only and do not represent a real Fortnite account, ownership, or account access.</p><div class="detailStats"><div class="detailStat"><b>'+a.skinCount+'</b><small>Outfit previews</small></div><div class="detailStat"><b>'+a.locker.length+'</b><small>Unique cosmetics</small></div><div class="detailStat"><b>—</b><small>Price</small></div></div></div></div><div class="sectionHead" style="margin:25px 0 10px"><div><div class="eyebrow">LOCKER PREVIEW</div><h2 style="font-size:20px">All 20 cosmetics</h2><p>Icons and names loaded from the cosmetic catalogue.</p></div></div><div class="itemGrid">'+a.locker.map(x=>'<div class="lockerItem"><div class="itemArt">'+(imageOf(x)?'<img loading="lazy" src="'+escapeHtml(imageOf(x))+'" alt="'+escapeHtml(x.name)+'">':'<span>Image unavailable</span>')+'</div><div class="itemName">'+escapeHtml(x.name)+'</div></div>').join('')+'</div><div class="apiStatus">Demo inventory only • API cosmetic metadata, not account locker verification.</div>';
+ document.getElementById('detailContent').innerHTML='<div class="detailHero"><div class="featuredRender">'+(imageOf(featured)?'<img src="'+escapeHtml(imageOf(featured))+'" alt="'+escapeHtml(featured.name)+'">':'<span>No render available</span>')+'</div><div><div class="eyebrow">'+escapeHtml(a.category)+' • SAMPLE LOCKER</div><h2 style="margin:8px 0">'+escapeHtml(featured?featured.name:'Cosmetic preview')+'</h2><p style="font-size:12px;color:#aab4c8;line-height:1.6">A category-based cosmetic preview assembled from the live Fortnite cosmetic catalogue. These 20 items are illustrative only and do not represent a real Fortnite account, ownership, or account access.</p><div class="detailStats"><div class="detailStat"><b>'+a.skinCount+'</b><small>Outfit previews</small></div><div class="detailStat"><b>'+a.locker.length+'</b><small>Unique cosmetics</small></div><div class="detailStat"><b>'+escapeHtml(SAMPLE_PRICES[a.category]||'—')+'</b><small>Sample price</small></div></div></div></div><div class="sectionHead" style="margin:25px 0 10px"><div><div class="eyebrow">LOCKER PREVIEW</div><h2 style="font-size:20px">All 20 cosmetics</h2><p>Icons and names loaded from the cosmetic catalogue.</p></div></div><div class="itemGrid">'+a.locker.map(x=>'<div class="lockerItem"><div class="itemArt">'+(imageOf(x)?'<img loading="lazy" src="'+escapeHtml(imageOf(x))+'" alt="'+escapeHtml(x.name)+'">':'<span>Image unavailable</span>')+'</div><div class="itemName">'+escapeHtml(x.name)+'</div></div>').join('')+'</div><div class="apiStatus">Demo inventory only • API cosmetic metadata, not account locker verification.</div>';
  overlay.classList.add('open');document.body.style.overflow='hidden';
 }
 function closeDetail(){overlay.classList.remove('open');document.body.style.overflow=''}
 document.getElementById('closeDetail').addEventListener('click',closeDetail);
 overlay.addEventListener('click',e=>{if(e.target===overlay)closeDetail()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDetail()});
-document.getElementById('cartBtn').addEventListener('click',()=>{alert('No real account listings or prices have been added. Demo locker previews cannot be purchased.')});
+document.getElementById('cartBtn').addEventListener('click',()=>{alert('These are sample category prices only. No real account listings are available to purchase yet.')});
 async function loadCosmetics(){
  count.textContent='Loading cosmetic catalogue…';
  try{
@@ -189,6 +220,9 @@ async function loadCosmetics(){
    if(!response.ok)throw new Error('Cosmetics API returned '+response.status);
    const payload=await response.json();
    allCosmetics=Array.isArray(payload.data)?payload.data:[];
+   const ghoul=allCosmetics.find(x=>val(x.name)==='ghoul trooper'&&x.images&&(x.images.icon||x.images.smallIcon));
+   const logo=document.getElementById('brandSkin');
+   if(ghoul&&logo)logo.src=imageOf(ghoul);
    if(!allCosmetics.length)throw new Error('Cosmetics list was empty');
    apiLoaded=true;buildDemo();render();count.textContent='Live cosmetic catalogue • '+allCosmetics.length.toLocaleString()+' items • demo locker previews';
  }catch(err){
