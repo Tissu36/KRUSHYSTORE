@@ -127,7 +127,7 @@ header{height:86px;border-bottom-color:#ff8ac31f}.brand{font-size:20px;letter-sp
 <div class="heroVisual"><div class="orbit"><div class="orbCore"><b>KS</b></div><span class="floatTag tagA">LOCKER COLLECTIONS</span><span class="floatTag tagB">KRUSHYSTORE • MARKET</span></div></div>
 </section>
 <div class="trust">
-<div class="trustItem"><b>7 categories</b><small>ORGANISED ACCOUNT TYPES</small></div>
+<div class="trustItem"><b>0 verified accounts</b><small>REAL STOCK ONLY</small></div>
 <div class="trustItem"><b>Clear details</b><small>LOCKER INFO BEFORE LISTING</small></div>
 <div class="trustItem"><b>Mobile-first</b><small>BUILT FOR PHONE & DESKTOP</small></div>
 </div>
@@ -145,7 +145,7 @@ header{height:86px;border-bottom-color:#ff8ac31f}.brand{font-size:20px;letter-sp
 </div>
 </section>
 <section id="catalogue">
-<div class="sectionHead"><div><div class="eyebrow">THE MARKET</div><h2>Account catalogue</h2><p>Search listings and filter by category.</p></div><input class="search" id="search" type="search" placeholder="Search accounts or categories…" aria-label="Search accounts"></div>
+<div class="sectionHead"><div><div class="eyebrow">THE MARKET</div><h2>Account catalogue</h2><p>Only verified account listings will appear here. Categories are ready for your stock.</p></div><input class="search" id="search" type="search" placeholder="Search categories…" aria-label="Search accounts"></div>
 <div class="catalogTools"><div class="filters" id="filters"><button class="active" data-filter="All">All</button><button data-filter="Competitive">Competitive</button><button data-filter="OG">OG</button><button data-filter="Stacked">Stacked</button><button data-filter="Rare">Rare</button><button data-filter="Exclusive">Exclusive</button><button data-filter="Starter">Starter</button><button data-filter="NFA">NFA</button></div><span class="resultCount" id="resultCount">Inventory pending verification</span></div>
 <div class="listingGrid" id="listingGrid">
 <div class="emptyState"><div class="emptyIcon">⌕</div><h3>Account inventory is being prepared</h3><p>The previous live site only contained cosmetic gallery examples — it did not contain verified Fortnite account listings. Real account cards will appear here once actual stock details, locker screenshots, platform/access information and prices are added. No sample accounts or made-up locker counts are shown as real stock.</p></div>
@@ -157,136 +157,31 @@ header{height:86px;border-bottom-color:#ff8ac31f}.brand{font-size:20px;letter-sp
 <article class="info"><b>Independent storefront</b><p>KRUSHYSTORE is not affiliated with Epic Games. Account sales or transfers may be restricted by Epic's terms; check the current rules before any transaction.</p></article>
 </section>
 </main>
-<footer><div class="footerRow"><div><strong style="color:#e8eaf4;letter-spacing:1px">KRUSHYSTORE</strong><br>Fortnite account catalogue concept.</div><div class="notice">Independent fan-made storefront. Not affiliated with or endorsed by Epic Games.</div></div></footer>
+<footer><div class="footerRow"><div><strong style="color:#e8eaf4;letter-spacing:1px">KRUSHYSTORE</strong><br>Fortnite account marketplace.</div><div class="notice">Independent fan-made storefront. Not affiliated with or endorsed by Epic Games.</div></div></footer>
 </div>
 <div id="detailPage" class="detailPage" hidden><div class="detailPageHeader"><button class="backStore" id="closeDetail" type="button">← BACK TO STORE</button><span>KRUSHY<em>STORE</em></span></div><div class="detailContent detailPageContent" id="detailContent"></div></div>
 <script>
-const grid=document.getElementById('listingGrid'),search=document.getElementById('search'),count=document.getElementById('resultCount');
-let active='All',query='',allCosmetics=[],demoAccounts=[],apiLoaded=false;
-const CATEGORIES=['Competitive','OG','Stacked','Rare','Exclusive','Starter','NFA'];
-const SAMPLE_PRICES={Competitive:'$29.99',OG:'$1,999.99',Stacked:'$399.99',Rare:'$299.99',Exclusive:'$499.99',Starter:'$14.99',NFA:'Not set'};
-const BADGES={Competitive:'META / SWEATY',OG:'OG 2017',Stacked:'STACKED / ICON',Rare:'PROMO',Exclusive:'PROMO',Starter:'BUDGET',NFA:'ACCESS TYPE'};
-const sampleNames={
- Competitive:['Focus','Aura','Surf Witch','Siren','Scarlet Commander','Mogul Master','Poised Playmaker','Backlash','Joltara','Par Patroller'],
- OG:['Renegade Raider','Aerial Assault Trooper','Black Knight','The Reaper','Skull Trooper','Ghoul Trooper','Rogue Agent','Sparkle Specialist','Mako','Blue Squire'],
- Stacked:['Midas','Lara Croft','Spider-Man','Travis Scott','The Foundation','Doom Slayer','Iron Man','Raven','Drift','Omega'],
- Rare:['Renegade Raider','Aerial Assault Trooper','The Reaper','Black Knight','Ghoul Trooper','Skull Trooper','Honor Guard','Galaxy','Ikonik','Double Helix'],
- Exclusive:['Galaxy','Ikonik','Honor Guard','Wonder','Eon','Glow','Neo Versa','Dark Vertex','Aloy','Kratos'],
- Starter:['Jonesy The First','Recruit','Commando','Recon Specialist','Brawler','Sledge','Whiplash','Munitions Expert','Ranger','Assault Trooper'],
- NFA:['Aura','Focus','Siren','Surf Witch','Echo','Crystal','Elite Agent','Red Knight','Raven','Skull Trooper']
-};
-function val(x){return (x||'').toString().toLowerCase()}
-function itemType(x){return val(x.type&&x.type.value)}
-function chapter(x){return Number(x.introduction&&x.introduction.chapter)||0}
-function season(x){return Number(String(x.introduction&&x.introduction.season||'').replace(/[^0-9.]/g,''))||0}
-function rarity(x){return val(x.rarity&&x.rarity.value)}
-function tagsOf(x){return Array.isArray(x.gameplayTags)?x.gameplayTags.map(val):Array.isArray(x.gameplay_tags)?x.gameplay_tags.map(val):[]}
-function sourceSeason(x){const tags=tagsOf(x);for(const t of tags){const m=t.match(/cosmetics\.source\.season(\d+)\.battlepass(?:\.|$)/i);if(m)return Number(m[1])}return 0}
-function categoryPool(cat){
- const pool=allCosmetics.filter(x=>x&&x.name&&x.images&&(x.images.icon||x.images.smallIcon||x.images.featured));
- const names=(sampleNames[cat]||[]).map(val);
- if(cat==='OG')return pool.filter(x=>(chapter(x)===1&&(season(x)<=2||!season(x)))||names.includes(val(x.name)));
- if(cat==='Competitive')return pool.filter(x=>itemType(x)==='outfit'&&names.includes(val(x.name)));
- if(cat==='Rare')return pool.filter(x=>['legendary','epic'].includes(rarity(x))||val(x.rarity&&x.rarity.displayValue).includes('series'));
- if(cat==='Exclusive')return pool.filter(x=>['gaming','icon','platform'].some(t=>val(x.series&&x.series.value).includes(t)));
- if(cat==='Starter')return pool.filter(x=>itemType(x)==='outfit'&&['common','uncommon','rare'].includes(rarity(x)));
- return pool;
+const grid=document.getElementById('listingGrid');
+const count=document.getElementById('resultCount');
+const search=document.getElementById('search');
+let active='All';
+const pendingHTML='<div class="emptyState"><div class="emptyIcon">⌕</div><h3>Account inventory is being prepared</h3><p>The previous live site only contained cosmetic gallery examples — it did not contain verified Fortnite account listings. Real account cards will appear here once actual stock details, locker screenshots, platform/access information and prices are added. No sample accounts or made-up locker counts are shown as real stock.</p></div>';
+function showPending(){
+ grid.innerHTML=pendingHTML;
+ count.textContent='0 verified accounts';
 }
-const TEMPLATE_SKINS={Competitive:30,OG:15,Stacked:235,Rare:100,Exclusive:80,Starter:20,NFA:50};
-function uniqueItems(items){return [...new Map(items.filter(x=>x&&x.id).map(x=>[x.id,x])).values()]}
-function pickOutfits(cat){
- const pool=categoryPool(cat),outfits=pool.filter(x=>itemType(x)==='outfit');
- const named=(sampleNames[cat]||[]).map(val),picked=[],seen=new Set();
- const add=x=>{if(x&&x.id&&!seen.has(x.id)){picked.push(x);seen.add(x.id)}};
- named.forEach(n=>add(outfits.find(x=>val(x.name)===n)));outfits.forEach(add);
- if(picked.length<TEMPLATE_SKINS[cat])allCosmetics.filter(x=>itemType(x)==='outfit').forEach(add);
- return picked.slice(0,TEMPLATE_SKINS[cat]||30);
+function setCategory(category){
+ active=category;
+ document.querySelectorAll('[data-filter]').forEach(button=>button.classList.toggle('active',button.dataset.filter===category));
+ document.querySelectorAll('[data-cat]').forEach(button=>button.classList.toggle('active',button.dataset.cat===category));
+ document.getElementById('catalogue').scrollIntoView({behavior:'smooth'});
+ showPending();
 }
-function battlePassLocker(outfit){
- const target=sourceSeason(outfit);if(!target)return [];
- const prefix='cosmetics.source.season'+target+'.battlepass.';
- return allCosmetics.filter(x=>x&&x.name&&tagsOf(x).some(t=>t.startsWith(prefix))).sort((a,b)=>itemType(a).localeCompare(itemType(b))||val(a.name).localeCompare(val(b.name)));
-}
-function isExclusive(x){
- const tags=tagsOf(x),series=val(x.series&&x.series.value)+' '+val(x.series&&x.series.displayValue);
- return tags.some(t=>/cosmetics\.source\..*(promo|exclusive|platform|founder|console|device|nintendo|playstation|xbox|samsung|twitch|crew)/i.test(t))||/gaming|icon|platform|marvel|dc|star wars|console|exclusive|promotion/.test(series);
-}
-function buildDemo(){
- demoAccounts=CATEGORIES.map(cat=>{
-  const skins=pickOutfits(cat);let featured=skins[0]||null;
-  if(cat==='OG'){const bk=allCosmetics.find(x=>val(x.name)==='black knight'&&itemType(x)==='outfit');if(bk){featured=bk;if(!skins.some(x=>x.id===bk.id))skins.unshift(bk)}}
-  const groups=new Map();
-  skins.filter(x=>sourceSeason(x)>0).forEach(outfit=>{const sid=sourceSeason(outfit);if(!groups.has(sid))groups.set(sid,battlePassLocker(outfit))});
-  const passGroups=[...groups.entries()].filter(([,items])=>items.length).map(([season,items])=>({season,items}));
-  const passItems=uniqueItems(passGroups.flatMap(g=>g.items)),passIds=new Set(passItems.map(x=>x.id));
-  const exclusiveItems=uniqueItems(allCosmetics.filter(x=>x&&x.name&&isExclusive(x)&&!passIds.has(x.id)&&itemType(x)!=='outfit'));
-  const exclusiveIds=new Set(exclusiveItems.map(x=>x.id)),extraTarget=Math.max(100,skins.length*7);
-  const preferred=['backpack','pickaxe','glider','emote','wrap','loadingscreen','music','spray','emoji','banner','contrail','toy','pet','instrument','jamtrack','vehicle','sidekick','shoe'];
-  const nonPass=allCosmetics.filter(x=>x&&x.name&&itemType(x)!=='outfit'&&!passIds.has(x.id)&&!exclusiveIds.has(x.id));
-  nonPass.sort((a,b)=>{const ai=preferred.indexOf(itemType(a)),bi=preferred.indexOf(itemType(b));return (ai<0?999:ai)-(bi<0?999:bi)||val(a.name).localeCompare(val(b.name))});
-  const otherItems=nonPass.slice(0,extraTarget),locker=uniqueItems([...skins,...passItems,...exclusiveItems,...otherItems]);
-  return {id:'demo-'+cat,category:cat,title:cat+' Locker Preview',locker,passItems,passGroups,exclusiveItems,otherItems,skinCount:skins.length,featured};
- });
-}
-function imageOf(x){return x&&x.images&&(x.images.icon||x.images.smallIcon||x.images.featured)||''}
-function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function cardHTML(a){
- const thumbs=a.locker.slice(0,20).map(x=>'<div class="previewItem" title="'+escapeHtml(x.name)+'">'+(imageOf(x)?'<img loading="lazy" src="'+escapeHtml(imageOf(x))+'" alt="'+escapeHtml(x.name)+'">':'<span>'+escapeHtml(x.name)+'</span>')+'</div>').join('');
- return '<article class="listing" data-id="'+a.id+'" tabindex="0" role="button" aria-label="Open '+escapeHtml(a.title)+'"><div class="listingTop"><span class="demoFlag">DEMO • NOT FOR SALE</span><div class="listingSymbol">'+escapeHtml(a.category.slice(0,1))+'</div><span class="listingLabel">'+escapeHtml(a.category.toUpperCase())+'</span></div><div class="listingBody"><h3>'+escapeHtml(a.title)+'</h3><p>'+a.skinCount+' sample skins, '+a.passItems.length+' Battle Pass rewards, '+a.exclusiveItems.length+' exclusives and '+a.otherItems.length+' additional cosmetics ('+a.locker.length+' unique items total). Illustrative preview, not verified ownership.</p><div class="listingMeta"><span class="chip">'+a.skinCount+' skins</span><span class="chip">'+a.passItems.length+' BP rewards</span><span class="chip">'+a.exclusiveItems.length+' exclusives</span><span class="chip">'+a.locker.length+' total items</span><span class="chip">'+escapeHtml(BADGES[a.category]||a.category)+'</span></div><div class="listingFoot"><strong>'+(SAMPLE_PRICES[a.category]==='Not set'?'Price not set':'Sample price '+SAMPLE_PRICES[a.category])+'</strong><button type="button" tabindex="-1">View locker ↗</button></div></div><div class="previewRow">'+thumbs+'</div></article>';
-}
-function render(){
- const q=val(query);
- const list=demoAccounts.filter(a=>(active==='All'||a.category===active)&&(!q||val(a.title+' '+a.category+' '+a.locker.map(x=>x.name).join(' ')).includes(q)));
- count.textContent=list.length+' preview categories • demo data';
- grid.innerHTML=list.length?list.map(cardHTML).join(''):'<div class="emptyState"><div class="emptyIcon">⌕</div><h3>No matching category</h3><p>Try another search or select All.</p></div>';
- grid.querySelectorAll('.listing').forEach(el=>{const open=()=>openDetail(el.dataset.id);el.addEventListener('click',open);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}})});
-}
-function setCategory(cat){active=cat;document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter===cat));document.querySelectorAll('[data-cat]').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));document.getElementById('catalogue').scrollIntoView({behavior:'smooth'});render()}
-document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.filter)));
-document.querySelectorAll('[data-cat]').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.cat)));
-search.addEventListener('input',e=>{query=e.target.value.trim();render()});
-const detailPage=document.getElementById('detailPage'),storeWrap=document.querySelector('.wrap');
-function openDetail(id){
- const a=demoAccounts.find(x=>x.id===id);if(!a)return;
- const featured=a.featured,price=SAMPLE_PRICES[a.category]||'Price not set';
- const typeLabel=x=>({outfit:'Outfit',backpack:'Back Bling',pickaxe:'Pickaxe',glider:'Glider',emote:'Emote',wrap:'Wrap',loadingscreen:'Loading Screen',music:'Music',spray:'Spray',emoji:'Emoticon',banner:'Banner',toy:'Toy',pet:'Pet',contrail:'Contrail',instrument:'Instrument',jamtrack:'Jam Track',vehicle:'Vehicle',sidekick:'Sidekick',shoe:'Kicks',aura:'Aura'}[itemType(x)]||((x.type&&x.type.displayValue)||'Cosmetic'));
- const passIds=new Set(a.passItems.map(x=>x.id)),exclusiveIds=new Set(a.exclusiveItems.map(x=>x.id));
- const otherLocker=a.locker.filter(x=>!passIds.has(x.id)&&!exclusiveIds.has(x.id)&&itemType(x)!=='outfit');
- const typeLabel=x=>({outfit:'Outfit',backpack:'Back Bling',pickaxe:'Pickaxe',glider:'Glider',emote:'Emote',wrap:'Wrap',loadingscreen:'Loading Screen',music:'Music',spray:'Spray',emoji:'Emoticon',banner:'Banner',toy:'Toy',pet:'Pet',contrail:'Contrail',instrument:'Instrument',jamtrack:'Jam Track',vehicle:'Vehicle',sidekick:'Sidekick',shoe:'Kicks',aura:'Aura'}[itemType(x)]||((x.type&&x.type.displayValue)||'Cosmetic'));
- const itemCards=items=>items.map(x=>'<div class="lockerItem"><div class="itemArt">'+(imageOf(x)?'<img loading="lazy" src="'+escapeHtml(imageOf(x))+'" alt="'+escapeHtml(x.name)+'">':'<span>Image unavailable</span>')+'</div><div class="itemName">'+escapeHtml(x.name)+'</div><span class="itemType">'+escapeHtml(typeLabel(x))+'</span></div>').join('');
- const passHtml=a.passGroups.length?'<div class="lockerSection passCollectionSection"><div class="sectionHead"><div><div class="eyebrow">MATCHED BY BATTLE PASS SOURCE TAGS</div><h2 style="font-size:clamp(22px,3vw,30px)">Battle Pass rewards ('+a.passItems.length+')</h2><p>Full tagged reward sets across outfits, back blings, pickaxes, gliders, emotes and other reward types.</p></div></div>'+a.passGroups.map(g=>'<div class="passGroup"><div class="passGroupHead"><b>Battle Pass · Season '+g.season+'</b><span>'+g.items.length+' reward items</span></div><div class="itemGrid">'+itemCards(g.items)+'</div></div>').join('')+'</div>':'<div class="passBanner"><b>No verified Battle Pass reward set found</b><span>No Battle Pass source tags were found for the featured outfits. The catalogue will not guess from introduction season.</span></div>';
- const exclusiveHtml='<div class="lockerSection"><div class="sectionHead"><div><div class="eyebrow">PROMO / PLATFORM / COLLAB</div><h2 style="font-size:clamp(22px,3vw,30px)">Exclusive cosmetics ('+a.exclusiveItems.length+')</h2><p>Non-Battle-Pass promotional, platform, founder and collaboration items identified from catalogue metadata.</p></div></div><div class="itemGrid">'+itemCards(a.exclusiveItems)+'</div></div>';
- document.getElementById('detailContent').innerHTML=
- '<div class="detailHero '+(a.category==='OG'?'ogTheme':'')+'"><div class="featuredRender">'+(imageOf(featured)?'<img src="'+escapeHtml(imageOf(featured))+'" alt="'+escapeHtml(featured.name)+'">':'<span>No render available</span>')+'</div><div><div class="eyebrow">'+escapeHtml(BADGES[a.category]||a.category)+' • SAMPLE LISTING</div><h2 style="margin:8px 0">'+escapeHtml(a.title)+'</h2><p style="font-size:14px;color:#d2b9c8;line-height:1.7">Example collection featuring '+escapeHtml(featured?featured.name:'Fortnite cosmetics')+'. Full Battle Pass reward groups are shown separately when the game data identifies them. This is a catalogue demo, not a verified account inventory.</p><div class="detailStats"><div class="detailStat"><b>'+a.skinCount+'</b><small>Skins</small></div><div class="detailStat"><b>'+a.passItems.length+'</b><small>BP rewards</small></div><div class="detailStat"><b>'+a.exclusiveItems.length+'</b><small>Exclusives</small></div><div class="detailStat"><b>'+otherLocker.length+'</b><small>Other items</small></div><div class="detailStat"><b>'+a.locker.length+'</b><small>Total items</small></div></div><div class="buyPanel"><div><div class="priceNote">Example asking price</div><div class="buyPrice">'+escapeHtml(price)+'</div></div><button class="buyNow" id="buyNowBtn" type="button">BUY NOW ↗</button><div class="buyNote">Demo listing only — checkout is not enabled until a real account is added and verified.</div></div></div></div>'
- +passHtml
- +exclusiveHtml+'<div class="lockerSection"><div class="sectionHead"><div><div class="eyebrow">OTHER COSMETICS</div><h2 style="font-size:clamp(22px,3vw,30px)">Additional items ('+otherLocker.length+')</h2><p>Non-outfit cosmetics outside the Battle Pass and exclusive groups, including back blings, pickaxes, gliders, emotes and wraps.</p></div></div><div class="itemGrid">'+itemCards(otherLocker)+'</div></div><div class="apiStatus">Illustrative catalogue preview using real catalogue entries. Exact items and ownership must be checked against each account before sale.</div>';
- document.getElementById('buyNowBtn').addEventListener('click',()=>alert('This is a sample listing. Checkout will be enabled when a genuine account and confirmed inventory are added.'));
- storeWrap.style.display='none';detailPage.hidden=false;window.scrollTo(0,0);document.body.style.overflow='auto';
-}
-
-function closeDetail(){detailPage.hidden=true;storeWrap.style.display='';window.scrollTo(0,0);document.body.style.overflow=''}
-document.getElementById('closeDetail').addEventListener('click',closeDetail);
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!detailPage.hidden)closeDetail()});
-document.getElementById('cartBtn').addEventListener('click',()=>{alert('These are sample category prices only. No real account listings are available to purchase yet.')});
-async function loadCosmetics(){
- count.textContent='Loading cosmetic catalogue…';
- try{
-   const response=await fetch('https://fortnite-api.com/v2/cosmetics/br?language=en&responseFlags=2',{headers:{'Accept':'application/json'}});
-   if(!response.ok)throw new Error('Cosmetics API returned '+response.status);
-   const payload=await response.json();
-   allCosmetics=Array.isArray(payload.data)?payload.data:[];
-   const ghoul=allCosmetics.find(x=>val(x.name)==='ghoul trooper'&&x.images&&(x.images.icon||x.images.smallIcon));
-   const logo=document.getElementById('brandSkin');
-   if(ghoul&&logo)logo.src='https://fortnite-api.com/images/cosmetics/br/cid_029_athena_commando_f_halloween/variants/material/mat3.png';
-   if(!allCosmetics.length)throw new Error('Cosmetics list was empty');
-   apiLoaded=true;buildDemo();render();count.textContent='Live cosmetic catalogue • '+allCosmetics.length.toLocaleString()+' items • demo locker previews';
- }catch(err){
-   count.textContent='Cosmetic API unavailable';
-   grid.innerHTML='<div class="emptyState"><div class="emptyIcon">!</div><h3>Could not load the cosmetic catalogue</h3><p>The live cosmetic service did not respond. Refresh to retry. No fake item names or broken-image placeholders are being shown as real inventory.</p></div>';
-   console.error(err);
- }
-}
-loadCosmetics();
+document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListener('click',()=>setCategory(button.dataset.filter)));
+document.querySelectorAll('[data-cat]').forEach(button=>button.addEventListener('click',()=>setCategory(button.dataset.cat)));
+search.addEventListener('input',()=>showPending());
+document.getElementById('cartBtn').addEventListener('click',()=>alert('There are no verified account listings available to purchase yet.'));
+showPending();
 </script>
 </body>
 </html>
