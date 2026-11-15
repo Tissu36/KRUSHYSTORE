@@ -194,35 +194,44 @@ function categoryPool(cat){
 }
 function pickTwenty(cat){
  const pool=categoryPool(cat),picked=[],seen=new Set();
- const outfitPool=pool.filter(x=>itemType(x)==='outfit');
- const otherPool=allCosmetics.filter(x=>x&&x.name&&x.images&&(x.images.icon||x.images.smallIcon||x.images.featured)&&itemType(x)!=='outfit');
  const add=x=>{if(x&&!seen.has(x.id)&&picked.length<20){picked.push(x);seen.add(x.id)}};
- const addType=(items,limit)=>{let n=0;for(const x of items){if(n>=limit)break;if(!seen.has(x.id)){add(x);n++}}};
+ const outfits=pool.filter(x=>itemType(x)==='outfit');
  const named=(sampleNames[cat]||[]).map(val);
- addType(named.map(n=>outfitPool.find(x=>val(x.name)===n)).filter(Boolean),8);
- addType(outfitPool,8);
- [['backpack',3],['pickaxe',3],['glider',2],['emote',2],['wrap',1],['loadingscreen',1]].forEach(([type,limit])=>addType(otherPool.filter(x=>itemType(x)===type),limit));
- addType(otherPool,12);
- return picked.slice(0,20);
+ named.forEach(n=>add(outfits.find(x=>val(x.name)===n)));
+ outfits.forEach(add);
+ return picked;
 }
-function battlePassLocker(blackKnight){
- if(!blackKnight)return [];
- const target=sourceSeason(blackKnight)||season(blackKnight),ch=chapter(blackKnight)||1;
+
+function battlePassLocker(outfit){
+ const target=sourceSeason(outfit);
  if(!target)return [];
- return allCosmetics.filter(x=>chapter(x)===ch&&(sourceSeason(x)||season(x))===target).sort((a,b)=>itemType(a).localeCompare(itemType(b))||val(a.name).localeCompare(val(b.name)));
+ const prefix='cosmetics.source.season'+target+'.battlepass';
+ return allCosmetics.filter(x=>x&&x.name&&x.images&&(x.images.icon||x.images.smallIcon||x.images.featured)&&tagsOf(x).some(t=>t.includes(prefix)))
+  .sort((a,b)=>itemType(a).localeCompare(itemType(b))||val(a.name).localeCompare(val(b.name)));
 }
+
 function buildDemo(){
  demoAccounts=CATEGORIES.map(cat=>{
-  let locker=pickTwenty(cat),featured=locker.find(x=>itemType(x)==='outfit')||locker[0],passItems=[];
+  let locker=pickTwenty(cat),featured=locker.find(x=>itemType(x)==='outfit')||locker[0];
   if(cat==='OG'){
    const blackKnight=allCosmetics.find(x=>val(x.name)==='black knight'&&itemType(x)==='outfit');
-   const renegade=allCosmetics.find(x=>val(x.name)==='renegade raider'&&itemType(x)==='outfit');
-   if(blackKnight){featured=blackKnight;passItems=battlePassLocker(blackKnight);locker=[...new Map([...passItems,...locker].map(x=>[x.id,x])).values()]}
-   if(renegade&&!locker.some(x=>x.id===renegade.id))locker.unshift(renegade);
+   if(blackKnight){featured=blackKnight;if(!locker.some(x=>x.id===blackKnight.id))locker.unshift(blackKnight)}
   }
-  return {id:'demo-'+cat,category:cat,title:cat+' Locker Preview',locker,passItems,skinCount:locker.filter(x=>itemType(x)==='outfit').length,featured};
+  const groups=new Map();
+  locker.filter(x=>itemType(x)==='outfit'&&sourceSeason(x)>0).forEach(outfit=>{
+   const seasonId=sourceSeason(outfit);
+   if(!groups.has(seasonId)){
+    const rewards=battlePassLocker(outfit);
+    if(rewards.length)groups.set(seasonId,rewards);
+   }
+  });
+  const passGroups=[...groups.entries()].map(([season,items])=>({season,items}));
+  const passItems=[...new Map(passGroups.flatMap(g=>g.items).map(x=>[x.id,x])).values()];
+  locker=[...new Map([...locker,...passItems].map(x=>[x.id,x])).values()];
+  return {id:'demo-'+cat,category:cat,title:cat+' Locker Preview',locker,passItems,passGroups,skinCount:locker.filter(x=>itemType(x)==='outfit').length,featured};
  });
 }
+
 function imageOf(x){return x&&x.images&&(x.images.icon||x.images.smallIcon||x.images.featured)||''}
 function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function cardHTML(a){
