@@ -3,273 +3,87 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080a12">
-<title>KrushyStore — Fortnite Locker Gallery</title>
+<meta name="theme-color" content="#090a10">
+<title>KRUSHYSTORE — Fortnite Account Marketplace</title>
+<meta name="description" content="Browse the KRUSHYSTORE Fortnite account catalogue. Explore competitive, OG, stacked, rare and starter locker categories.">
 <style>
-:root{--bg:#080a12;--panel:#101421;--panel2:#141b2c;--line:#27314a;--text:#f7f8ff;--muted:#9da8be;--purple:#9b6dff;--blue:#56c7ff;--gold:#f0c66a}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 15% 15%,#7c45ff18 0,transparent 30%),radial-gradient(circle at 85% 20%,#20a56d16 0,transparent 30%),radial-gradient(ellipse at 80% -10%,#24315a66,transparent 34%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
-button,input{font:inherit}a{color:inherit;text-decoration:none}.shell{width:min(1320px,calc(100% - 36px));margin:auto}
-header{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12}
-.brand{display:flex;align-items:center;gap:10px;font-weight:1000;letter-spacing:1.7px;font-size:20px}.brandMark{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(140deg,#8c52ff,#35baff);box-shadow:0 7px 24px #794fff55;font-size:16px}.brand span:last-child{color:#a981ff}
-.topLinks{display:flex;align-items:center;gap:22px;color:#b9c2d5;font-size:13px}.topLinks a:hover{color:#fff}
-.headerBtn,.primaryBtn{border:0;border-radius:12px;padding:12px 17px;font-weight:850;color:#fff;background:linear-gradient(120deg,#794bff,#287dca);cursor:pointer;box-shadow:0 10px 26px #5639bd30}
-.hero{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:center;min-height:440px;margin:28px 0 24px;padding:45px 48px;border:1px solid #ffffff17;border-radius:28px;overflow:hidden;background:linear-gradient(115deg,#111728 0%,#111525 52%,#1a1c37 100%)}
-.hero:before{content:"";position:absolute;width:520px;height:520px;right:7%;top:-36%;border-radius:50%;background:radial-gradient(circle,#6550dc55 0%,#3d75cb20 45%,transparent 70%);pointer-events:none}
-.eyebrow{color:#b99aff;text-transform:uppercase;letter-spacing:2.4px;font-size:11px;font-weight:950}
-h1{font-size:clamp(42px,6vw,76px);line-height:.94;letter-spacing:-3px;margin:17px 0 15px;max-width:650px}
-.hero p{color:#b4bfd2;max-width:540px;line-height:1.7;margin:0 0 22px;font-size:15px}
-.heroActions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.ghostBtn{border:1px solid #ffffff26;background:#ffffff08;border-radius:12px;padding:12px 17px;color:#e7ecfa;font-weight:800;cursor:pointer}
-.heroArtWrap{height:345px;position:relative;display:flex;align-items:center;justify-content:center;z-index:1}
-.heroHalo{position:absolute;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,#9c78ff55,transparent 68%);filter:blur(14px)}
-#heroArt{position:relative;z-index:2;height:100%;width:100%;object-fit:contain;filter:drop-shadow(0 22px 35px #000b);opacity:0;transition:opacity .5s}
-#heroArt.loaded{opacity:1}
-.heroRenderLabel{position:absolute;bottom:4px;right:12px;z-index:3;padding:8px 11px;border:1px solid #ffffff22;background:#0b1020bb;border-radius:9px;color:#cdd6e8;font-size:10px;letter-spacing:1px;text-transform:uppercase}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 42px}
-.stat{border:1px solid #ffffff12;background:#0e1320;border-radius:16px;padding:16px 18px}.stat b{display:block;font-size:19px}.stat span{color:var(--muted);font-size:11px;letter-spacing:.6px}
-.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:18px;margin:26px 0 15px}.sectionHead h2{font-size:28px;letter-spacing:-.8px;margin:0}.sectionHead p{color:var(--muted);margin:6px 0 0;font-size:13px}
-.search{width:min(290px,100%);border:1px solid #ffffff1b;background:#111827;color:#fff;border-radius:12px;padding:12px 14px;outline:none}.search:focus{border-color:#8b68f5;box-shadow:0 0 0 3px #8b68f522}
-.categoryBar{display:flex;gap:9px;overflow:auto;padding:5px 0 16px;scrollbar-width:thin}
-.categoryBar button{white-space:nowrap;border:1px solid #ffffff19;background:#111725;color:#bcc6d9;border-radius:999px;padding:10px 15px;font-size:12px;font-weight:850;cursor:pointer;transition:.18s}
-.categoryBar button:hover{border-color:#a077ff;color:white}.categoryBar button.active{border-color:transparent;background:linear-gradient(115deg,#794bff,#248fd3);color:white;box-shadow:0 7px 20px #5538af33}
-.categoryIntro{border:1px solid #ffffff12;background:linear-gradient(120deg,#111827,#111525);padding:15px 17px;border-radius:14px;color:#aeb9ce;font-size:12px;line-height:1.55;margin-bottom:17px}.categoryIntro strong{color:#fff}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
-.skinCard{min-width:0;overflow:hidden;border:1px solid #ffffff15;background:linear-gradient(180deg,#151c2c,#0f1420);border-radius:19px;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;outline:none}
-.skinCard:hover,.skinCard:focus-visible{transform:translateY(-4px);border-color:#8e6dff99;box-shadow:0 16px 34px #0005}
-.art{height:292px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(circle at 50% 42%,#ffffff 0,#f4f6fb 62%,#e7ebf2 100%)}
-.art:after{display:none}
-.art img{width:100%;height:100%;object-fit:contain;object-position:center;padding:12px;background:transparent;position:relative;z-index:1;filter:drop-shadow(0 8px 12px #0003);transform:scale(1);transition:transform .2s}
-.skinCard:hover .art img{transform:scale(1.03)}
-.imageStatus{position:absolute;z-index:2;top:12px;left:12px;border:1px solid #ffffff1e;background:#080d1bcc;padding:6px 8px;border-radius:7px;color:#d1d8e7;font-size:9px;text-transform:uppercase;letter-spacing:1px}
-.artFallback{display:none;align-items:center;justify-content:center;position:absolute;inset:0;color:#b8a3ff;font-size:56px;font-weight:1000;letter-spacing:-3px;background:transparent}
-.cardBody{padding:14px 15px 15px}.meta{display:flex;justify-content:space-between;align-items:center;gap:8px}.pill{font-size:9px;font-weight:950;letter-spacing:1px;text-transform:uppercase;color:#c5aaff;background:#7951dc21;border:1px solid #9b75f744;border-radius:6px;padding:5px 7px}
-.cardBody h3{font-size:17px;margin:10px 0 5px;letter-spacing:-.2px}.cardBody p{font-size:11px;line-height:1.45;color:#9da8be;margin:0;min-height:31px}
-.viewLine{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:11px;border-top:1px solid #ffffff12;color:#c8d2e7;font-size:10px;font-weight:900;letter-spacing:.9px}.viewLine span:last-child{color:#aa8bff;font-size:17px}.priceLine{display:flex;justify-content:space-between;align-items:center;margin-top:12px;color:#f3f5ff;font-size:14px;font-weight:950}.priceLine small{font-size:9px;color:#8f9bb2;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
-.cartAdd{margin-top:10px;width:100%;border:0;border-radius:10px;padding:10px 12px;background:linear-gradient(120deg,#7c45ff,#20a56d);color:#fff;font-size:11px;font-weight:950;cursor:pointer;box-shadow:0 8px 20px #0003}
-.cartAdd:hover{filter:brightness(1.08)}
-.cartButton{position:relative;border:1px solid #ffffff24;background:#ffffff0d;color:#fff;border-radius:12px;padding:10px 13px;font-weight:900;cursor:pointer}
-.cartCount{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#9b6dff;color:#fff;font-size:10px;margin-left:5px}
-.cartDrawer{position:fixed;inset:0;z-index:70;display:none;background:#0009}
-.cartDrawer.open{display:block}
-.cartPanel{position:absolute;right:0;top:0;height:100%;width:min(430px,100%);background:#0d1220;border-left:1px solid #ffffff1c;box-shadow:-25px 0 70px #0008;padding:22px;overflow:auto}
-.cartHead{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #ffffff14;padding-bottom:16px}
-.cartHead h3{margin:0;font-size:22px}.cartClose{border:1px solid #ffffff24;background:#ffffff0b;color:#fff;border-radius:50%;width:36px;height:36px;cursor:pointer}
-.cartItem{display:grid;grid-template-columns:70px 1fr auto;gap:12px;align-items:center;padding:15px 0;border-bottom:1px solid #ffffff12}
-.cartThumb{width:70px;height:78px;border-radius:10px;background:#fff;display:grid;place-items:center;overflow:hidden}
-.cartThumb img{width:100%;height:100%;object-fit:contain;padding:5px}.cartItem h4{margin:0 0 4px;font-size:13px}.cartItem p{margin:0;color:#9da8be;font-size:10px;line-height:1.4}
-.cartQty{display:flex;align-items:center;gap:6px;margin-top:7px}.cartQty button{width:25px;height:25px;border:1px solid #ffffff1c;background:#ffffff08;color:#fff;border-radius:7px;cursor:pointer}.cartQty span{font-size:11px;color:#dfe5f3;min-width:14px;text-align:center}
-.cartItemPrice{font-weight:950;font-size:12px;white-space:nowrap}.removeBtn{border:0;background:transparent;color:#8f9bb2;font-size:10px;cursor:pointer;margin-top:6px}
-.cartEmpty{padding:50px 10px;text-align:center;color:#8f9bb2;font-size:12px}
-.cartSummary{margin-top:18px;border-top:1px solid #ffffff18;padding-top:17px}.cartTotal{display:flex;justify-content:space-between;font-size:18px;font-weight:950}.cartNote{font-size:10px;line-height:1.55;color:#8f9bb2;margin:10px 0 14px}.checkoutBtn{width:100%;border:0;border-radius:11px;padding:13px;background:linear-gradient(120deg,#7c45ff,#20a56d);color:#fff;font-weight:950;cursor:pointer}
-@media(max-width:680px){.art{height:230px}.cartPanel{width:100%}}
-.empty{grid-column:1/-1;text-align:center;padding:55px 20px;color:var(--muted);border:1px dashed #ffffff22;border-radius:18px}
-.researchNotes{margin:40px 0 18px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.note{border:1px solid #ffffff12;background:#0e1421;padding:16px;border-radius:15px}.note b{font-size:13px}.note p{font-size:11px;color:#9da8be;line-height:1.55;margin:7px 0 0}
-footer{padding:34px 0 42px;border-top:1px solid #ffffff12;margin-top:35px;color:#7e8aa3;font-size:10px;line-height:1.7}footer a{color:#b9a0ff;text-decoration:underline}
-.modal{display:none;position:fixed;inset:0;z-index:50;padding:18px;background:#02040bd9;backdrop-filter:blur(12px);align-items:center;justify-content:center}.modal.open{display:flex}
-.modalPanel{width:min(900px,100%);max-height:min(92vh,900px);overflow:auto;display:grid;grid-template-columns:1fr 1fr;border:1px solid #ffffff24;border-radius:23px;background:#111827;box-shadow:0 35px 100px #000b;position:relative}
-.modalArt{min-height:490px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}.modalArt img{width:100%;height:100%;max-height:610px;object-fit:contain;object-position:center center;padding:18px;transform:scale(1);filter:drop-shadow(0 12px 20px #0004)}
-.modalCopy{padding:42px 32px 30px;display:flex;flex-direction:column;align-items:flex-start}.modalCopy h2{font-size:36px;line-height:1.05;margin:14px 0 12px;letter-spacing:-1.5px}.modalCopy p{font-size:13px;line-height:1.7;color:#b3bfd2}.factBox{margin:10px 0 18px;padding:14px;border-radius:12px;background:#ffffff08;border:1px solid #ffffff15;color:#d1d9e9;font-size:12px;line-height:1.6}.sourceLink{display:inline-block;color:#b79cff;font-size:11px;font-weight:900;text-decoration:underline;margin-top:auto;padding-top:15px}
-.close{position:absolute;top:12px;right:12px;z-index:5;width:38px;height:38px;border:1px solid #ffffff27;border-radius:50%;background:#0a1020;color:white;font-size:20px;cursor:pointer}
-@media(max-width:950px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.hero{padding:32px;min-height:390px}.heroArtWrap{height:300px}}
-@media(max-width:680px){.shell{width:min(100% - 24px,560px)}header{height:68px}.topLinks{gap:12px;font-size:11px}.topLinks a:nth-child(2){display:none}.brand{font-size:17px}.brandMark{width:30px;height:30px}.hero{grid-template-columns:1fr;gap:0;padding:27px 23px 16px;margin-top:16px;min-height:unset}.heroText{position:relative;z-index:2}.heroArtWrap{height:245px;margin-top:-3px}.heroRenderLabel{right:0;bottom:0}h1{font-size:49px;letter-spacing:-2px}.hero p{font-size:13px}.stats{gap:8px;margin-bottom:30px}.stat{padding:12px}.stat b{font-size:16px}.stat span{font-size:9px}.sectionHead{align-items:stretch;flex-direction:column}.sectionHead h2{font-size:25px}.search{width:100%}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.art{height:230px}.cardBody{padding:12px}.cardBody h3{font-size:15px}.cardBody p{font-size:10px;min-height:43px}.researchNotes{grid-template-columns:1fr}.modalPanel{grid-template-columns:1fr;max-height:94vh}.modalArt{min-height:280px;height:38vh}.modalArt img{max-height:38vh}.modalCopy{padding:25px 23px}.modalCopy h2{font-size:30px}.close{top:9px;right:9px}}
-@media(max-width:380px){.grid{grid-template-columns:1fr}.art{height:290px}.topLinks a:first-child{display:none}}
+:root{--bg:#090a10;--panel:#11131d;--panel2:#171a27;--line:#292d3d;--text:#f7f8fc;--muted:#9ba2b6;--purple:#9b70ff;--lime:#b7f36b;--cyan:#75d9ff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#38255e55,transparent 34%),radial-gradient(ellipse at 0% 28%,#1b3d4840,transparent 28%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif}button,input{font:inherit}button,a{-webkit-tap-highlight-color:transparent}a{color:inherit;text-decoration:none}.wrap{width:min(1220px,calc(100% - 36px));margin:auto}
+header{height:78px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12;gap:16px}.brand{display:flex;align-items:center;gap:11px;font-weight:1000;letter-spacing:1.5px;font-size:19px}.mark{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--purple),#5a9eff 60%,var(--lime));display:grid;place-items:center;color:#0b0b12;font-size:17px;box-shadow:0 8px 25px #7656d855}.brand span:last-child em{font-style:normal;color:#b99aff}.nav{display:flex;align-items:center;gap:25px;color:#b8bfd0;font-size:12px;font-weight:750}.nav a:hover{color:white}.nav .cart{border:1px solid #ffffff24;background:#ffffff0a;color:white;border-radius:11px;padding:10px 14px;cursor:pointer}
+.hero{margin:26px 0 20px;min-height:370px;border:1px solid #ffffff18;border-radius:25px;overflow:hidden;position:relative;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;padding:45px;background:linear-gradient(115deg,#151625 0%,#171728 50%,#182b35 100%);box-shadow:0 25px 70px #0005}.hero:before{content:"";position:absolute;width:470px;height:470px;border-radius:50%;right:3%;top:-25%;background:radial-gradient(circle,#a078ff55, #65d7ff1b 46%,transparent 70%)}.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 55%,#0c111a22);pointer-events:none}.eyebrow{font-size:10px;letter-spacing:2.7px;text-transform:uppercase;font-weight:950;color:#b99aff}.hero h1{font-size:clamp(42px,6vw,72px);line-height:.94;letter-spacing:-3px;margin:17px 0 16px;max-width:650px}.hero h1 span{color:#b99aff}.hero p{max-width:520px;color:#b5bdd0;line-height:1.7;font-size:14px;margin:0 0 23px}.actions{display:flex;gap:11px;flex-wrap:wrap}.primary,.secondary{border:0;border-radius:11px;padding:13px 17px;font-weight:900;font-size:12px;cursor:pointer}.primary{background:linear-gradient(115deg,#9a70ff,#5a9eff);color:white;box-shadow:0 10px 26px #7d5ad644}.secondary{background:#ffffff0b;border:1px solid #ffffff25;color:white}.heroVisual{position:relative;z-index:1;min-height:260px;display:grid;place-items:center}.orbit{width:265px;height:265px;border-radius:50%;border:1px solid #ffffff25;box-shadow:0 0 0 25px #ffffff05,0 0 80px #9b70ff22;display:grid;place-items:center;position:relative}.orbit:before,.orbit:after{content:"";position:absolute;border:1px solid #ffffff16;border-radius:50%;inset:18px}.orbit:after{inset:42px}.orbCore{width:145px;height:145px;border-radius:38px;transform:rotate(-12deg);background:linear-gradient(145deg,#9c70ff,#5d8dff 55%,#b8f36b);display:grid;place-items:center;box-shadow:0 22px 70px #0008}.orbCore b{font-size:72px;color:#10111a;transform:rotate(12deg);font-weight:1000}.floatTag{position:absolute;padding:9px 12px;border:1px solid #ffffff25;border-radius:10px;background:#101421dd;color:#e8eaff;font-size:10px;font-weight:900;letter-spacing:1px;backdrop-filter:blur(10px)}.tagA{top:24px;left:-6px}.tagB{right:-20px;bottom:34px}.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 44px}.trustItem{padding:16px 18px;border:1px solid #ffffff13;border-radius:14px;background:#11131c}.trustItem b{display:block;font-size:17px}.trustItem small{font-size:10px;color:var(--muted);letter-spacing:.7px}
+.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:36px 0 16px}.sectionHead h2{font-size:27px;letter-spacing:-.8px;margin:7px 0 0}.sectionHead p{font-size:12px;color:var(--muted);margin:6px 0 0}.search{width:min(290px,100%);padding:12px 14px;border-radius:11px;border:1px solid #ffffff20;background:#111520;color:white;outline:none}.search:focus{border-color:var(--purple);box-shadow:0 0 0 3px #9b70ff22}
+.categoryGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.category{position:relative;min-height:135px;text-align:left;border:1px solid #ffffff16;border-radius:16px;padding:18px;background:linear-gradient(145deg,#171a29,#10131d);color:white;cursor:pointer;overflow:hidden;transition:.2s}.category:before{content:"";position:absolute;width:120px;height:120px;border-radius:50%;right:-35px;top:-40px;background:var(--glow,#9b70ff);filter:blur(35px);opacity:.2}.category:hover,.category.active{transform:translateY(-3px);border-color:#a786ff99;box-shadow:0 14px 35px #0005}.catIcon{width:32px;height:32px;display:grid;place-items:center;border-radius:10px;background:#ffffff10;font-size:16px;margin-bottom:15px}.category strong{display:block;font-size:14px}.category small{display:block;color:#929bb1;font-size:10px;margin-top:5px}.category .arrow{position:absolute;right:16px;bottom:17px;color:#b99aff;font-size:18px}
+.catalogTools{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:25px 0 14px}.filters{display:flex;gap:8px;overflow:auto;padding:2px 0 8px}.filters button{white-space:nowrap;border:1px solid #ffffff1b;border-radius:999px;padding:9px 13px;background:#111520;color:#bfc7d8;font-size:10px;font-weight:850;cursor:pointer}.filters button.active{background:linear-gradient(115deg,#895eff,#4e89ed);color:white;border-color:transparent}.resultCount{font-size:10px;color:#8f99ae;white-space:nowrap}
+.listingGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.listing{border:1px solid #ffffff16;border-radius:17px;background:linear-gradient(160deg,#171a28,#10131c);overflow:hidden}.listingTop{height:145px;position:relative;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 50%,#8e68ff35,transparent 58%),linear-gradient(135deg,#20243a,#121722)}.listingTop:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#11131d,transparent 60%)}.listingSymbol{width:76px;height:76px;border-radius:22px;display:grid;place-items:center;background:linear-gradient(145deg,#9c70ff,#65a5ff);color:#10121a;font-size:34px;font-weight:1000;box-shadow:0 14px 35px #0007;transform:rotate(-8deg)}.listingLabel{position:absolute;z-index:1;top:12px;left:12px;border:1px solid #ffffff20;background:#0b0d15bb;border-radius:6px;padding:6px 8px;font-size:8px;font-weight:950;letter-spacing:1px;color:#d6c7ff}.listingBody{padding:15px}.listingBody h3{font-size:16px;margin:0 0 6px}.listingBody p{font-size:11px;line-height:1.5;color:#9da7bb;margin:0;min-height:34px}.listingMeta{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}.chip{font-size:9px;color:#c3cadd;border:1px solid #ffffff17;border-radius:6px;padding:5px 7px;background:#ffffff06}.listingFoot{border-top:1px solid #ffffff12;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}.listingFoot strong{font-size:11px;color:#b5f080}.listingFoot button{border:1px solid #ffffff20;background:#ffffff0b;color:white;border-radius:8px;padding:8px 10px;font-size:9px;font-weight:900;cursor:pointer}.listingFoot button:disabled{opacity:.55;cursor:not-allowed}
+.emptyState{grid-column:1/-1;border:1px dashed #ffffff26;border-radius:18px;padding:34px 22px;text-align:center;background:#11131b}.emptyIcon{width:45px;height:45px;border-radius:14px;background:#9b70ff20;color:#c3a8ff;display:grid;place-items:center;margin:0 auto 12px;font-size:20px}.emptyState h3{margin:0 0 8px;font-size:17px}.emptyState p{max-width:530px;margin:0 auto;color:#9da7bb;font-size:11px;line-height:1.6}
+.infoGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:35px 0}.info{padding:18px;border:1px solid #ffffff14;border-radius:15px;background:#11131d}.info b{font-size:12px}.info p{font-size:10px;color:#9ba5b9;line-height:1.6;margin:8px 0 0}
+footer{border-top:1px solid #ffffff14;padding:25px 0 38px;margin-top:38px;color:#7f899e;font-size:10px;line-height:1.7}.footerRow{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.notice{color:#c7b7ff}
+.drawer{display:none;position:fixed;inset:0;z-index:30;background:#000b;align-items:center;justify-content:center;padding:18px}.drawer.open{display:flex}.dialog{width:min(520px,100%);border:1px solid #ffffff24;border-radius:18px;background:#121522;padding:23px;box-shadow:0 25px 80px #000b}.dialogHead{display:flex;align-items:center;justify-content:space-between}.dialog h3{margin:0;font-size:20px}.x{width:32px;height:32px;border-radius:50%;border:1px solid #ffffff22;background:#ffffff0a;color:white;cursor:pointer}.dialog p{font-size:12px;color:#aab4c8;line-height:1.65}.dialog .primary{width:100%}
+@media(max-width:850px){.categoryGrid{grid-template-columns:repeat(2,1fr)}.listingGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding:34px;min-height:340px}.heroVisual{min-height:220px}.orbit{width:220px;height:220px}.orbCore{width:120px;height:120px}}
+@media(max-width:620px){.wrap{width:calc(100% - 24px)}header{height:66px}.brand{font-size:16px}.mark{width:31px;height:31px}.nav{gap:12px;font-size:10px}.nav a:nth-child(2),.nav a:nth-child(3){display:none}.nav .cart{padding:9px 10px}.hero{grid-template-columns:1fr;padding:27px 22px 12px;margin-top:15px;min-height:unset}.hero h1{font-size:48px;letter-spacing:-2px}.hero p{font-size:12px}.heroVisual{min-height:205px;margin-top:8px}.orbit{width:190px;height:190px}.orbCore{width:105px;height:105px}.orbCore b{font-size:55px}.tagA{left:0;top:18px}.tagB{right:0;bottom:15px}.trust{gap:7px;margin-bottom:30px}.trustItem{padding:12px 10px}.trustItem b{font-size:14px}.trustItem small{font-size:8px}.sectionHead{align-items:stretch;flex-direction:column}.sectionHead h2{font-size:24px}.search{width:100%}.categoryGrid{gap:9px}.category{min-height:125px;padding:14px}.listingGrid{grid-template-columns:1fr}.listingTop{height:125px}.catalogTools{align-items:start;flex-direction:column}.infoGrid{grid-template-columns:1fr}.footerRow{display:block}}
 </style>
 </head>
 <body>
-<div class="shell">
+<div class="wrap">
 <header>
-  <a class="brand" href="#" aria-label="KrushyStore home"><span class="brandMark">K</span><span>KRUSHY<span>STORE</span></span></a>
-  <nav class="topLinks"><a href="#gallery">SKIN GALLERY</a><a href="#research">CATEGORY GUIDE</a><button class="headerBtn" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">Explore skins ↗</button><button class="cartButton" id="openCart">Cart <span class="cartCount" id="cartCount">0</span></button></nav>
+<a class="brand" href="#"><span class="mark">K</span><span>KRUSHY<em>STORE</em></span></a>
+<nav class="nav"><a href="#categories">CATEGORIES</a><a href="#catalogue">MARKET</a><a href="#about">ABOUT</a><button class="cart" id="cartBtn">Cart <span id="cartCount">0</span></button></nav>
 </header>
 <main>
 <section class="hero">
-  <div class="heroText">
-    <div class="eyebrow">THE KRUSHYSTORE LOCKER ARCHIVE</div>
-    <h1>See the skin.<br>Know the story.</h1>
-    <p>Explore competitive favourites, Chapter 1 classics, standout lockers and device-promo cosmetics. Tap any skin to open its full-size character render and background notes.</p>
-    <div class="heroActions"><button class="primaryBtn" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">Explore the gallery ↘</button><button class="ghostBtn" onclick="setCategory('OG')">See OG classics</button></div>
-  </div>
-  <div class="heroArtWrap"><div class="heroHalo"></div><img id="heroArt" alt="Renegade Raider full character render"><div class="heroRenderLabel">Featured • OG Archive</div></div>
-</section>
-<div class="stats">
-  <div class="stat"><b id="skinCount">30+</b><span>CURATED COSMETIC PICKS</span></div>
-  <div class="stat"><b>FULL BODY</b><span>HIGH-RES CHARACTER ART</span></div>
-  <div class="stat"><b>CLICK TO VIEW</b><span>DETAILS ON EVERY SKIN</span></div>
+<div>
+<div class="eyebrow">THE FORTNITE ACCOUNT MARKETPLACE</div>
+<h1>Find your next<br><span>locker.</span></h1>
+<p>Explore the KRUSHYSTORE catalogue by account style — competitive, OG, stacked, rare, exclusive and starter. Every listing should show its actual locker details before it is offered.</p>
+<div class="actions"><button class="primary" onclick="document.getElementById('catalogue').scrollIntoView({behavior:'smooth'})">Explore marketplace ↘</button><button class="secondary" onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'})">Browse categories</button></div>
 </div>
-<section id="gallery">
-  <div class="sectionHead"><div><div class="eyebrow">BROWSE THE COLLECTION</div><h2>Skin gallery</h2><p>Choose a category or search for a specific outfit.</p></div><input class="search" id="search" type="search" placeholder="Search skins…" aria-label="Search skins"></div>
-  <div class="categoryBar" id="categoryBar"></div>
-  <div class="categoryIntro" id="categoryIntro"><strong>All collections.</strong> Browse a curated mix of competitive-style picks, early-season outfits, promo cosmetics and locker favourites. Tap a card for a larger view.</div>
-  <div class="grid" id="grid" aria-live="polite"></div>
+<div class="heroVisual"><div class="orbit"><div class="orbCore"><b>K</b></div><span class="floatTag tagA">LOCKER COLLECTIONS</span><span class="floatTag tagB">KRUSHYSTORE • MARKET</span></div></div>
 </section>
-<section id="research" class="researchNotes">
-  <article class="note"><b>Competitive / comp-style</b><p>Community-style picks such as Aura, Focus, Siren and Crystal. “Comp” is a community label, not an official Epic rarity or tournament category.</p></article>
-  <article class="note"><b>OG / early-season</b><p>Some early outfits later returned. For Renegade Raider and Aerial Assault Trooper, the Black &amp; Gold style is the 2017-owner distinction; Skull Trooper’s Purple Glow and Ghoul Trooper’s Pink style are also original-owner styles.</p></article>
-  <article class="note"><b>Rare / exclusive</b><p>Here, “rare” refers to history or a limited unlock route, not the in-game colour tier. Shop rotations and availability can change, so check the item’s current status before relying on a rarity label.</p></article>
+<div class="trust">
+<div class="trustItem"><b>7 categories</b><small>ORGANISED ACCOUNT TYPES</small></div>
+<div class="trustItem"><b>Clear details</b><small>LOCKER INFO BEFORE LISTING</small></div>
+<div class="trustItem"><b>Mobile-first</b><small>BUILT FOR PHONE & DESKTOP</small></div>
+</div>
+<section id="categories">
+<div class="sectionHead"><div><div class="eyebrow">PICK YOUR STYLE</div><h2>Browse categories</h2><p>Choose the type of account you're looking for.</p></div></div>
+<div class="categoryGrid" id="categoryGrid">
+<button class="category" data-cat="Competitive" style="--glow:#9b70ff"><span class="catIcon">⚡</span><strong>Competitive</strong><small>Comp-style lockers</small><span class="arrow">↗</span></button>
+<button class="category" data-cat="OG" style="--glow:#f2c66d"><span class="catIcon">★</span><strong>OG</strong><small>Chapter 1-era favourites</small><span class="arrow">↗</span></button>
+<button class="category" data-cat="Stacked" style="--glow:#72caff"><span class="catIcon">▦</span><strong>Stacked</strong><small>Large cosmetic collections</small><span class="arrow">↗</span></button>
+<button class="category" data-cat="Rare" style="--glow:#f17caa"><span class="catIcon">◇</span><strong>Rare</strong><small>Collector-style lockers</small><span class="arrow">↗</span></button>
+<button class="category" data-cat="Exclusive" style="--glow:#b7f36b"><span class="catIcon">✦</span><strong>Exclusive</strong><small>Promotional cosmetics</small><span class="arrow">↗</span></button>
+<button class="category" data-cat="Starter" style="--glow:#7bd5bb"><span class="catIcon">＋</span><strong>Starter</strong><small>Entry-level collections</small><span class="arrow">↗</span></button>
+<button class="category" data-cat="NFA" style="--glow:#c38aff"><span class="catIcon">◈</span><strong>NFA</strong><small>Access type label, not a skin tier</small><span class="arrow">↗</span></button>
+<button class="category active" data-cat="All" style="--glow:#9b70ff"><span class="catIcon">⌕</span><strong>All accounts</strong><small>View the full catalogue</small><span class="arrow">↗</span></button>
+</div>
+</section>
+<section id="catalogue">
+<div class="sectionHead"><div><div class="eyebrow">THE MARKET</div><h2>Account catalogue</h2><p>Search listings and filter by category.</p></div><input class="search" id="search" type="search" placeholder="Search accounts or categories…" aria-label="Search accounts"></div>
+<div class="catalogTools"><div class="filters" id="filters"><button class="active" data-filter="All">All</button><button data-filter="Competitive">Competitive</button><button data-filter="OG">OG</button><button data-filter="Stacked">Stacked</button><button data-filter="Rare">Rare</button><button data-filter="Exclusive">Exclusive</button><button data-filter="Starter">Starter</button><button data-filter="NFA">NFA</button></div><span class="resultCount" id="resultCount">Inventory pending verification</span></div>
+<div class="listingGrid" id="listingGrid">
+<div class="emptyState"><div class="emptyIcon">⌕</div><h3>Account inventory is being prepared</h3><p>The previous live site only contained cosmetic gallery examples — it did not contain verified Fortnite account listings. Real account cards will appear here once actual stock details, locker screenshots, platform/access information and prices are added. No sample accounts or made-up locker counts are shown as real stock.</p></div>
+</div>
+</section>
+<section class="infoGrid" id="about">
+<article class="info"><b>Real locker details</b><p>Each future product card is designed to show the actual outfit count, notable cosmetics, platform/access details and price supplied for that account.</p></article>
+<article class="info"><b>Know what you're viewing</b><p>Competitive, OG, stacked and rare are storefront labels, not official Epic Games account classes. NFA is an access label, not a cosmetic category.</p></article>
+<article class="info"><b>Independent storefront</b><p>KRUSHYSTORE is not affiliated with Epic Games. Account sales or transfers may be restricted by Epic's terms; check the current rules before any transaction.</p></article>
 </section>
 </main>
-<footer>
-  KrushyStore is an independent fan-made catalogue and is not affiliated with, endorsed by, or sponsored by Epic Games. Fortnite, its cosmetics and related marks belong to their respective owners. Cosmetic access and account transfers are subject to Epic Games’ terms. Artwork is loaded from direct image files selected for each cosmetic; original-owner styles use separate style-specific image files where available. <br>
-  Research references: <a href="https://fn-web source.cc/docs" target="_blank" rel="noopener">FN web source render documentation</a> · <a href="https://news.samsung.com/us/samsung-brings-k-pop-to-fortnite-with-exclusive-ikonik-outfit-for-galaxy-s10-players/" target="_blank" rel="noopener">Samsung iKONIK announcement</a> · <a href="https://news.samsung.com/us/starting-now-galaxy-users-have-advance-access-to-fortnite-beta-on-android/" target="_blank" rel="noopener">Samsung Galaxy promotion</a> · <a href="https://metammo.com/guides/fortnite-og-skins-still-exclusive-2026" target="_blank" rel="noopener">OG skin style history</a>
-</footer>
+<footer><div class="footerRow"><div><strong style="color:#e8eaf4;letter-spacing:1px">KRUSHYSTORE</strong><br>Fortnite account catalogue concept.</div><div class="notice">Independent fan-made storefront. Not affiliated with or endorsed by Epic Games.</div></div></footer>
 </div>
-<div class="modal" id="skinModal" role="dialog" aria-modal="true" aria-labelledby="modalName">
-  <div class="modalPanel">
-    <button class="close" id="closeModal" aria-label="Close details">×</button>
-    <div class="modalArt"><img id="modalArt" alt=""></div>
-    <div class="modalCopy"><span class="pill" id="modalPill">OUTFIT</span><h2 id="modalName"></h2><p id="modalDescription"></p><div class="priceLine" id="modalPrice"></div><button class="cartAdd" id="modalAddToCart">ADD TO CART</button><div class="factBox" id="modalFact"></div><a class="sourceLink" id="modalSource" target="_blank" rel="noopener">VIEW REFERENCE ↗</a></div>
-  </div>
-</div>
-<div class="cartDrawer" id="cartDrawer" aria-hidden="true">
-  <div class="cartPanel">
-    <div class="cartHead"><h3>Your cart</h3><button class="cartClose" id="closeCart" aria-label="Close cart">×</button></div>
-    <div id="cartItems"></div>
-    <div class="cartSummary">
-      <div class="cartTotal"><span>Total</span><span id="cartTotal">$0.00</span></div>
-      <div class="cartNote">This is a catalogue/cart interface. It does not process payment or transfer a Fortnite account. Account sales/transfers may violate Epic Games' terms, so verify the actual locker and applicable terms before any transaction.</div>
-      <button class="checkoutBtn" id="reviewOrder">REVIEW ORDER</button>
-    </div>
-  </div>
-</div>
+<div class="drawer" id="infoDialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle"><div class="dialog"><div class="dialogHead"><h3 id="dialogTitle">Cart</h3><button class="x" id="closeDialog" aria-label="Close">×</button></div><p id="dialogText">There are no verified account listings available to add yet. The old gallery prices were cosmetic examples, not real account prices, so they have not been carried over as purchasable products.</p><button class="primary" id="dialogOkay">Got it</button></div></div>
 <script>
-const skins=[
-{cat:"Comp",name:"Chani",tag:"Current comp favourite",price:"$39.99",desc:"A clean, minimal Dune outfit that has become one of the most-used competitive-style picks. Current popularity sources place Chani at or near the top of sweaty-skin usage.",fact:"Popularity research: Fortnite.GG / esports coverage lists Chani among the most-used competitive-style outfits.",url:"https://fortnite.gg/most-used?usage=43"},
-{cat:"Comp",name:"Backlash",tag:"Superhero classic",price:"$34.99",desc:"The customizable Superhero outfit that became a long-running competitive-style favourite because players can create a very clean, low-visual-noise look.",fact:"Popularity research: Fortnite.GG and esports coverage consistently place Superhero outfits among the most-used sweaty choices.",url:"https://fortnite.gg/most-used?usage=43"},
-{cat:"Comp",name:"Joltara",tag:"Superhero classic",price:"$34.99",desc:"A customizable Hero Series outfit frequently grouped with competitive-style locker picks. Its clean silhouette makes it a common sweat-style choice.",fact:"Popularity research: Fortnite.GG currently lists Joltara among heavily used outfits.",url:"https://fortnite.gg/most-used?usage=43"},
-{cat:"Comp",name:"Surf Witch",tag:"Tournament favourite",price:"$29.99",desc:"A long-running competitive-style favourite with a simple silhouette and strong tournament presence. A staple pick for players building a sweat-style locker.",fact:"Popularity research: esports.gg and Fortnite.GG list Surf Witch among heavily used sweaty/competitive-style outfits.",url:"https://fortnite.gg/most-used?usage=43"},
-{cat:"Comp",name:"Focus",tag:"Clean comp pick",price:"$24.99",desc:"A minimal, recognisable outfit that has remained popular with competitive-style players and in sweaty locker lists.",fact:"Popularity research: Fortnite.GG lists Focus among the most-used outfits.",url:"https://fortnite.gg/most-used?usage=43"},
-{cat:"Comp",name:"Aura",tag:"Classic comp pick",price:"$24.99",desc:"One of the best-known competitive-style and sweat picks in Fortnite. Its simple silhouette has kept it popular for years.",fact:"Popularity research: Fortnite.GG lists Aura among the most-used outfits.",url:"https://fortnite.gg/most-used?usage=43"},
-{cat:"Comp",name:"Siren",tag:"Classic comp pick",price:"$24.99",desc:"A streamlined outfit frequently seen in competitive-style locker combinations. Included here as a community popularity pick, not an official tournament category.",fact:"Popularity research: Fortnite.GG lists Siren among the most-used outfits.",url:"https://fortnite.gg/most-used?usage=43"},
-{cat:"Comp",name:"Crystal",tag:"Classic sweat pick",price:"$22.99",desc:"A lightweight-looking outfit that has long been associated with sweat and competitive-style lockers.",fact:"Community category: competitive-style popularity rather than an official Epic classification.",url:"https://fortnite.gg/most-used?usage=43"},
-{cat:"OG",name:"Renegade Raider",tag:"Base / Default style",price:"$399.99+ (example account)",desc:"The standard Renegade Raider outfit. This is the base version, not proof of original 2017 ownership. It returned in the OG Season Shop.",fact:"Version: Default / base outfit. The separate Black & Gold style is the original-owner variant.",url:"https://metammo.com/guides/fortnite-og-skins-still-exclusive-2026",cosmeticName:"Renegade Raider",styleLabel:"Default / Base"},
-{cat:"OG",name:"Aerial Assault Trooper",tag:"Base / Default style",price:"$399.99+ (example account)",desc:"The standard Aerial Assault Trooper outfit. This is the base version, not proof of original 2017 ownership. It returned in the OG Season Shop.",fact:"Version: Default / base outfit. The separate Black & Gold style is the original-owner variant.",url:"https://metammo.com/guides/fortnite-og-skins-still-exclusive-2026",cosmeticName:"Aerial Assault Trooper",styleLabel:"Default / Base"},
-{cat:"OG",name:"Skull Trooper",tag:"Base / Default style",price:"$59.99+ (example account)",desc:"The standard Skull Trooper outfit. This base version is available separately from its original-owner Purple Glow style.",fact:"Version: Default / base outfit. Purple Glow is the original 2017-owner variant; Inverted is another selectable style.",url:"https://fortnite.fandom.com/wiki/Skull_Trooper",cosmeticName:"Skull Trooper",styleLabel:"Default / Base"},
-{cat:"OG",name:"Ghoul Trooper",tag:"Base / Default style",price:"$59.99+ (example account)",desc:"The standard Ghoul Trooper outfit. This base version is different from the original-owner Pink style.",fact:"Version: Default / base outfit. Zombie is another selectable style; Pink is the original 2017-owner variant.",url:"https://fortnite.fandom.com/wiki/Ghoul_Trooper",cosmeticName:"Ghoul Trooper",styleLabel:"Default / Base"},
-
-{cat:"OG",name:"Renegade Raider — Black & Gold",tag:"Original 2017 owner style",price:"$499.99+ (example account)",desc:"The Black & Gold selectable style for Renegade Raider. This is the original-owner version granted to players who purchased the outfit in 2017.",fact:"Style: Black & Gold. Epic confirms this variant is for players who purchased Renegade Raider when it originally released in 2017. Verify the style in the in-game locker.",url:"https://www.epicgames.com/help/c-34254770/c-33726977/a22433530",cosmeticName:"Renegade Raider",styleLabel:"Black & Gold",image:"https://pbs.twimg.com/media/GhR1bs4XIAAoNXP.jpg"},
-{cat:"OG",name:"Aerial Assault Trooper — Black & Gold",tag:"Original 2017 owner style",price:"$499.99+ (example account)",desc:"The Black & Gold selectable style for Aerial Assault Trooper. This is the original-owner version granted to players who purchased the outfit in 2017.",fact:"Style: Black & Gold. Epic confirms this variant is for players who purchased Aerial Assault Trooper when it originally released in 2017. Verify the style in the in-game locker.",url:"https://www.epicgames.com/help/c-34254770/c-33726977/a22433530",cosmeticName:"Aerial Assault Trooper",styleLabel:"Black & Gold",image:"https://pbs.twimg.com/media/GhR1btOWcAA81yn.jpg"},
-{cat:"OG",name:"Skull Trooper — Purple Glow",tag:"Original 2017 owner style",price:"$399.99+ (example account)",desc:"The Purple Glow selectable style for Skull Trooper, reserved for players who purchased the outfit during its original 2017 release.",fact:"Style: Purple Glow. Original-owner style; verify it is unlocked in the in-game locker.",url:"https://fortnite.fandom.com/wiki/Skull_Trooper",cosmeticName:"Skull Trooper",styleLabel:"Purple Glow",image:"https://wallpapers.com/images/hd/purple-skull-trooper-6mtbkb8f9ixuyf0g.jpg"},
-{cat:"OG",name:"Skull Trooper — Inverted",tag:"Additional selectable style",price:"$79.99+ (example account)",desc:"The Inverted selectable style for Skull Trooper. This is a separate style and should not be mislabeled as the original-owner Purple Glow version.",fact:"Style: Inverted. Not the 2017 Purple Glow owner style.",url:"https://fortnite.fandom.com/wiki/Skull_Trooper",cosmeticName:"Skull Trooper",styleLabel:"Inverted"},
-{cat:"OG",name:"Ghoul Trooper — Zombie",tag:"Additional selectable style",price:"$79.99+ (example account)",desc:"The Zombie selectable style for Ghoul Trooper. This is separate from the original-owner Pink version.",fact:"Style: Zombie. Not the 2017 Pink owner style.",url:"https://fortnite.fandom.com/wiki/Ghoul_Trooper",cosmeticName:"Ghoul Trooper",styleLabel:"Zombie",image:"https://cdn.plick.es/item_image/eqGwdPMpLz9rA4VNXY4rJjx5aW1ROBno3Egv08Z6/w1125_q90.webp"},
-{cat:"OG",name:"Ghoul Trooper — Pink",tag:"Original 2017 owner style",price:"$499.99+ (example account)",desc:"The Pink selectable style for Ghoul Trooper, reserved for players who purchased the outfit during its original 2017 release.",fact:"Style: Pink. Original-owner style; verify it is unlocked in the in-game locker.",url:"https://fortnite.fandom.com/wiki/Ghoul_Trooper",cosmeticName:"Ghoul Trooper",styleLabel:"Pink",image:"https://cdn.plick.es/item_image/eqGwdPMpLz9rA4VNXY4rJjx5aW1ROBno3Egv08Z6/w1125_q90.webp"},{cat:"OG",name:"Black Knight",tag:"Chapter 1 Season 2",price:"$99.99+",desc:"The iconic Tier 70 Battle Pass outfit from Chapter 1 Season 2. It is not part of the OG Quad, but is commonly treated as a major extra on early-era accounts.",fact:"OG history: Chapter 1 Season 2 Battle Pass, Tier 70. Not part of the four-skin OG Quad.",url:"https://fortnite.fandom.com/wiki/Black_Knight"},
-{cat:"OG",name:"Sparkle Specialist",tag:"Chapter 1 Season 2",price:"$69.99+",desc:"An early Chapter 1 Battle Pass outfit included as a classic-era locker example.",fact:"Early Chapter 1 Battle Pass outfit.",url:"https://fortnite.fandom.com/wiki/Sparkle_Specialist"},
-{cat:"Stacked",name:"IKONIK",tag:"Samsung promo",price:"$79.99+",desc:"A Samsung Galaxy S10 promotional outfit paired with the Scenario emote. A strong example of a device-promo cosmetic in a stacked locker.",fact:"Samsung announced availability beginning March 8, 2019 for eligible Galaxy S10-series devices.",url:"https://news.samsung.com/us/samsung-brings-k-pop-to-fortnite-with-exclusive-ikonik-outfit-for-galaxy-s10-players/"},
-{cat:"Stacked",name:"Galaxy",tag:"Samsung promo",price:"$79.99+",desc:"The cosmic outfit from Samsung's Fortnite Android promotion, associated with eligible Galaxy Note9 and Tab S4 devices.",fact:"2018 Samsung device promotion.",url:"https://news.samsung.com/us/starting-now-galaxy-users-have-advance-access-to-fortnite-beta-on-android/"},
-{cat:"Stacked",name:"Travis Scott",tag:"Icon Series",price:"$59.99+",desc:"The Icon Series collaboration outfit with a short 2020 Item Shop run. It remains a recognisable headline cosmetic for stacked locker showcases.",fact:"Item Shop run: April 22–27, 2020.",url:"https://fndb.gg/skin/travis-scott/"},
-{cat:"Stacked",name:"Midas",tag:"Chapter 2 classic",price:"$49.99+",desc:"A signature Chapter 2 Season 2 Battle Pass outfit that gives a stacked locker a strong spy-season classic.",fact:"Chapter 2 Season 2 Battle Pass outfit.",url:"https://fortnite.fandom.com/wiki/Midas"},
-{cat:"Stacked",name:"The Reaper",tag:"Season 3 Tier 100",price:"$49.99+",desc:"The original suited Tier 100 Battle Pass outfit from Chapter 1 Season 3 and one of the most recognisable early cosmetics.",fact:"Chapter 1 Season 3 Battle Pass · Tier 100.",url:"https://fortnite.fandom.com/wiki/The_Reaper"},
-{cat:"Rare",name:"Recon Expert",tag:"Early Item Shop",price:"$39.99+",desc:"A famous early Item Shop outfit that became a collector talking point because of its long absence before returning.",fact:"Early Chapter 1 Item Shop cosmetic; availability has changed over time.",url:"https://metammo.com/fortnite-guide/skins"},
-{cat:"Rare",name:"Honor Guard",tag:"HONOR View20 promo",price:"$69.99+",desc:"A device-promotion outfit associated with the HONOR View20. A notable promotional cosmetic for collector-style locker showcases.",fact:"HONOR View20 promotion · released February 25, 2019.",url:"https://fortnite.fandom.com/wiki/Honor_Guard"},
-{cat:"Rare",name:"Wonder",tag:"Honor 20 promo",price:"$69.99+",desc:"A promotional outfit tied to eligible Huawei Honor 20 devices, making it a strong example of a hardware-promo cosmetic.",fact:"Huawei Honor 20 promotion · released June 21, 2019.",url:"https://fortnite.fandom.com/wiki/Wonder"},
-{cat:"Exclusive",name:"IKONIK",tag:"Galaxy S10 promo",price:"$79.99+",desc:"The famous iKONIK + Scenario device-promotion combination. Use the exact cosmetic and emote names in any catalogue listing.",fact:"Samsung Galaxy S10-series promotion beginning March 8, 2019.",url:"https://news.samsung.com/us/samsung-brings-k-pop-to-fortnite-with-exclusive-ikonik-outfit-for-galaxy-s10-players/"},
-{cat:"Exclusive",name:"Galaxy",tag:"Galaxy Note9 promo",price:"$79.99+",desc:"A device-promotion cosmetic associated with Samsung's early Fortnite Android campaign.",fact:"Samsung Galaxy Note9 / Tab S4 promotion.",url:"https://news.samsung.com/us/starting-now-galaxy-users-have-advance-access-to-fortnite-beta-on-android/"},
-{cat:"Exclusive",name:"Wonder",tag:"Honor 20 promo",price:"$69.99+",desc:"A device-promotion outfit from the Honor 20 campaign, included here for its distinct unlock history.",fact:"Eligible Huawei Honor 20 promotion.",url:"https://fortnite.fandom.com/wiki/Wonder"},
-{cat:"Exclusive",name:"Honor Guard",tag:"HONOR View20 promo",price:"$69.99+",desc:"A promotional outfit connected to the HONOR View20 campaign and commonly treated as a collector-oriented cosmetic.",fact:"Eligible HONOR View20 promotion.",url:"https://fortnite.fandom.com/wiki/Honor_Guard"},
-{cat:"Starter",name:"Commando",tag:"Classic starter-style",price:"$9.99+",desc:"A simple classic outfit used here as a low-tier catalogue example. The Starter label is a storefront theme, not an official Fortnite account class.",fact:"Storefront category only; verify the actual account inventory before any transaction.",url:"https://fortnite.fandom.com/wiki/Commando"},
-{cat:"Starter",name:"Aura",tag:"Everyday favourite",price:"$19.99+",desc:"A recognisable Item Shop outfit that works as a clean everyday locker example.",fact:"Storefront category only; Aura is also widely used in competitive-style lockers.",url:"https://fortnite.fandom.com/wiki/Aura"},
-{cat:"Starter",name:"Nog Ops",tag:"Classic seasonal",price:"$19.99+",desc:"A familiar seasonal outfit included as an approachable catalogue example.",fact:"Storefront category only; cosmetic availability can change.",url:"https://fortnite.fandom.com/wiki/Nog_Ops"},
-{cat:"Starter",name:"Assault Trooper",tag:"Classic simple look",price:"$9.99+",desc:"A simple outfit used here as a starter-style example for a lower-price catalogue tier.",fact:"Storefront category only; verify actual inventory before any transaction.",url:"https://fortnite.fandom.com/wiki/Assault_Trooper"},
-{cat:"NFA",name:"Chani",tag:"Cosmetic example",price:"—",desc:"NFA is an account-access label, not a Fortnite skin category. Chani is shown only as the cosmetic example for this catalogue filter.",fact:"NFA does not describe the skin itself. Account access and transfer terms should be checked before any transaction.",url:"https://fortnite.gg/most-used?usage=43"},
-{cat:"NFA",name:"Focus",tag:"Cosmetic example",price:"—",desc:"A cosmetic example for the NFA storefront filter. The NFA label should never be presented as an official Epic cosmetic classification.",fact:"NFA describes an account-access arrangement, not a skin property.",url:"https://fortnite.gg/most-used?usage=43"}
-];
-const categories=["All","Comp","OG","Stacked","Rare","Exclusive","Starter","NFA"];
-const intros={
-All:"<strong>All collections.</strong> A curated mix of competitive-style picks, early-season outfits, locker favourites and device promotions. Tap any card to inspect the full-size render and its background.",
-Comp:"<strong>Competitive / comp-style.</strong> These are community favourites for competitive-style lockers, not officially designated tournament outfits or a ranking of the best players’ skins.",
-OG:"<strong>OG / early-season.</strong> Some iconic outfits later returned. Both the base/default outfit and each selectable style are listed separately. Original-owner styles are clearly distinguished from ordinary selectable styles.",
-Stacked:"<strong>Stacked locker examples.</strong> A mixed collection of iconic Battle Pass, collaboration and promotional cosmetics. “Stacked” has no official skin checklist.",
-Rare:"<strong>Collector-history picks.</strong> “Rare” here describes a notable unlock route or history, not the in-game rarity colour. Some OG outfits have returned; their original-owner styles may remain distinct.",
-Exclusive:"<strong>Device-promotion cosmetics.</strong> These outfits were tied to specific hardware offers or promotions, such as Samsung and HONOR devices.",
-Starter:"<strong>Starter-style examples.</strong> A clean mix of recognisable everyday outfits. This is a gallery theme, not an official Epic account tier.",
-NFA:"<strong>NFA is not a skin type.</strong> It is an account-access label used by sellers. The cards below are only cosmetic examples; do not mistake this filter for an official Fortnite category."
-};
-const imageMap={"Chani":"https://tryhardguides.com/wp-content/uploads/2021/10/chani-featured-1024x1024.png","Backlash":"https://fortnitestudioshq.com/cosmetics/CID_861_Athena_Commando_F_Elastic_B/backlash-outfit-4k.png","Joltara":"https://image.pngaaa.com/108/4440122-middle.png","Surf Witch":"https://image.emojisky.com/900/14191900-middle.png","Focus":"https://image.fnbr.co/outfit/5d08ab81f940022a476b62e4/featured.png","Aura":"https://www.pngfind.com/pngs/m/680-6802265_aura-fortnite-hd-png-download.png","Renegade Raider":"https://image.pngaaa.com/430/1619430-middle.png","Black Knight":"https://e7.pngegg.com/pngimages/782/241/png-clipart-fortnite-knight-character-games-fortnite.png","Ghoul Trooper":"https://toppng.com/uploads/preview/fortnite-ghoul-trooper-png-image-fortnite-skin-png-ghoul-trooper-11562868400qsn7oxhura.png","IKONIK":"https://image.pngaaa.com/646/1189646-middle.png","Recon Expert":"https://image.pngaaa.com/319/2445319-middle.png","Crystal":"https://image.fnbr.co/outfit/5d42bee75f111eccf9ce6138/featured.png","Siren":"https://wallpapercave.com/wp/wp6097643.jpg","Aerial Assault Trooper":"https://image.pngaaa.com/609/2316609-middle.png","Skull Trooper":"https://image.emojipng.com/824/480824.jpg","Sparkle Specialist":"https://purepng.com/public/uploads/large/purepng.com-fortnite-sparkle-specialistfortnitefortnite-battle-royalebattle-royaleepic-gamesgames-1251525436489aihd8.png","Galaxy":"https://purepng.com/public/uploads/large/fortnite-new-galaxy-skin-gm0.png","Travis Scott":"https://i.pinimg.com/originals/fa/62/c0/fa62c011412542a112618a24187191bb.png","Midas":"https://image.pngaaa.com/725/2792725-middle.png","The Reaper":"https://pngset.com/images/fortnite-the-reaper-costume-suit-overcoat-clothing-person-transparent-png-1431867.png","Honor Guard":"https://tryhardguides.com/wp-content/uploads/2021/08/honor-guard-featured.png","Wonder":"https://www.vhv.rs/dpng/d/580-5805064_fortnite-wonder-a-fortnite-wonser-sticker-wonder-skin.png","Commando":"https://purepng.com/public/uploads/large/purepng.com-fortnite-commandofortnitefortnite-battle-royalebattle-royaleepic-gamesgames-1251525434582acfns.png","Nog Ops":"https://www.hoyfortnite.com/images/skins/Nog%20Ops_3.png","Assault Trooper":"https://purepng.com/public/uploads/large/purepng.com-fortnite-assault-trooperfortnitefortnite-battle-royalebattle-royaleepic-gamesgames-1251525434020hvofe.png"};
-skins.forEach(s=>{if(!s.image)s.image=imageMap[s.cosmeticName||s.name]||null;});
-const grid=document.getElementById("grid"),bar=document.getElementById("categoryBar"),intro=document.getElementById("categoryIntro"),search=document.getElementById("search");
-let active="All",query="",cosmeticCache=new Map(),renderObserver=null;
-function setCategory(cat){active=cat;search.value="";query="";render()}
-window.setCategory=setCategory;
-categories.forEach(cat=>{const b=document.createElement("button");b.textContent=cat==="Comp"?"Competitive":cat;b.dataset.category=cat;b.addEventListener("click",()=>setCategory(cat));bar.appendChild(b)});
-search.addEventListener("input",e=>{query=e.target.value.trim().toLowerCase();render()});
-function initials(name){return name.split(/\s+/).map(x=>x[0]).join("").slice(0,2).toUpperCase()}
-function render(){
-  const visible=skins.filter(s=>(active==="All"||s.cat===active)&&(!query||(s.name+" "+s.cat+" "+s.tag+" "+s.desc).toLowerCase().includes(query)));
-  intro.innerHTML=intros[active];
-  bar.querySelectorAll("button").forEach(b=>b.classList.toggle("active",b.dataset.category===active));
-  grid.innerHTML="";
-  if(!visible.length){grid.innerHTML='<div class="empty">No matching skins. Try another name or category.</div>';return}
-  visible.forEach(s=>{
-    const card=document.createElement("article");card.className="skinCard";card.tabIndex=0;card.setAttribute("role","button");card.setAttribute("aria-label","View "+s.name+" details");
-    card.innerHTML='<div class="art"><span class="imageStatus">Loading artwork</span><div class="artFallback">'+initials(s.name)+'</div></div><div class="cardBody"><div class="meta"><span class="pill">'+s.cat+'</span><span style="color:#8390a9;font-size:9px">OUTFIT</span></div><h3></h3><p></p><div class="priceLine"><span></span><small>EXAMPLE ACCOUNT PRICE</small></div><div class="viewLine"><span>VIEW PRODUCT</span><span>↗</span></div><button class="cartAdd" type="button">ADD TO CART</button></div>';
-    card.querySelector("h3").textContent=s.name;card.querySelector(".priceLine span").textContent=s.price||"Contact for price";card.querySelector(".cardBody p").textContent=(s.styleLabel?s.styleLabel+" · ":"")+s.tag+" · Tap for product details";
-    card.querySelector(".cartAdd").addEventListener("click",e=>{e.stopPropagation();addToCart(s)});
-    card.addEventListener("click",()=>openDetails(s));
-    card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetails(s)}});
-    grid.appendChild(card);observeCard(card,s);
-  });
-  document.getElementById("skinCount").textContent=skins.length;
-}
-function observeCard(card,skin){
-  if(skin.image){setCardImage(card,{url:skin.image});return}
-  if(!("IntersectionObserver" in window)){loadRender(skin.cosmeticName||skin.name).then(d=>setCardImage(card,d));return}
-  if(!renderObserver)renderObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const c=entry.target;renderObserver.unobserve(c);loadRender(c.dataset.renderName||c.dataset.skin).then(d=>setCardImage(c,d))}})},{rootMargin:"240px"});
-  card.dataset.skin=skin.name;card.dataset.renderName=skin.cosmeticName||skin.name;renderObserver.observe(card);
-}
-async function loadRender(name){
-  const skin=skins.find(x=>(x.cosmeticName||x.name)===name);
-  const url=(skin&&skin.image)||imageMap[name]||null;
-  return {url,placeholder:false,meta:null};
-}
-function setCardImage(card,data){
- if(!card.isConnected)return;
- const art=card.querySelector(".art"),status=card.querySelector(".imageStatus"),fallback=card.querySelector(".artFallback");
- if(!data||!data.url||data.placeholder){status.textContent="Render unavailable";fallback.style.display="flex";return}
- const img=new Image();img.alt=card.querySelector("h3").textContent+" full-body Fortnite render";img.onload=()=>{art.insertBefore(img,status.nextSibling);status.textContent="Full-body render";status.style.color="#bde8ff"};img.onerror=()=>{status.textContent="Artwork unavailable";fallback.style.display="flex"};img.src=data.url;
-}
-let modalRequest=0;
-async function openDetails(s){
- const request=++modalRequest;
- const modal=document.getElementById("skinModal"),art=document.getElementById("modalArt");
- document.getElementById("modalPill").textContent=s.cat==="Comp"?"COMP-STYLE":s.cat.toUpperCase();
- document.getElementById("modalName").textContent=s.name;
- document.getElementById("modalDescription").textContent=s.desc;
- document.getElementById("modalPrice").textContent="Price: "+(s.price||"Contact for price")+" — catalogue/example price.";
- document.getElementById("modalAddToCart").onclick=()=>addToCart(s);
- document.getElementById("modalFact").textContent=(s.styleLabel?"Selected style: "+s.styleLabel+". ":"")+s.fact+" Artwork is a reference image for the selected style. Verify the selectable style in the in-game locker before describing an account as original-owner.";
- const source=document.getElementById("modalSource");source.href=s.url;source.textContent="VIEW REFERENCE ↗";
- art.removeAttribute("src");art.alt=s.name+" full-body Fortnite render";
- modal.classList.add("open");document.body.style.overflow="hidden";
- const data=s.image?{url:s.image}:await loadRender(s.cosmeticName||s.name);
- if(request!==modalRequest||!modal.classList.contains("open"))return;
- if(data&&data.url&&!data.placeholder){art.onload=null;art.onerror=()=>{art.removeAttribute("src");art.alt=s.name+" artwork could not load"};art.src=data.url;}
- else art.alt=s.name+" artwork is not available yet";
-}
-function closeModal(){modalRequest++;document.getElementById("skinModal").classList.remove("open");document.body.style.overflow=""}
-document.getElementById("closeModal").addEventListener("click",closeModal);
-document.getElementById("skinModal").addEventListener("click",e=>{if(e.target.id==="skinModal")closeModal()});
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
-const heroSkin=skins.find(x=>x.name==="Renegade Raider — Black & Gold")||skins.find(x=>x.name==="Renegade Raider");
-if(heroSkin&&heroSkin.image){const im=document.getElementById("heroArt");im.onload=()=>im.classList.add("loaded");im.src=heroSkin.image;}
-
-let cart=[];
-function numericPrice(s){const m=String(s.price||"").replace(/,/g,"").match(/\$?([0-9]+(?:\.[0-9]{1,2})?)/);return m?Number(m[1]):0}
-function addToCart(s){const existing=cart.find(x=>x.name===s.name);if(existing)existing.qty++;else cart.push({name:s.name,price:s.price,image:s.image||null,qty:1});renderCart();openCart();closeModal()}
-function changeQty(name,delta){const item=cart.find(x=>x.name===name);if(!item)return;item.qty+=delta;if(item.qty<=0)cart=cart.filter(x=>x.name!==name);renderCart()}
-function removeFromCart(name){cart=cart.filter(x=>x.name!==name);renderCart()}
-function renderCart(){
- const box=document.getElementById("cartItems"),count=document.getElementById("cartCount"),totalEl=document.getElementById("cartTotal");
- const total=cart.reduce((sum,x)=>sum+numericPrice(x)*x.qty,0);count.textContent=cart.reduce((sum,x)=>sum+x.qty,0);totalEl.textContent="$"+total.toFixed(2);
- if(!cart.length){box.innerHTML='<div class="cartEmpty">Your cart is empty.<br>Open a product and add it here.</div>';return}
- box.innerHTML=cart.map(x=>'<div class="cartItem"><div class="cartThumb">'+(x.image?'<img src="'+x.image+'" alt="">':'')+'</div><div><h4>'+escapeHtml(x.name)+'</h4><p>'+escapeHtml(x.price||"Contact for price")+'</p><div class="cartQty"><button onclick="changeQty('+JSON.stringify(x.name)+',-1)">−</button><span>'+x.qty+'</span><button onclick="changeQty('+JSON.stringify(x.name)+',1)">+</button></div></div><div class="cartItemPrice">$'+(numericPrice(x)*x.qty).toFixed(2)+'<br><button class="removeBtn" onclick="removeFromCart('+JSON.stringify(x.name)+')">REMOVE</button></div></div>').join("");
-}
-function escapeHtml(v){return String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
-function openCart(){document.getElementById("cartDrawer").classList.add("open");document.getElementById("cartDrawer").setAttribute("aria-hidden","false")}
-function closeCart(){document.getElementById("cartDrawer").classList.remove("open");document.getElementById("cartDrawer").setAttribute("aria-hidden","true")}
-document.getElementById("openCart").addEventListener("click",openCart);
-document.getElementById("closeCart").addEventListener("click",closeCart);
-document.getElementById("cartDrawer").addEventListener("click",e=>{if(e.target.id==="cartDrawer")closeCart()});
-document.getElementById("reviewOrder").addEventListener("click",()=>{if(!cart.length){alert("Your cart is empty.");return}alert("Order review is ready. Payment is not connected in this catalogue build.")});
-renderCart();
-try{render()}catch(err){console.error(err);grid.innerHTML='<div class="empty">The skin gallery failed to load. Please refresh the page.</div>';}
+const grid=document.getElementById('listingGrid'),search=document.getElementById('search'),count=document.getElementById('resultCount');
+let active='All',query='';
+function setCategory(cat){active=cat;document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter===cat));document.querySelectorAll('[data-cat]').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));document.getElementById('catalogue').scrollIntoView({behavior:'smooth'});render()}
+function render(){const q=query.toLowerCase();const labels=['Competitive','OG','Stacked','Rare','Exclusive','Starter','NFA'];const matches=labels.filter(x=>(active==='All'||active===x)&&(!q||x.toLowerCase().includes(q)||('fortnite '+x+' account').includes(q)));count.textContent='0 verified listings';grid.innerHTML='<div class="emptyState"><div class="emptyIcon">⌕</div><h3>'+(q||active!=='All'?'No verified listings in this selection':'Account inventory is being prepared')+'</h3><p>'+(q||active!=='All'?'There are currently no verified account listings for this search or category.':'The previous live site only contained cosmetic gallery examples — it did not contain verified Fortnite account listings. Real account cards will appear here once actual stock details, locker screenshots, platform/access information and prices are added. No sample accounts or made-up locker counts are shown as real stock.')+'</p></div>'}
+document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.filter)));
+document.querySelectorAll('[data-cat]').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.cat)));
+search.addEventListener('input',e=>{query=e.target.value.trim();render()});
+const dialog=document.getElementById('infoDialog');function openDialog(){dialog.classList.add('open')}function closeDialog(){dialog.classList.remove('open')}
+document.getElementById('cartBtn').addEventListener('click',openDialog);document.getElementById('closeDialog').addEventListener('click',closeDialog);document.getElementById('dialogOkay').addEventListener('click',closeDialog);dialog.addEventListener('click',e=>{if(e.target===dialog)closeDialog()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDialog()});
+render();
 </script>
 </body>
 </html>
