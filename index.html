@@ -44,12 +44,29 @@ h1{font-size:clamp(42px,6vw,76px);line-height:.94;letter-spacing:-3px;margin:17p
 .cardBody{padding:14px 15px 15px}.meta{display:flex;justify-content:space-between;align-items:center;gap:8px}.pill{font-size:9px;font-weight:950;letter-spacing:1px;text-transform:uppercase;color:#c5aaff;background:#7951dc21;border:1px solid #9b75f744;border-radius:6px;padding:5px 7px}
 .cardBody h3{font-size:17px;margin:10px 0 5px;letter-spacing:-.2px}.cardBody p{font-size:11px;line-height:1.45;color:#9da8be;margin:0;min-height:31px}
 .viewLine{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:11px;border-top:1px solid #ffffff12;color:#c8d2e7;font-size:10px;font-weight:900;letter-spacing:.9px}.viewLine span:last-child{color:#aa8bff;font-size:17px}.priceLine{display:flex;justify-content:space-between;align-items:center;margin-top:12px;color:#f3f5ff;font-size:14px;font-weight:950}.priceLine small{font-size:9px;color:#8f9bb2;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.cartAdd{margin-top:10px;width:100%;border:0;border-radius:10px;padding:10px 12px;background:linear-gradient(120deg,#7c45ff,#20a56d);color:#fff;font-size:11px;font-weight:950;cursor:pointer;box-shadow:0 8px 20px #0003}
+.cartAdd:hover{filter:brightness(1.08)}
+.cartButton{position:relative;border:1px solid #ffffff24;background:#ffffff0d;color:#fff;border-radius:12px;padding:10px 13px;font-weight:900;cursor:pointer}
+.cartCount{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#9b6dff;color:#fff;font-size:10px;margin-left:5px}
+.cartDrawer{position:fixed;inset:0;z-index:70;display:none;background:#0009}
+.cartDrawer.open{display:block}
+.cartPanel{position:absolute;right:0;top:0;height:100%;width:min(430px,100%);background:#0d1220;border-left:1px solid #ffffff1c;box-shadow:-25px 0 70px #0008;padding:22px;overflow:auto}
+.cartHead{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #ffffff14;padding-bottom:16px}
+.cartHead h3{margin:0;font-size:22px}.cartClose{border:1px solid #ffffff24;background:#ffffff0b;color:#fff;border-radius:50%;width:36px;height:36px;cursor:pointer}
+.cartItem{display:grid;grid-template-columns:70px 1fr auto;gap:12px;align-items:center;padding:15px 0;border-bottom:1px solid #ffffff12}
+.cartThumb{width:70px;height:78px;border-radius:10px;background:#fff;display:grid;place-items:center;overflow:hidden}
+.cartThumb img{width:100%;height:100%;object-fit:contain;padding:5px}.cartItem h4{margin:0 0 4px;font-size:13px}.cartItem p{margin:0;color:#9da8be;font-size:10px;line-height:1.4}
+.cartQty{display:flex;align-items:center;gap:6px;margin-top:7px}.cartQty button{width:25px;height:25px;border:1px solid #ffffff1c;background:#ffffff08;color:#fff;border-radius:7px;cursor:pointer}.cartQty span{font-size:11px;color:#dfe5f3;min-width:14px;text-align:center}
+.cartItemPrice{font-weight:950;font-size:12px;white-space:nowrap}.removeBtn{border:0;background:transparent;color:#8f9bb2;font-size:10px;cursor:pointer;margin-top:6px}
+.cartEmpty{padding:50px 10px;text-align:center;color:#8f9bb2;font-size:12px}
+.cartSummary{margin-top:18px;border-top:1px solid #ffffff18;padding-top:17px}.cartTotal{display:flex;justify-content:space-between;font-size:18px;font-weight:950}.cartNote{font-size:10px;line-height:1.55;color:#8f9bb2;margin:10px 0 14px}.checkoutBtn{width:100%;border:0;border-radius:11px;padding:13px;background:linear-gradient(120deg,#7c45ff,#20a56d);color:#fff;font-weight:950;cursor:pointer}
+@media(max-width:680px){.art{height:230px}.cartPanel{width:100%}}
 .empty{grid-column:1/-1;text-align:center;padding:55px 20px;color:var(--muted);border:1px dashed #ffffff22;border-radius:18px}
 .researchNotes{margin:40px 0 18px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.note{border:1px solid #ffffff12;background:#0e1421;padding:16px;border-radius:15px}.note b{font-size:13px}.note p{font-size:11px;color:#9da8be;line-height:1.55;margin:7px 0 0}
 footer{padding:34px 0 42px;border-top:1px solid #ffffff12;margin-top:35px;color:#7e8aa3;font-size:10px;line-height:1.7}footer a{color:#b9a0ff;text-decoration:underline}
 .modal{display:none;position:fixed;inset:0;z-index:50;padding:18px;background:#02040bd9;backdrop-filter:blur(12px);align-items:center;justify-content:center}.modal.open{display:flex}
 .modalPanel{width:min(900px,100%);max-height:min(92vh,900px);overflow:auto;display:grid;grid-template-columns:1fr 1fr;border:1px solid #ffffff24;border-radius:23px;background:#111827;box-shadow:0 35px 100px #000b;position:relative}
-.modalArt{min-height:490px;background:transparent;display:flex;align-items:center;justify-content:center;overflow:hidden}.modalArt img{width:100%;height:100%;max-height:610px;object-fit:cover;object-position:center 10%;padding:0;transform:scale(1.08);filter:drop-shadow(0 12px 20px #0007)}
+.modalArt{min-height:490px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}.modalArt img{width:100%;height:100%;max-height:610px;object-fit:contain;object-position:center center;padding:18px;transform:scale(1);filter:drop-shadow(0 12px 20px #0004)}
 .modalCopy{padding:42px 32px 30px;display:flex;flex-direction:column;align-items:flex-start}.modalCopy h2{font-size:36px;line-height:1.05;margin:14px 0 12px;letter-spacing:-1.5px}.modalCopy p{font-size:13px;line-height:1.7;color:#b3bfd2}.factBox{margin:10px 0 18px;padding:14px;border-radius:12px;background:#ffffff08;border:1px solid #ffffff15;color:#d1d9e9;font-size:12px;line-height:1.6}.sourceLink{display:inline-block;color:#b79cff;font-size:11px;font-weight:900;text-decoration:underline;margin-top:auto;padding-top:15px}
 .close{position:absolute;top:12px;right:12px;z-index:5;width:38px;height:38px;border:1px solid #ffffff27;border-radius:50%;background:#0a1020;color:white;font-size:20px;cursor:pointer}
 @media(max-width:950px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.hero{padding:32px;min-height:390px}.heroArtWrap{height:300px}}
@@ -61,7 +78,7 @@ footer{padding:34px 0 42px;border-top:1px solid #ffffff12;margin-top:35px;color:
 <div class="shell">
 <header>
   <a class="brand" href="#" aria-label="KrushyStore home"><span class="brandMark">K</span><span>KRUSHY<span>STORE</span></span></a>
-  <nav class="topLinks"><a href="#gallery">SKIN GALLERY</a><a href="#research">CATEGORY GUIDE</a><button class="headerBtn" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">Explore skins ↗</button></nav>
+  <nav class="topLinks"><a href="#gallery">SKIN GALLERY</a><a href="#research">CATEGORY GUIDE</a><button class="headerBtn" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">Explore skins ↗</button><button class="cartButton" id="openCart">Cart <span class="cartCount" id="cartCount">0</span></button></nav>
 </header>
 <main>
 <section class="hero">
@@ -99,7 +116,18 @@ footer{padding:34px 0 42px;border-top:1px solid #ffffff12;margin-top:35px;color:
   <div class="modalPanel">
     <button class="close" id="closeModal" aria-label="Close details">×</button>
     <div class="modalArt"><img id="modalArt" alt=""></div>
-    <div class="modalCopy"><span class="pill" id="modalPill">OUTFIT</span><h2 id="modalName"></h2><p id="modalDescription"></p><div class="priceLine" id="modalPrice"></div><div class="factBox" id="modalFact"></div><a class="sourceLink" id="modalSource" target="_blank" rel="noopener">VIEW REFERENCE ↗</a></div>
+    <div class="modalCopy"><span class="pill" id="modalPill">OUTFIT</span><h2 id="modalName"></h2><p id="modalDescription"></p><div class="priceLine" id="modalPrice"></div><button class="cartAdd" id="modalAddToCart">ADD TO CART</button><div class="factBox" id="modalFact"></div><a class="sourceLink" id="modalSource" target="_blank" rel="noopener">VIEW REFERENCE ↗</a></div>
+  </div>
+</div>
+<div class="cartDrawer" id="cartDrawer" aria-hidden="true">
+  <div class="cartPanel">
+    <div class="cartHead"><h3>Your cart</h3><button class="cartClose" id="closeCart" aria-label="Close cart">×</button></div>
+    <div id="cartItems"></div>
+    <div class="cartSummary">
+      <div class="cartTotal"><span>Total</span><span id="cartTotal">$0.00</span></div>
+      <div class="cartNote">This is a catalogue/cart interface. It does not process payment or transfer a Fortnite account. Account sales/transfers may violate Epic Games' terms, so verify the actual locker and applicable terms before any transaction.</div>
+      <button class="checkoutBtn" id="reviewOrder">REVIEW ORDER</button>
+    </div>
   </div>
 </div>
 <script>
@@ -154,6 +182,8 @@ Exclusive:"<strong>Device-promotion cosmetics.</strong> These outfits were tied 
 Starter:"<strong>Starter-style examples.</strong> A clean mix of recognisable everyday outfits. This is a gallery theme, not an official Epic account tier.",
 NFA:"<strong>NFA is not a skin type.</strong> It is an account-access label used by sellers. The cards below are only cosmetic examples; do not mistake this filter for an official Fortnite category."
 };
+const imageMap={"Chani":"https://tryhardguides.com/wp-content/uploads/2021/10/chani-featured-1024x1024.png","Backlash":"https://fortnitestudioshq.com/cosmetics/CID_861_Athena_Commando_F_Elastic_B/backlash-outfit-4k.png","Joltara":"https://trackercdn.com/legacycdn/fortnite/B8B412734_large.png","Surf Witch":"https://i.pinimg.com/736x/74/e0/a3/74e0a3cda0d586daf793a404b1dda367.jpg","Focus":"https://image.fnbr.co/outfit/5d08ab81f940022a476b62e4/featured.png","Aura":"https://image.pngaaa.com/108/791108-middle.png","Siren":"https://wallpapercave.com/wp/wp6097643.jpg","Crystal":"https://image.fnbr.co/outfit/5d42bee75f111eccf9ce6138/featured.png","Renegade Raider":"https://image.pngaaa.com/430/1619430-middle.png","Aerial Assault Trooper":"https://image.pngaaa.com/609/2316609-middle.png","Skull Trooper":"https://image.emojipng.com/824/480824.jpg","Ghoul Trooper":"https://toppng.b-cdn.net/uploads/preview/fortnite-ghoul-trooper-png-image-fortnite-skin-png-ghoul-trooper-11562868400qsn7oxhura.png","Black Knight":"https://e7.pngegg.com/pngimages/782/241/png-clipart-fortnite-knight-character-games-fortnite.png","Sparkle Specialist":"https://purepng.com/public/uploads/large/purepng.com-fortnite-sparkle-specialistfortnitefortnite-battle-royalebattle-royaleepic-gamesgames-1251525436489aihd8.png","IKONIK":"https://www.vhv.rs/dpng/d/415-4158810_fortnite-skin-png-free-download-fortnite-ikonik-png.png","Galaxy":"https://purepng.com/public/uploads/large/fortnite-new-galaxy-skin-gm0.png","Travis Scott":"https://i.pinimg.com/originals/fa/62/c0/fa62c011412542a112618a24187191bb.png","Midas":"https://image.pngaaa.com/725/2792725-middle.png","The Reaper":"https://pngset.com/images/fortnite-the-reaper-costume-suit-overcoat-clothing-person-transparent-png-1431867.png","Recon Expert":"https://image.pngaaa.com/319/2445319-middle.png","Honor Guard":"https://tryhardguides.com/wp-content/uploads/2021/08/honor-guard-featured.png","Wonder":"https://www.vhv.rs/dpng/d/580-5805064_fortnite-wonder-a-fortnite-wonser-sticker-wonder-skin.png","Commando":"https://purepng.com/public/uploads/large/purepng.com-fortnite-commandofortnitefortnite-battle-royalebattle-royaleepic-gamesgames-1251525434582acfns.png","Nog Ops":"https://www.hoyfortnite.com/images/skins/Nog%20Ops_3.png","Assault Trooper":"https://purepng.com/public/uploads/large/purepng.com-fortnite-assault-trooperfortnitefortnite-battle-royalebattle-royaleepic-gamesgames-1251525434020hvofe.png"};
+skins.forEach(s=>{if(!s.image)s.image=imageMap[s.cosmeticName||s.name]||null;});
 const grid=document.getElementById("grid"),bar=document.getElementById("categoryBar"),intro=document.getElementById("categoryIntro"),search=document.getElementById("search");
 let active="All",query="",cosmeticCache=new Map(),renderObserver=null;
 function setCategory(cat){active=cat;search.value="";query="";render()}
@@ -169,8 +199,9 @@ function render(){
   if(!visible.length){grid.innerHTML='<div class="empty">No matching skins. Try another name or category.</div>';return}
   visible.forEach(s=>{
     const card=document.createElement("article");card.className="skinCard";card.tabIndex=0;card.setAttribute("role","button");card.setAttribute("aria-label","View "+s.name+" details");
-    card.innerHTML='<div class="art"><span class="imageStatus">Loading artwork</span><div class="artFallback">'+initials(s.name)+'</div></div><div class="cardBody"><div class="meta"><span class="pill">'+s.cat+'</span><span style="color:#8390a9;font-size:9px">OUTFIT</span></div><h3></h3><p></p><div class="priceLine"><span></span><small>EXAMPLE ACCOUNT PRICE</small></div><div class="viewLine"><span>VIEW DETAILS</span><span>↗</span></div></div>';
-    card.querySelector("h3").textContent=s.name;card.querySelector(".priceLine span").textContent=s.price||"Contact for price";card.querySelector(".cardBody p").textContent=(s.styleLabel?s.styleLabel+" · ":"")+s.tag+" · Tap to view";
+    card.innerHTML='<div class="art"><span class="imageStatus">Loading artwork</span><div class="artFallback">'+initials(s.name)+'</div></div><div class="cardBody"><div class="meta"><span class="pill">'+s.cat+'</span><span style="color:#8390a9;font-size:9px">OUTFIT</span></div><h3></h3><p></p><div class="priceLine"><span></span><small>EXAMPLE ACCOUNT PRICE</small></div><div class="viewLine"><span>VIEW PRODUCT</span><span>↗</span></div><button class="cartAdd" type="button">ADD TO CART</button></div>';
+    card.querySelector("h3").textContent=s.name;card.querySelector(".priceLine span").textContent=s.price||"Contact for price";card.querySelector(".cardBody p").textContent=(s.styleLabel?s.styleLabel+" · ":"")+s.tag+" · Tap for product details";
+    card.querySelector(".cartAdd").addEventListener("click",e=>{e.stopPropagation();addToCart(s)});
     card.addEventListener("click",()=>openDetails(s));
     card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetails(s)}});
     grid.appendChild(card);observeCard(card,s);
@@ -185,8 +216,8 @@ function observeCard(card,skin){
 }
 async function loadRender(name){
   const skin=skins.find(x=>(x.cosmeticName||x.name)===name);
-  if(skin&&skin.image)return {url:skin.image,placeholder:false,meta:null};
-  return {url:null,placeholder:false,meta:null};
+  const url=(skin&&skin.image)||imageMap[name]||null;
+  return {url,placeholder:false,meta:null};
 }
 function setCardImage(card,data){
  if(!card.isConnected)return;
@@ -201,7 +232,8 @@ async function openDetails(s){
  document.getElementById("modalPill").textContent=s.cat==="Comp"?"COMP-STYLE":s.cat.toUpperCase();
  document.getElementById("modalName").textContent=s.name;
  document.getElementById("modalDescription").textContent=s.desc;
- document.getElementById("modalPrice").textContent="Example account price: "+(s.price||"Contact for price")+" — final price depends on verified locker inventory.";
+ document.getElementById("modalPrice").textContent="Price: "+(s.price||"Contact for price")+" — catalogue/example price.";
+ document.getElementById("modalAddToCart").onclick=()=>addToCart(s);
  document.getElementById("modalFact").textContent=(s.styleLabel?"Selected style: "+s.styleLabel+". ":"")+s.fact+" Artwork is a reference image for the selected style. Verify the selectable style in the in-game locker before describing an account as original-owner.";
  const source=document.getElementById("modalSource");source.href=s.url;source.textContent="VIEW REFERENCE ↗";
  art.removeAttribute("src");art.alt=s.name+" full-body Fortnite render";
@@ -217,6 +249,29 @@ document.getElementById("skinModal").addEventListener("click",e=>{if(e.target.id
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
 const heroSkin=skins.find(x=>x.name==="Renegade Raider — Black & Gold")||skins.find(x=>x.name==="Renegade Raider");
 if(heroSkin&&heroSkin.image){const im=document.getElementById("heroArt");im.onload=()=>im.classList.add("loaded");im.src=heroSkin.image;}
+
+let cart=[];
+function numericPrice(s){const m=String(s.price||"").replace(/,/g,"").match(/\$?([0-9]+(?:\.[0-9]{1,2})?)/);return m?Number(m[1]):0}
+function addToCart(s){const existing=cart.find(x=>x.name===s.name);if(existing)existing.qty++;else cart.push({name:s.name,price:s.price,image:s.image||null,qty:1});renderCart();openCart();closeModal()}
+function changeQty(name,delta){const item=cart.find(x=>x.name===name);if(!item)return;item.qty+=delta;if(item.qty<=0)cart=cart.filter(x=>x.name!==name);renderCart()}
+function removeFromCart(name){cart=cart.filter(x=>x.name!==name);renderCart()}
+function renderCart(){
+ const box=document.getElementById("cartItems"),count=document.getElementById("cartCount"),totalEl=document.getElementById("cartTotal");
+ const total=cart.reduce((sum,x)=>sum+numericPrice(x)*x.qty,0);count.textContent=cart.reduce((sum,x)=>sum+x.qty,0);totalEl.textContent="$"+total.toFixed(2);
+ if(!cart.length){box.innerHTML='<div class="cartEmpty">Your cart is empty.<br>Open a product and add it here.</div>';return}
+ box.innerHTML=cart.map(x=>'<div class="cartItem"><div class="cartThumb">'+(x.image?'<img src="'+x.image+'" alt="">':'')+'</div><div><h4>'+escapeHtml(x.name)+'</h4><p>'+escapeHtml(x.price||"Contact for price")+'</p><div class="cartQty"><button onclick="changeQty('+JSON.stringify(x.name)+',-1)">−</button><span>'+x.qty+'</span><button onclick="changeQty('+JSON.stringify(x.name)+',1)">+</button></div></div><div class="cartItemPrice">
+</body>
+</html>+(numericPrice(x)*x.qty).toFixed(2)+'<br><button class="removeBtn" onclick="removeFromCart('+JSON.stringify(x.name)+')">REMOVE</button></div></div>').join("");
+}
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function openCart(){document.getElementById("cartDrawer").classList.add("open");document.getElementById("cartDrawer").setAttribute("aria-hidden","false")}
+function closeCart(){document.getElementById("cartDrawer").classList.remove("open");document.getElementById("cartDrawer").setAttribute("aria-hidden","true")}
+document.getElementById("openCart").addEventListener("click",openCart);
+document.getElementById("closeCart").addEventListener("click",closeCart);
+document.getElementById("cartDrawer").addEventListener("click",e=>{if(e.target.id==="cartDrawer")closeCart()});
+document.getElementById("reviewOrder").addEventListener("click",()=>{if(!cart.length){alert("Your cart is empty.");return}alert("Order review is ready. Payment is not connected in this catalogue build.")});
+renderCart();
+
 render();
 </script>
 </body>
