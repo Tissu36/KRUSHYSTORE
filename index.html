@@ -178,7 +178,8 @@ function render(){
   document.getElementById("skinCount").textContent=skins.length;
 }
 function observeCard(card,skin){
-  if(!("IntersectionObserver" in window)){loadRender(skin).then(d=>setCardImage(card,d));return}
+  if(skin.image){setCardImage(card,{url:skin.image});return}
+  if(!("IntersectionObserver" in window)){loadRender(skin.cosmeticName||skin.name).then(d=>setCardImage(card,d));return}
   if(!renderObserver)renderObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const c=entry.target;renderObserver.unobserve(c);loadRender(skin.cosmeticName||c.dataset.skin).then(d=>setCardImage(c,d))}})},{rootMargin:"240px"});
   card.dataset.skin=skin.name;renderObserver.observe(card);
 }
@@ -205,14 +206,15 @@ async function openDetails(s){
  const modal=document.getElementById("skinModal"),art=document.getElementById("modalArt");
  document.getElementById("modalPill").textContent=s.cat==="Comp"?"COMP-STYLE":s.cat.toUpperCase();
  document.getElementById("modalName").textContent=s.name;
- document.getElementById("modalDescription").textContent=s.desc;\n document.getElementById("modalPrice").textContent="Example account price: "+(s.price||"Contact for price")+" — final price depends on verified locker inventory.";
+ document.getElementById("modalDescription").textContent=s.desc;
+ document.getElementById("modalPrice").textContent="Example account price: "+(s.price||"Contact for price")+" — final price depends on verified locker inventory.";
  document.getElementById("modalFact").textContent=(s.styleLabel?"Selected style: "+s.styleLabel+". ":"")+s.fact+" Artwork is a reference image for the selected style. Verify the selectable style in the in-game locker before describing an account as original-owner.";
  const source=document.getElementById("modalSource");source.href=s.url;source.textContent="VIEW REFERENCE ↗";
  art.removeAttribute("src");art.alt=s.name+" full-body Fortnite render";
  modal.classList.add("open");document.body.style.overflow="hidden";
- const data=await loadRender(s.cosmeticName||s.name);
+ const data=s.image?{url:s.image}:await loadRender(s.cosmeticName||s.name);
  if(data&&data.url&&!data.placeholder)art.src=data.url;
- else art.alt=s.name+" render is not available from the cosmetic API";
+ else art.alt=s.name+" artwork is not available yet";
 }
 function closeModal(){document.getElementById("skinModal").classList.remove("open");document.body.style.overflow=""}
 document.getElementById("closeModal").addEventListener("click",closeModal);
