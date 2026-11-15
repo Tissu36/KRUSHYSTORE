@@ -184,17 +184,9 @@ function observeCard(card,skin){
   card.dataset.skin=skin.name;card.dataset.renderName=skin.cosmeticName||skin.name;renderObserver.observe(card);
 }
 async function loadRender(name){
- if(cosmeticCache.has(name))return cosmeticCache.get(name);
- const promise=(async()=>{
-  try{
-   const response=await fetch("https://prod.fn-api.cc/v1/cosmetics/br/"+encodeURIComponent(name));
-   if(!response.ok)throw new Error("Cosmetic API returned "+response.status);
-   const json=await response.json(),item=json.data||json;
-   const images=item.images||{};
-   return {url:images.render||images.featured||images.icon||null,placeholder:!!images.placeholder,meta:item};
-  }catch(err){return {url:null,placeholder:false,meta:null}}
- })();
- cosmeticCache.set(name,promise);return promise;
+  const skin=skins.find(x=>(x.cosmeticName||x.name)===name);
+  if(skin&&skin.image)return {url:skin.image,placeholder:false,meta:null};
+  return {url:null,placeholder:false,meta:null};
 }
 function setCardImage(card,data){
  if(!card.isConnected)return;
@@ -223,7 +215,8 @@ function closeModal(){modalRequest++;document.getElementById("skinModal").classL
 document.getElementById("closeModal").addEventListener("click",closeModal);
 document.getElementById("skinModal").addEventListener("click",e=>{if(e.target.id==="skinModal")closeModal()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
-loadRender("Renegade Raider").then(d=>{if(d.url&&!d.placeholder){const im=document.getElementById("heroArt");im.onload=()=>im.classList.add("loaded");im.src=d.url}});
+const heroSkin=skins.find(x=>x.name==="Renegade Raider — Black & Gold")||skins.find(x=>x.name==="Renegade Raider");
+if(heroSkin&&heroSkin.image){const im=document.getElementById("heroArt");im.onload=()=>im.classList.add("loaded");im.src=heroSkin.image;}
 render();
 </script>
 </body>
