@@ -105,12 +105,15 @@ header{height:86px;border-bottom-color:#ff8ac31f}.brand{font-size:20px;letter-sp
 .itemType{display:block;padding:0 9px 9px;color:#ff9bc9;font-size:9px;text-transform:uppercase;letter-spacing:.8px;font-weight:800}
 @media(max-width:700px){.detailHero{grid-template-columns:1fr!important}.featuredRender{height:260px!important}.itemGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.detailStats{grid-template-columns:repeat(3,1fr)!important}.buyNow{width:100%}.detailContent{padding:14px!important}}
 
+
+/* Full account detail is a replacement page, never a popup overlay */
+.detailPage{min-height:100dvh;width:100%;background:#080910;color:#f7f4fb}.detailPage[hidden]{display:none!important}.detailPageHeader{height:66px;padding:0 clamp(16px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #ffffff18;background:#0c0d16}.detailPageHeader>span{font-weight:1000;letter-spacing:1.5px}.detailPageHeader em{font-style:normal;color:#ff4fa3}.backStore{border:1px solid #ffffff25;background:#ffffff0b;color:#fff;border-radius:10px;padding:11px 15px;font-size:11px;font-weight:850;letter-spacing:.7px;cursor:pointer}.detailPageContent{width:min(1320px,100%);margin:0 auto;padding:clamp(16px,3vw,34px)!important}.detailPage .detailHero{grid-template-columns:minmax(180px,300px) minmax(0,1fr);gap:clamp(18px,3vw,36px)}.detailPage .featuredRender{height:clamp(230px,30vw,390px)}.detailPage .itemGrid{grid-template-columns:repeat(auto-fill,minmax(145px,1fr))}.detailPage .lockerItem .itemArt{height:clamp(110px,13vw,170px)}@media(max-width:650px){.detailPage .detailHero{grid-template-columns:1fr!important}.detailPage .featuredRender{height:290px!important}.detailPage .itemGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.detailPage .lockerItem .itemArt{height:125px}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
-<a class="brand" href="#"><span class="mark"><img id="brandSkin" alt="Pink Ghoul Trooper" src="https://fortnite-api.com/images/cosmetics/br/cid_029_athena_commando_f_halloween/icon.png" /></span><span>KRUSHY<em>STORE</em></span></a>
+<a class="brand" href="#"><span class="mark"><img id="brandSkin" alt="Pink Ghoul Trooper — Pink style" src="https://fortnite-api.com/images/cosmetics/br/cid_029_athena_commando_f_halloween/variants/material/mat3.png" style="width:100%;height:100%;object-fit:contain;border-radius:10px" /></span><span>KRUSHY<em>STORE</em></span></a>
 <nav class="nav"><a href="#categories">CATEGORIES</a><a href="#catalogue">MARKET</a><a href="#about">ABOUT</a><button class="cart" id="cartBtn">Cart <span id="cartCount">0</span></button></nav>
 </header>
 <main>
@@ -156,7 +159,7 @@ header{height:86px;border-bottom-color:#ff8ac31f}.brand{font-size:20px;letter-sp
 </main>
 <footer><div class="footerRow"><div><strong style="color:#e8eaf4;letter-spacing:1px">KRUSHYSTORE</strong><br>Fortnite account catalogue concept.</div><div class="notice">Independent fan-made storefront. Not affiliated with or endorsed by Epic Games.</div></div></footer>
 </div>
-<div class="modalOverlay" id="detailOverlay" role="dialog" aria-modal="true" aria-labelledby="detailTitle"><div class="detailModal"><div class="detailHeader"><h2 id="detailTitle">Locker preview</h2><button class="x" id="closeDetail" aria-label="Close">×</button></div><div class="detailContent" id="detailContent"></div></div></div>
+<div id="detailPage" class="detailPage" hidden><div class="detailPageHeader"><button class="backStore" id="closeDetail" type="button">← BACK TO STORE</button><span>KRUSHY<em>STORE</em></span></div><div class="detailContent detailPageContent" id="detailContent"></div></div>
 <script>
 const grid=document.getElementById('listingGrid'),search=document.getElementById('search'),count=document.getElementById('resultCount');
 let active='All',query='',allCosmetics=[],demoAccounts=[],apiLoaded=false;
@@ -232,21 +235,19 @@ function setCategory(cat){active=cat;document.querySelectorAll('[data-filter]').
 document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.filter)));
 document.querySelectorAll('[data-cat]').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.cat)));
 search.addEventListener('input',e=>{query=e.target.value.trim();render()});
-const overlay=document.getElementById('detailOverlay');
+const detailPage=document.getElementById('detailPage'),storeWrap=document.querySelector('.wrap');
 function openDetail(id){
  const a=demoAccounts.find(x=>x.id===id);if(!a)return;
  const featured=a.featured,price=SAMPLE_PRICES[a.category]||'Price not set';
- document.getElementById('detailTitle').textContent=a.title;
  const typeLabel=x=>({outfit:'Outfit',backpack:'Back Bling',pickaxe:'Pickaxe',glider:'Glider',emote:'Emote',wrap:'Wrap',loadingscreen:'Loading Screen',music:'Music'}[itemType(x)]||((x.type&&x.type.displayValue)||'Cosmetic'));
  document.getElementById('detailContent').innerHTML=
  '<div class="detailHero '+(a.category==='OG'?'ogTheme':'')+'"><div class="featuredRender">'+(imageOf(featured)?'<img src="'+escapeHtml(imageOf(featured))+'" alt="'+escapeHtml(featured.name)+'">':'<span>No render available</span>')+'</div><div><div class="eyebrow">'+escapeHtml(BADGES[a.category]||a.category)+' • SAMPLE LISTING</div><h2 style="margin:8px 0">'+escapeHtml(a.title)+'</h2><p style="font-size:14px;color:#d2b9c8;line-height:1.7">Explore this example locker featuring '+escapeHtml(featured?featured.name:'Fortnite cosmetics')+' and a mix of outfits, back blings, pickaxes, gliders and emotes. This is a catalogue mockup, not a verified account or confirmed inventory.</p><div class="detailStats"><div class="detailStat"><b>'+a.locker.filter(x=>itemType(x)==='outfit').length+'</b><small>Outfits</small></div><div class="detailStat"><b>'+a.locker.length+'</b><small>Cosmetic items</small></div><div class="detailStat"><b>'+escapeHtml(price)+'</b><small>Sample price</small></div></div><div class="buyPanel"><div><div class="priceNote">Example asking price</div><div class="buyPrice">'+escapeHtml(price)+'</div></div><button class="buyNow" id="buyNowBtn" type="button">BUY NOW ↗</button><div class="buyNote">Demo listing only — checkout is not enabled until a real account is added and verified.</div></div></div></div>'+(a.passItems&&a.passItems.length?'<div class="passBanner"><b>BLACK KNIGHT • CHAPTER 1 SEASON 2</b><span>'+a.passItems.length+' cosmetics matched to the same season. The public cosmetic catalogue does not expose a verified complete historic reward list, so this is a season-matched collection, not a confirmed full Battle Pass checklist.</span></div>':'')+'<div class="lockerSection"><div class="sectionHead"><div><div class="eyebrow">FULL COSMETIC PREVIEW</div><h2 style="font-size:clamp(22px,3vw,30px)">Locker contents <span style="color:#ff8fc2">('+a.locker.length+')</span></h2><p>Real cosmetic names and artwork from the live cosmetic catalogue. This is not proof of account ownership.</p></div></div><div class="itemGrid">'+a.locker.map(x=>'<div class="lockerItem"><div class="itemArt">'+(imageOf(x)?'<img loading="lazy" src="'+escapeHtml(imageOf(x))+'" alt="'+escapeHtml(x.name)+'">':'<span>Image unavailable</span>')+'</div><div class="itemName">'+escapeHtml(x.name)+'</div><span class="itemType">'+escapeHtml(typeLabel(x))+'</span></div>').join('')+'</div></div><div class="apiStatus">Sample catalogue preview • cosmetics are not verified as belonging to a real account.</div>';
  document.getElementById('buyNowBtn').addEventListener('click',()=>alert('This is a sample listing. Checkout will be enabled when a genuine account and confirmed inventory are added.'));
- overlay.classList.add('open');document.body.style.overflow='hidden';
+ storeWrap.style.display='none';detailPage.hidden=false;window.scrollTo(0,0);document.body.style.overflow='auto';
 }
-function closeDetail(){overlay.classList.remove('open');document.body.style.overflow=''}
+function closeDetail(){detailPage.hidden=true;storeWrap.style.display='';window.scrollTo(0,0);document.body.style.overflow=''}
 document.getElementById('closeDetail').addEventListener('click',closeDetail);
-overlay.addEventListener('click',e=>{if(e.target===overlay)closeDetail()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDetail()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!detailPage.hidden)closeDetail()});
 document.getElementById('cartBtn').addEventListener('click',()=>{alert('These are sample category prices only. No real account listings are available to purchase yet.')});
 async function loadCosmetics(){
  count.textContent='Loading cosmetic catalogue…';
