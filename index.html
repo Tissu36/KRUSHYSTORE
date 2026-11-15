@@ -1,8 +1,221 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KrushyStore</title><style>*{box-sizing:border-box}body{margin:0;background:#08080d;color:#fff;font-family:Arial,sans-serif}.wrap{max-width:1200px;margin:auto;padding:24px}header{display:flex;justify-content:space-between;align-items:center;padding:14px 0}.logo{font-weight:900;letter-spacing:2px;font-size:24px}.logo span{color:#9b5cff}.hero{min-height:390px;border:1px solid #292938;border-radius:28px;padding:46px;display:flex;align-items:center;background:radial-gradient(circle at 80% 20%,#54218c55,transparent 40%),linear-gradient(135deg,#11111b,#09090e)}.heroText{max-width:620px}.eyebrow{color:#a873ff;font-weight:900;letter-spacing:2px;font-size:12px}h1{font-size:clamp(44px,8vw,78px);line-height:.9;margin:14px 0}p{color:#b9b9c7;line-height:1.6}.cta{display:inline-block;margin-top:10px;padding:13px 20px;border-radius:12px;background:#fff;color:#09090e;font-weight:900}.filters{display:flex;gap:9px;overflow:auto;padding:24px 0}.filters button{white-space:nowrap;border:0;border-radius:999px;padding:10px 16px;background:#171722;color:#fff}.filters .active,.filters button:hover{background:linear-gradient(135deg,#7d35ff,#25a7ff)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.card{background:#101019;border:1px solid #292938;border-radius:20px;overflow:hidden}.art{height:260px;background:linear-gradient(135deg,#171722,#25253a);display:flex;align-items:center;justify-content:center;overflow:hidden}.art img{width:100%;height:100%;object-fit:cover}.fallback{font-size:54px;font-weight:900;color:#8b5cf6}.info{padding:15px}.tag{font-size:10px;letter-spacing:1.5px;color:#a873ff;font-weight:900;text-transform:uppercase}.name{font-size:18px;font-weight:900;margin:6px 0}.sub{color:#888898;font-size:12px}.notice{margin-top:20px;padding:14px;border:1px solid #2c2c3a;border-radius:14px;color:#8f8f9f;font-size:11px}footer{text-align:center;color:#666675;padding:36px 0;font-size:11px}</style></head><body><div class="wrap"><header><div class="logo">KRUSHY<span>STORE</span></div><div>Fortnite Account Catalog</div></header><section class="hero"><div class="heroText"><div class="eyebrow">KRUSHYSTORE • ACCOUNT CATALOG</div><h1>Find your next locker.</h1><p>Browse OG, competitive, stacked, rare, exclusive, NFA and starter categories with Fortnite cosmetic examples.</p><a class="cta" href="#catalog">Browse accounts</a></div></section><div class="filters" id="filters"></div><section id="catalog" class="grid"></section><div class="notice">Cosmetic names and artwork belong to their respective rights holders. Account transfers may be restricted by Epic Games' Terms of Service.</div><footer>© KrushyStore</footer></div><script>
-const data=[["Competitive","Focus"],["Competitive","Aura"],["Competitive","Siren"],["Competitive","Crystal"],["Competitive","Elite Agent"],["OG","Renegade Raider"],["OG","Black Knight"],["OG","Sparkle Specialist"],["OG","Aerial Assault Trooper"],["OG","Skull Trooper"],["Stacked","IKONIK"],["Stacked","Travis Scott"],["Stacked","Galaxy"],["Stacked","The Reaper"],["Stacked","Midas"],["Rare","Renegade Raider"],["Rare","Aerial Assault Trooper"],["Rare","Black Knight"],["Rare","Ghoul Trooper"],["Rare","Pink Ghoul Trooper"],["Exclusive","IKONIK"],["Exclusive","Galaxy"],["Exclusive","Travis Scott"],["Exclusive","Wonder"],["Exclusive","Honor Guard"],["NFA","Aura"],["NFA","Siren"],["NFA","Focus"],["NFA","Crystal"],["NFA","Elite Agent"],["Starter","Aura"],["Starter","Commando"],["Starter","Nog Ops"],["Starter","Assault Trooper"],["Starter","Dynamo"]];
-const filters=["All","OG","Competitive","Stacked","Rare","Exclusive","NFA","Starter"],f=document.getElementById("filters"),g=document.getElementById("catalog");
-filters.forEach((x,i)=>{let b=document.createElement("button");b.textContent=x;b.className=i?"":"active";b.onclick=()=>render(x);f.appendChild(b)});
-function render(filter="All"){g.innerHTML="";data.filter(x=>filter==="All"||x[0]===filter).forEach(([cat,name])=>{let c=document.createElement("article");c.className="card";c.innerHTML='<div class="art"><div class="fallback">'+name.split(" ").map(x=>x[0]).join("").slice(0,2)+'</div></div><div class="info"><div class="tag">'+cat+' Account</div><div class="name">'+name+'</div><div class="sub">Cosmetic example • KrushyStore</div></div>';g.appendChild(c);loadImage(c,name)});document.querySelectorAll(".filters button").forEach(b=>b.classList.toggle("active",b.textContent===filter))}
-async function loadImage(card,name){try{let r=await fetch("https://prod.fn-api.cc/v1/cosmetics/br/"+encodeURIComponent(name));if(!r.ok)return;let d=await r.json(),u=d?.data?.images?.icon||d?.data?.images?.featured||d?.images?.icon||d?.images?.featured;if(u){let im=new Image();im.onload=()=>{card.querySelector(".art").innerHTML="";card.querySelector(".art").appendChild(im)};im.src=u}}catch(e){}}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080a12">
+<title>KrushyStore — Fortnite Locker Gallery</title>
+<style>
+:root{--bg:#080a12;--panel:#101421;--panel2:#141b2c;--line:#27314a;--text:#f7f8ff;--muted:#9da8be;--purple:#9b6dff;--blue:#56c7ff;--gold:#f0c66a}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% -10%,#24315a66,transparent 34%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+button,input{font:inherit}a{color:inherit;text-decoration:none}.shell{width:min(1320px,calc(100% - 36px));margin:auto}
+header{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12}
+.brand{display:flex;align-items:center;gap:10px;font-weight:1000;letter-spacing:1.7px;font-size:20px}.brandMark{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(140deg,#8c52ff,#35baff);box-shadow:0 7px 24px #794fff55;font-size:16px}.brand span:last-child{color:#a981ff}
+.topLinks{display:flex;align-items:center;gap:22px;color:#b9c2d5;font-size:13px}.topLinks a:hover{color:#fff}
+.headerBtn,.primaryBtn{border:0;border-radius:12px;padding:12px 17px;font-weight:850;color:#fff;background:linear-gradient(120deg,#794bff,#287dca);cursor:pointer;box-shadow:0 10px 26px #5639bd30}
+.hero{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:center;min-height:440px;margin:28px 0 24px;padding:45px 48px;border:1px solid #ffffff17;border-radius:28px;overflow:hidden;background:linear-gradient(115deg,#111728 0%,#111525 52%,#1a1c37 100%)}
+.hero:before{content:"";position:absolute;width:520px;height:520px;right:7%;top:-36%;border-radius:50%;background:radial-gradient(circle,#6550dc55 0%,#3d75cb20 45%,transparent 70%);pointer-events:none}
+.eyebrow{color:#b99aff;text-transform:uppercase;letter-spacing:2.4px;font-size:11px;font-weight:950}
+h1{font-size:clamp(42px,6vw,76px);line-height:.94;letter-spacing:-3px;margin:17px 0 15px;max-width:650px}
+.hero p{color:#b4bfd2;max-width:540px;line-height:1.7;margin:0 0 22px;font-size:15px}
+.heroActions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.ghostBtn{border:1px solid #ffffff26;background:#ffffff08;border-radius:12px;padding:12px 17px;color:#e7ecfa;font-weight:800;cursor:pointer}
+.heroArtWrap{height:345px;position:relative;display:flex;align-items:center;justify-content:center;z-index:1}
+.heroHalo{position:absolute;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,#9c78ff55,transparent 68%);filter:blur(14px)}
+#heroArt{position:relative;z-index:2;height:100%;width:100%;object-fit:contain;filter:drop-shadow(0 22px 35px #000b);opacity:0;transition:opacity .5s}
+#heroArt.loaded{opacity:1}
+.heroRenderLabel{position:absolute;bottom:4px;right:12px;z-index:3;padding:8px 11px;border:1px solid #ffffff22;background:#0b1020bb;border-radius:9px;color:#cdd6e8;font-size:10px;letter-spacing:1px;text-transform:uppercase}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 42px}
+.stat{border:1px solid #ffffff12;background:#0e1320;border-radius:16px;padding:16px 18px}.stat b{display:block;font-size:19px}.stat span{color:var(--muted);font-size:11px;letter-spacing:.6px}
+.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:18px;margin:26px 0 15px}.sectionHead h2{font-size:28px;letter-spacing:-.8px;margin:0}.sectionHead p{color:var(--muted);margin:6px 0 0;font-size:13px}
+.search{width:min(290px,100%);border:1px solid #ffffff1b;background:#111827;color:#fff;border-radius:12px;padding:12px 14px;outline:none}.search:focus{border-color:#8b68f5;box-shadow:0 0 0 3px #8b68f522}
+.categoryBar{display:flex;gap:9px;overflow:auto;padding:5px 0 16px;scrollbar-width:thin}
+.categoryBar button{white-space:nowrap;border:1px solid #ffffff19;background:#111725;color:#bcc6d9;border-radius:999px;padding:10px 15px;font-size:12px;font-weight:850;cursor:pointer;transition:.18s}
+.categoryBar button:hover{border-color:#a077ff;color:white}.categoryBar button.active{border-color:transparent;background:linear-gradient(115deg,#794bff,#248fd3);color:white;box-shadow:0 7px 20px #5538af33}
+.categoryIntro{border:1px solid #ffffff12;background:linear-gradient(120deg,#111827,#111525);padding:15px 17px;border-radius:14px;color:#aeb9ce;font-size:12px;line-height:1.55;margin-bottom:17px}.categoryIntro strong{color:#fff}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.skinCard{min-width:0;overflow:hidden;border:1px solid #ffffff15;background:linear-gradient(180deg,#151c2c,#0f1420);border-radius:19px;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;outline:none}
+.skinCard:hover,.skinCard:focus-visible{transform:translateY(-4px);border-color:#8e6dff99;box-shadow:0 16px 34px #0005}
+.art{height:292px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#46507865 0%,#1c2943 43%,#101522 80%)}
+.art:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 65%,#111724 100%);pointer-events:none}
+.art img{width:100%;height:100%;object-fit:contain;object-position:center bottom;padding:12px 10px 0;position:relative;z-index:1;filter:drop-shadow(0 12px 16px #0007);transition:transform .25s}
+.skinCard:hover .art img{transform:scale(1.04)}
+.imageStatus{position:absolute;z-index:2;top:12px;left:12px;border:1px solid #ffffff1e;background:#080d1bcc;padding:6px 8px;border-radius:7px;color:#d1d8e7;font-size:9px;text-transform:uppercase;letter-spacing:1px}
+.artFallback{display:none;align-items:center;justify-content:center;position:absolute;inset:0;color:#b8a3ff;font-size:56px;font-weight:1000;letter-spacing:-3px;background:radial-gradient(circle,#3e3566,#141b2b 65%)}
+.cardBody{padding:14px 15px 15px}.meta{display:flex;justify-content:space-between;align-items:center;gap:8px}.pill{font-size:9px;font-weight:950;letter-spacing:1px;text-transform:uppercase;color:#c5aaff;background:#7951dc21;border:1px solid #9b75f744;border-radius:6px;padding:5px 7px}
+.cardBody h3{font-size:17px;margin:10px 0 5px;letter-spacing:-.2px}.cardBody p{font-size:11px;line-height:1.45;color:#9da8be;margin:0;min-height:31px}
+.viewLine{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:11px;border-top:1px solid #ffffff12;color:#c8d2e7;font-size:10px;font-weight:900;letter-spacing:.9px}.viewLine span:last-child{color:#aa8bff;font-size:17px}
+.empty{grid-column:1/-1;text-align:center;padding:55px 20px;color:var(--muted);border:1px dashed #ffffff22;border-radius:18px}
+.researchNotes{margin:40px 0 18px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.note{border:1px solid #ffffff12;background:#0e1421;padding:16px;border-radius:15px}.note b{font-size:13px}.note p{font-size:11px;color:#9da8be;line-height:1.55;margin:7px 0 0}
+footer{padding:34px 0 42px;border-top:1px solid #ffffff12;margin-top:35px;color:#7e8aa3;font-size:10px;line-height:1.7}footer a{color:#b9a0ff;text-decoration:underline}
+.modal{display:none;position:fixed;inset:0;z-index:50;padding:18px;background:#02040bd9;backdrop-filter:blur(12px);align-items:center;justify-content:center}.modal.open{display:flex}
+.modalPanel{width:min(900px,100%);max-height:min(92vh,900px);overflow:auto;display:grid;grid-template-columns:1fr 1fr;border:1px solid #ffffff24;border-radius:23px;background:#111827;box-shadow:0 35px 100px #000b;position:relative}
+.modalArt{min-height:490px;background:radial-gradient(ellipse at 50% 35%,#55518c77,#1a2740 60%,#101522);display:flex;align-items:center;justify-content:center;overflow:hidden}.modalArt img{width:100%;height:100%;max-height:610px;object-fit:contain;padding:20px;filter:drop-shadow(0 20px 30px #0008)}
+.modalCopy{padding:42px 32px 30px;display:flex;flex-direction:column;align-items:flex-start}.modalCopy h2{font-size:36px;line-height:1.05;margin:14px 0 12px;letter-spacing:-1.5px}.modalCopy p{font-size:13px;line-height:1.7;color:#b3bfd2}.factBox{margin:10px 0 18px;padding:14px;border-radius:12px;background:#ffffff08;border:1px solid #ffffff15;color:#d1d9e9;font-size:12px;line-height:1.6}.sourceLink{display:inline-block;color:#b79cff;font-size:11px;font-weight:900;text-decoration:underline;margin-top:auto;padding-top:15px}
+.close{position:absolute;top:12px;right:12px;z-index:5;width:38px;height:38px;border:1px solid #ffffff27;border-radius:50%;background:#0a1020;color:white;font-size:20px;cursor:pointer}
+@media(max-width:950px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.hero{padding:32px;min-height:390px}.heroArtWrap{height:300px}}
+@media(max-width:680px){.shell{width:min(100% - 24px,560px)}header{height:68px}.topLinks{gap:12px;font-size:11px}.topLinks a:nth-child(2){display:none}.brand{font-size:17px}.brandMark{width:30px;height:30px}.hero{grid-template-columns:1fr;gap:0;padding:27px 23px 16px;margin-top:16px;min-height:unset}.heroText{position:relative;z-index:2}.heroArtWrap{height:245px;margin-top:-3px}.heroRenderLabel{right:0;bottom:0}h1{font-size:49px;letter-spacing:-2px}.hero p{font-size:13px}.stats{gap:8px;margin-bottom:30px}.stat{padding:12px}.stat b{font-size:16px}.stat span{font-size:9px}.sectionHead{align-items:stretch;flex-direction:column}.sectionHead h2{font-size:25px}.search{width:100%}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.art{height:230px}.cardBody{padding:12px}.cardBody h3{font-size:15px}.cardBody p{font-size:10px;min-height:43px}.researchNotes{grid-template-columns:1fr}.modalPanel{grid-template-columns:1fr;max-height:94vh}.modalArt{min-height:280px;height:38vh}.modalArt img{max-height:38vh}.modalCopy{padding:25px 23px}.modalCopy h2{font-size:30px}.close{top:9px;right:9px}}
+@media(max-width:380px){.grid{grid-template-columns:1fr}.art{height:290px}.topLinks a:first-child{display:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header>
+  <a class="brand" href="#" aria-label="KrushyStore home"><span class="brandMark">K</span><span>KRUSHY<span>STORE</span></span></a>
+  <nav class="topLinks"><a href="#gallery">SKIN GALLERY</a><a href="#research">CATEGORY GUIDE</a><button class="headerBtn" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">Explore skins ↗</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div class="heroText">
+    <div class="eyebrow">THE KRUSHYSTORE LOCKER ARCHIVE</div>
+    <h1>See the skin.<br>Know the story.</h1>
+    <p>Explore competitive favourites, Chapter 1 classics, standout lockers and device-promo cosmetics. Tap any skin to open its full-size character render and background notes.</p>
+    <div class="heroActions"><button class="primaryBtn" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">Explore the gallery ↘</button><button class="ghostBtn" onclick="setCategory('OG')">See OG classics</button></div>
+  </div>
+  <div class="heroArtWrap"><div class="heroHalo"></div><img id="heroArt" alt="Renegade Raider full character render"><div class="heroRenderLabel">Featured • OG Archive</div></div>
+</section>
+<div class="stats">
+  <div class="stat"><b id="skinCount">30+</b><span>CURATED COSMETIC PICKS</span></div>
+  <div class="stat"><b>FULL BODY</b><span>HIGH-RES CHARACTER ART</span></div>
+  <div class="stat"><b>CLICK TO VIEW</b><span>DETAILS ON EVERY SKIN</span></div>
+</div>
+<section id="gallery">
+  <div class="sectionHead"><div><div class="eyebrow">BROWSE THE COLLECTION</div><h2>Skin gallery</h2><p>Choose a category or search for a specific outfit.</p></div><input class="search" id="search" type="search" placeholder="Search skins…" aria-label="Search skins"></div>
+  <div class="categoryBar" id="categoryBar"></div>
+  <div class="categoryIntro" id="categoryIntro"><strong>All collections.</strong> Browse a curated mix of competitive-style picks, early-season outfits, promo cosmetics and locker favourites. Tap a card for a larger view.</div>
+  <div class="grid" id="grid" aria-live="polite"></div>
+</section>
+<section id="research" class="researchNotes">
+  <article class="note"><b>Competitive / comp-style</b><p>Community-style picks such as Aura, Focus, Siren and Crystal. “Comp” is a community label, not an official Epic rarity or tournament category.</p></article>
+  <article class="note"><b>OG / early-season</b><p>Some early outfits later returned. For Renegade Raider and Aerial Assault Trooper, the Black &amp; Gold style is the 2017-owner distinction; Skull Trooper’s Purple Glow and Ghoul Trooper’s Pink style are also original-owner styles.</p></article>
+  <article class="note"><b>Rare / exclusive</b><p>Here, “rare” refers to history or a limited unlock route, not the in-game colour tier. Shop rotations and availability can change, so check the item’s current status before relying on a rarity label.</p></article>
+</section>
+</main>
+<footer>
+  KrushyStore is an independent fan-made catalogue and is not affiliated with, endorsed by, or sponsored by Epic Games. Fortnite, its cosmetics and related marks belong to their respective owners. Cosmetic access and account transfers are subject to Epic Games’ terms. Character renders are requested from the FN Api service; the site uses full-body render artwork where the API provides it. <br>
+  Research references: <a href="https://fn-api.cc/docs" target="_blank" rel="noopener">FN Api render documentation</a> · <a href="https://news.samsung.com/us/samsung-brings-k-pop-to-fortnite-with-exclusive-ikonik-outfit-for-galaxy-s10-players/" target="_blank" rel="noopener">Samsung iKONIK announcement</a> · <a href="https://news.samsung.com/us/starting-now-galaxy-users-have-advance-access-to-fortnite-beta-on-android/" target="_blank" rel="noopener">Samsung Galaxy promotion</a> · <a href="https://metammo.com/guides/fortnite-og-skins-still-exclusive-2026" target="_blank" rel="noopener">OG skin style history</a>
+</footer>
+</div>
+<div class="modal" id="skinModal" role="dialog" aria-modal="true" aria-labelledby="modalName">
+  <div class="modalPanel">
+    <button class="close" id="closeModal" aria-label="Close details">×</button>
+    <div class="modalArt"><img id="modalArt" alt=""></div>
+    <div class="modalCopy"><span class="pill" id="modalPill">OUTFIT</span><h2 id="modalName"></h2><p id="modalDescription"></p><div class="factBox" id="modalFact"></div><a class="sourceLink" id="modalSource" target="_blank" rel="noopener">VIEW REFERENCE ↗</a></div>
+  </div>
+</div>
+<script>
+const skins=[
+{cat:"Comp",name:"Aura",tag:"Community favourite",desc:"A frequently seen community pick in competitive-style locker lineups. This is a style preference, not an official tournament-exclusive outfit.",fact:"Comp context: community favourite / Item Shop outfit.",url:"https://fortnite.fandom.com/wiki/Aura"},
+{cat:"Comp",name:"Focus",tag:"Clean look",desc:"A sleek outfit often included in competitive-style cosmetic lineups. Focus was added in v9.30 and first released on July 12, 2019.",fact:"Release: July 12, 2019 · Set: Focal Point · First added: v9.30.",url:"https://fortnite.fandom.com/wiki/Focus"},
+{cat:"Comp",name:"Siren",tag:"Comp-style pick",desc:"A popular outfit in clean, understated competitive-style combinations. The Comp label here describes community taste, not a special unlock.",fact:"Comp context: community-style pick; not a tournament reward.",url:"https://fortnite.fandom.com/wiki/Siren"},
+{cat:"Comp",name:"Crystal",tag:"Comp-style pick",desc:"A lightweight-looking outfit that appears in many player-made competitive-style locker lists. It is included as a community pick.",fact:"Comp context: community-style pick; not a tournament reward.",url:"https://fortnite.fandom.com/wiki/Crystal"},
+{cat:"Comp",name:"Elite Agent",tag:"Classic tryhard pick",desc:"A Season 3 Battle Pass outfit with a helmet / no-helmet style option. A classic dark tactical look that also fits competitive-style collections.",fact:"Chapter 1, Season 3 Battle Pass · Tier 87 · Released February 22, 2018.",url:"https://fortnite.fandom.com/wiki/Elite_Agent"},
+{cat:"Comp",name:"Dynamo",tag:"Comp-style pick",desc:"A bold wrestling-inspired outfit often chosen for competitive-style locker combinations. The category is a community style grouping.",fact:"Comp context: popular style choice; not an official competitive classification.",url:"https://fortnite.fandom.com/wiki/Dynamo"},
+{cat:"OG",name:"Renegade Raider",tag:"Season 1 classic",desc:"One of the original Season 1 Season Shop outfits. It returned in the OG Season Shop; the Black & Gold style is the distinguishing style for players who owned it in 2017.",fact:"OG detail: Black & Gold style is tied to original 2017 owners; the base outfit later returned.",url:"https://metammo.com/guides/fortnite-og-skins-still-exclusive-2026"},
+{cat:"OG",name:"Aerial Assault Trooper",tag:"Season 1 classic",desc:"A Season 1 Season Shop outfit that also returned through the OG Season Shop. Its Black & Gold style is the original-owner distinction.",fact:"OG detail: Black & Gold style is tied to original 2017 owners; the base outfit later returned.",url:"https://metammo.com/guides/fortnite-og-skins-still-exclusive-2026"},
+{cat:"OG",name:"Black Knight",tag:"Season 2 Battle Pass",desc:"The iconic final-tier knight outfit from Fortnite Chapter 1, Season 2. It is one of the defining early Battle Pass cosmetics.",fact:"Chapter 1, Season 2 Battle Pass · Tier 70 reward.",url:"https://fortnite.fandom.com/wiki/Black_Knight"},
+{cat:"OG",name:"Skull Trooper",tag:"Season 1 Halloween",desc:"The original Halloween skeleton outfit. The Purple Glow style is reserved for players who bought Skull Trooper in 2017; the base outfit has returned in later years.",fact:"OG detail: Purple Glow style is for original 2017 owners.",url:"https://fortnite.fandom.com/wiki/Skull_Trooper"},
+{cat:"OG",name:"Ghoul Trooper",tag:"Season 1 Halloween",desc:"A classic Halloween outfit introduced alongside Skull Trooper. The Pink style is the original 2017-owner distinction.",fact:"OG detail: Pink style is for original 2017 owners.",url:"https://fortnite.fandom.com/wiki/Ghoul_Trooper"},
+{cat:"OG",name:"Sparkle Specialist",tag:"Chapter 1 classic",desc:"A memorable early Battle Pass outfit from Fortnite’s first chapter and a familiar pick in OG-themed locker collections.",fact:"Early Chapter 1 Battle Pass outfit; not an Item Shop cosmetic.",url:"https://fortnite.fandom.com/wiki/Sparkle_Specialist"},
+{cat:"Stacked",name:"Travis Scott",tag:"Icon Series",desc:"An Icon Series collaboration outfit from Chapter 2, Season 2. Its original Item Shop appearance ran for six days, from April 22 to 27, 2020.",fact:"Introduced: Chapter 2, Season 2 · Item Shop run: April 22–27, 2020 (six days).",url:"https://fndb.gg/skin/travis-scott/"},
+{cat:"Stacked",name:"Galaxy",tag:"Samsung promotion",desc:"A cosmic outfit offered through Samsung’s Galaxy Note9 / Galaxy Tab S4 promotion in 2018. It is a hardware-promotion cosmetic, not an OG Season 1 outfit.",fact:"Promotion: eligible Samsung Galaxy Note9 and Tab S4 devices · 2018.",url:"https://news.samsung.com/us/starting-now-galaxy-users-have-advance-access-to-fortnite-beta-on-android/"},
+{cat:"Stacked",name:"IKONIK",tag:"Samsung promotion",desc:"A promotional outfit inspired by iKON’s Jung Chanwoo and offered to eligible Galaxy S10 owners alongside the Scenario emote.",fact:"Available from March 8, 2019 · Eligible devices: Galaxy S10 / S10+ / S10e.",url:"https://news.samsung.com/us/samsung-brings-k-pop-to-fortnite-with-exclusive-ikonik-outfit-for-galaxy-s10-players/"},
+{cat:"Stacked",name:"Midas",tag:"Chapter 2 classic",desc:"A standout outfit from Chapter 2, Season 2 and one of the signature cosmetics associated with that season’s spy-themed Battle Pass.",fact:"Chapter 2, Season 2 Battle Pass outfit.",url:"https://fortnite.fandom.com/wiki/Midas"},
+{cat:"Stacked",name:"The Reaper",tag:"Season 3 Battle Pass",desc:"A memorable Tier 100 outfit from the original Chapter 1, Season 3 Battle Pass, commonly recognised as the classic suited assassin look.",fact:"Chapter 1, Season 3 Battle Pass · Tier 100 reward.",url:"https://fortnite.fandom.com/wiki/The_Reaper"},
+{cat:"Stacked",name:"Elite Agent",tag:"Season 3 classic",desc:"A clean tactical outfit with a selectable helmet option. Included here as one example of a broader mixed-era locker.",fact:"Chapter 1, Season 3 Battle Pass · Tier 87 reward.",url:"https://fortnite.fandom.com/wiki/Elite_Agent"},
+{cat:"Rare",name:"Black Knight",tag:"Battle Pass legacy",desc:"An early Battle Pass reward from Season 2. This card uses “rare” in the collector-history sense, not the blue in-game rarity tier.",fact:"Chapter 1, Season 2 · Battle Pass Tier 70.",url:"https://fortnite.fandom.com/wiki/Black_Knight"},
+{cat:"Rare",name:"IKONIK",tag:"Device promo",desc:"A Samsung Galaxy S10 promotion outfit. Its limited device-based unlock history makes it a notable promotional cosmetic.",fact:"Samsung Galaxy S10 promotion · March 2019.",url:"https://news.samsung.com/us/samsung-brings-k-pop-to-fortnite-with-exclusive-ikonik-outfit-for-galaxy-s10-players/"},
+{cat:"Rare",name:"Wonder",tag:"Honor device promo",desc:"A promotional outfit unlocked through eligible Huawei Honor 20 devices, introduced in June 2019.",fact:"Promotion: eligible Huawei Honor 20 devices · Released June 21, 2019.",url:"https://fortnite.fandom.com/wiki/Wonder"},
+{cat:"Rare",name:"Honor Guard",tag:"Honor device promo",desc:"A promotional outfit originally unlocked through the HONOR View20 smartphone promotion.",fact:"Promotion: HONOR View20 · Released February 25, 2019.",url:"https://fortnite.fandom.com/wiki/Honor_Guard"},
+{cat:"Rare",name:"Travis Scott",tag:"Short shop run",desc:"The Icon Series outfit had a six-day Item Shop run in April 2020. Shop history is different from a permanent device or Battle Pass unlock.",fact:"Item Shop run: April 22–27, 2020 · Six days total.",url:"https://fndb.gg/skin/travis-scott/"},
+{cat:"Rare",name:"Galaxy",tag:"Samsung promo",desc:"A 2018 Samsung device promotion outfit first associated with the Galaxy Note9 and Tab S4.",fact:"Samsung Galaxy Note9 / Tab S4 promotion · 2018.",url:"https://news.samsung.com/us/starting-now-galaxy-users-have-advance-access-to-fortnite-beta-on-android/"},
+{cat:"Exclusive",name:"IKONIK",tag:"Samsung Galaxy S10",desc:"The iKONIK outfit and Scenario emote were announced for eligible Galaxy S10 owners, with availability beginning March 8, 2019.",fact:"Official Samsung announcement: Galaxy S10, S10+ and S10e owners.",url:"https://news.samsung.com/us/samsung-brings-k-pop-to-fortnite-with-exclusive-ikonik-outfit-for-galaxy-s10-players/"},
+{cat:"Exclusive",name:"Galaxy",tag:"Samsung Galaxy Note9",desc:"Samsung and Epic promoted this cosmic outfit through eligible Galaxy Note9 and Tab S4 devices during Fortnite’s Android launch period.",fact:"Official Samsung campaign: Galaxy Note9 and Tab S4 devices.",url:"https://news.samsung.com/us/starting-now-galaxy-users-have-advance-access-to-fortnite-beta-on-android/"},
+{cat:"Exclusive",name:"Wonder",tag:"Huawei Honor 20",desc:"An outfit tied to the eligible Huawei Honor 20 promotion. It is a device-promotion cosmetic, not a Battle Pass reward.",fact:"Unlocked through eligible Huawei Honor 20 devices · June 2019.",url:"https://fortnite.fandom.com/wiki/Wonder"},
+{cat:"Exclusive",name:"Honor Guard",tag:"HONOR View20",desc:"An outfit connected to the HONOR View20 smartphone promotion, released in February 2019.",fact:"Unlocked through HONOR View20 · February 25, 2019.",url:"https://fortnite.fandom.com/wiki/Honor_Guard"},
+{cat:"Starter",name:"Commando",tag:"Classic simple look",desc:"A straightforward classic outfit for a simple locker theme. This gallery groups it as a starter-style example, not a claim about account inventory.",fact:"Starter category is a curated theme, not an official Fortnite item class.",url:"https://fortnite.fandom.com/wiki/Commando"},
+{cat:"Starter",name:"Nog Ops",tag:"Classic outfit",desc:"A familiar seasonal outfit included here as an example of a recognisable starter-style locker.",fact:"Starter category is a curated theme, not an official Fortnite item class.",url:"https://fortnite.fandom.com/wiki/Nog_Ops"},
+{cat:"Starter",name:"Assault Trooper",tag:"Classic simple look",desc:"A simple, understated outfit used as another starter-style example in this collection.",fact:"Starter category is a curated theme, not an official Fortnite item class.",url:"https://fortnite.fandom.com/wiki/Assault_Trooper"},
+{cat:"Starter",name:"Aura",tag:"Everyday favourite",desc:"A well-known Item Shop outfit that works as a familiar example in a starter-style locker theme.",fact:"Starter category is a curated theme, not an official Fortnite item class.",url:"https://fortnite.fandom.com/wiki/Aura"},
+{cat:"NFA",name:"Focus",tag:"Visual example",desc:"NFA is an account-access label used by some sellers; it is not a Fortnite skin rarity or cosmetic type. This card only shows a cosmetic example.",fact:"Important: NFA does not describe a skin. Verify any account-access claims independently and review Epic’s account terms.",url:"https://fortnite.fandom.com/wiki/Focus"},
+{cat:"NFA",name:"Siren",tag:"Visual example",desc:"This is a cosmetic example for the NFA filter. NFA describes an account-access arrangement, not a skin category or item property.",fact:"Important: NFA does not describe a skin. Verify any account-access claims independently and review Epic’s account terms.",url:"https://fortnite.fandom.com/wiki/Siren"}
+];
+const categories=["All","Comp","OG","Stacked","Rare","Exclusive","Starter","NFA"];
+const intros={
+All:"<strong>All collections.</strong> A curated mix of competitive-style picks, early-season outfits, locker favourites and device promotions. Tap any card to inspect the full-size render and its background.",
+Comp:"<strong>Competitive / comp-style.</strong> These are community favourites for competitive-style lockers, not officially designated tournament outfits or a ranking of the best players’ skins.",
+OG:"<strong>OG / early-season.</strong> Some iconic outfits later returned. The original-owner styles — not just the base outfit — matter when describing the 2017 Season 1 classics.",
+Stacked:"<strong>Stacked locker examples.</strong> A mixed collection of iconic Battle Pass, collaboration and promotional cosmetics. “Stacked” has no official skin checklist.",
+Rare:"<strong>Collector-history picks.</strong> “Rare” here describes a notable unlock route or history, not the in-game rarity colour. Some OG outfits have returned; their original-owner styles may remain distinct.",
+Exclusive:"<strong>Device-promotion cosmetics.</strong> These outfits were tied to specific hardware offers or promotions, such as Samsung and HONOR devices.",
+Starter:"<strong>Starter-style examples.</strong> A clean mix of recognisable everyday outfits. This is a gallery theme, not an official Epic account tier.",
+NFA:"<strong>NFA is not a skin type.</strong> It is an account-access label used by sellers. The cards below are only cosmetic examples; do not mistake this filter for an official Fortnite category."
+};
+const grid=document.getElementById("grid"),bar=document.getElementById("categoryBar"),intro=document.getElementById("categoryIntro"),search=document.getElementById("search");
+let active="All",query="",cosmeticCache=new Map(),renderObserver=null;
+function setCategory(cat){active=cat;search.value="";query="";render()}
+window.setCategory=setCategory;
+categories.forEach(cat=>{const b=document.createElement("button");b.textContent=cat==="Comp"?"Competitive":cat;b.dataset.category=cat;b.addEventListener("click",()=>setCategory(cat));bar.appendChild(b)});
+search.addEventListener("input",e=>{query=e.target.value.trim().toLowerCase();render()});
+function initials(name){return name.split(/\s+/).map(x=>x[0]).join("").slice(0,2).toUpperCase()}
+function render(){
+  const visible=skins.filter(s=>(active==="All"||s.cat===active)&&(!query||(s.name+" "+s.cat+" "+s.tag+" "+s.desc).toLowerCase().includes(query)));
+  intro.innerHTML=intros[active];
+  bar.querySelectorAll("button").forEach(b=>b.classList.toggle("active",b.dataset.category===active));
+  grid.innerHTML="";
+  if(!visible.length){grid.innerHTML='<div class="empty">No matching skins. Try another name or category.</div>';return}
+  visible.forEach(s=>{
+    const card=document.createElement("article");card.className="skinCard";card.tabIndex=0;card.setAttribute("role","button");card.setAttribute("aria-label","View "+s.name+" details");
+    card.innerHTML='<div class="art"><span class="imageStatus">Loading full render</span><div class="artFallback">'+initials(s.name)+'</div></div><div class="cardBody"><div class="meta"><span class="pill">'+s.cat+'</span><span style="color:#8390a9;font-size:9px">OUTFIT</span></div><h3></h3><p></p><div class="viewLine"><span>VIEW SKIN DETAILS</span><span>↗</span></div></div>';
+    card.querySelector("h3").textContent=s.name;card.querySelector(".cardBody p").textContent=s.tag+" · Tap to view";
+    card.addEventListener("click",()=>openDetails(s));
+    card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetails(s)}});
+    grid.appendChild(card);observeCard(card,s);
+  });
+  document.getElementById("skinCount").textContent=skins.length;
+}
+function observeCard(card,skin){
+  if(!("IntersectionObserver" in window)){loadRender(skin).then(d=>setCardImage(card,d));return}
+  if(!renderObserver)renderObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const c=entry.target;renderObserver.unobserve(c);loadRender(c.dataset.skin).then(d=>setCardImage(c,d))}})},{rootMargin:"240px"});
+  card.dataset.skin=skin.name;renderObserver.observe(card);
+}
+async function loadRender(name){
+ if(cosmeticCache.has(name))return cosmeticCache.get(name);
+ const promise=(async()=>{
+  try{
+   const response=await fetch("https://prod.fn-api.cc/v1/cosmetics/br/"+encodeURIComponent(name));
+   if(!response.ok)throw new Error("Cosmetic API returned "+response.status);
+   const json=await response.json(),item=json.data||json;
+   const images=item.images||{};
+   return {url:images.render||images.featured||images.icon||null,placeholder:!!images.placeholder,meta:item};
+  }catch(err){return {url:null,placeholder:false,meta:null}}
+ })();
+ cosmeticCache.set(name,promise);return promise;
+}
+function setCardImage(card,data){
+ if(!card.isConnected)return;
+ const art=card.querySelector(".art"),status=card.querySelector(".imageStatus"),fallback=card.querySelector(".artFallback");
+ if(!data||!data.url||data.placeholder){status.textContent="Render unavailable";fallback.style.display="flex";return}
+ const img=new Image();img.alt=card.querySelector("h3").textContent+" full-body Fortnite render";img.onload=()=>{art.insertBefore(img,status.nextSibling);status.textContent="Full-body render";status.style.color="#bde8ff"};img.onerror=()=>{status.textContent="Artwork unavailable";fallback.style.display="flex"};img.src=data.url;
+}
+async function openDetails(s){
+ const modal=document.getElementById("skinModal"),art=document.getElementById("modalArt");
+ document.getElementById("modalPill").textContent=s.cat==="Comp"?"COMP-STYLE":s.cat.toUpperCase();
+ document.getElementById("modalName").textContent=s.name;
+ document.getElementById("modalDescription").textContent=s.desc;
+ document.getElementById("modalFact").textContent=s.fact;
+ const source=document.getElementById("modalSource");source.href=s.url;source.textContent="VIEW REFERENCE ↗";
+ art.removeAttribute("src");art.alt=s.name+" full-body Fortnite render";
+ modal.classList.add("open");document.body.style.overflow="hidden";
+ const data=await loadRender(s.name);
+ if(data&&data.url&&!data.placeholder)art.src=data.url;
+ else art.alt=s.name+" render is not available from the cosmetic API";
+}
+function closeModal(){document.getElementById("skinModal").classList.remove("open");document.body.style.overflow=""}
+document.getElementById("closeModal").addEventListener("click",closeModal);
+document.getElementById("skinModal").addEventListener("click",e=>{if(e.target.id==="skinModal")closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+loadRender("Renegade Raider").then(d=>{if(d.url&&!d.placeholder){const im=document.getElementById("heroArt");im.onload=()=>im.classList.add("loaded");im.src=d.url}});
 render();
-</script></body></html>
+</script>
+</body>
+</html>
