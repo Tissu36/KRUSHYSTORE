@@ -230,7 +230,7 @@ const imageMap={
 
 function esc(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function listItems(text){return (text||'').split(',').map(x=>x.trim()).filter(Boolean);}
-function art(name,category){const u=imageMap[name];if(u)return '<img loading="lazy" src="'+u+'" alt="'+esc(name)+'" onerror="this.style.display=\'none\';this.nextElementSibling.hidden=false"><span class="artFallback" hidden></span>';return '<span class="artFallback" aria-label="Fortnite cosmetic artwork"></span>';}
+function art(name,category){const u=imageMap[name];if(u){const proxied='https://wsrv.nl/?url='+encodeURIComponent(u);return '<img loading="lazy" referrerpolicy="no-referrer" src="'+proxied+'" alt="'+esc(name)+'" onerror="this.style.display=\'none\';this.nextElementSibling.hidden=false"><span class="artFallback" hidden></span>';}return '<span class="artFallback" aria-label="Fortnite cosmetic artwork"></span>';}
 function cosmeticCard(name,category){return '<div class="cosmeticCard">'+art(name,category)+'<span>'+esc(name)+'</span></div>';}
 
 function renderAccount(){
